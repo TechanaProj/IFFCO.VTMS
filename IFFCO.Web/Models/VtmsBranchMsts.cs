@@ -6,7 +6,7 @@ namespace IFFCO.VTMS.Web.Models
 {
     public partial class VtmsBranchMsts :Entity
     {
-        public int BranchId { get; set; }
+        public int? BranchId { get; set; }
         public string BranchCode { get; set; }
         public string BranchDesc { get; set; }
         public string CourseCode { get; set; }

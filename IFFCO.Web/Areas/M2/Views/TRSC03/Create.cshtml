@@ -1,0 +1,87 @@
+﻿@model IFFCO.VTMS.Web.ViewModels.TRSC03ViewModel
+
+
+<!DOCTYPE html>
+<html>
+<head>
+         <div style="width:27.94cm; height:21.59cm; padding:20px; text-align:center; border: 10px solid #787878;color">
+         <div style="width:auto; height:20.00cm; padding:20px; text-align:center; border: 5px solid #787878">
+         <img style="margin:auto;padding:0;" src="~/images/logo.jpg" alt="iffco " width="180px" height="90px"><br /><br />
+         <script src="@Url.Content("~/js/jquery-3.3.1.min.js")"></script>
+         
+         <script>
+              $(document).ready(function () { 
+               window.print(); 
+             });
+         </script>
+</head>
+
+<body >
+    <div style="background-image:image('~/images/logo.jpg')">
+       
+        <div >
+            <span style="font-size: 35px;font-family: arial;color: green; font-weight:bold; padding-top:70px; "> INDIAN FARMERS FERTILISER COOPERATIVE LTD. </span>
+        </div>
+            
+        <div style="margin-bottom: 30px;">
+            <span style="font-size:25px;font-family: arial;"> AONLA UNIT </span>
+        </div> 
+        
+        <div>
+            <span style="font-size:35px;font-family:times new roman;color:brown;font-weight: 300;"> TECHNICAL DEPARTMENT </span>
+        </div>
+
+        <div style=" margin-bottom: 45px;" >
+           <span style="font-size:30px;font-family: times new roman;color: brown;font-stretch: expanded;"> (TRAINING & DEVELOPMENT SECTION) </span> <br /><br /> 
+         </div>
+        
+        <div style="padding-right:180;margin-right:200;text-align:center;">
+            <span style="font-size:20px"><p><i>certified that Mr./Ms.<b>@Model.Pi_Msts.Name </b>a student of </i></p></span>
+        </div>
+
+        <div style="text-align:center;">
+            <span style="font-size:20px"><p><i><b>@Model.Edu_Msts.InstituteName</b> </i></p></span> 
+        </div>
+
+        <div style="margin-left: 100px;text-align:center;">
+            <span style="font-size:20px"><i>has undergone vocational training from <b>@Model.Pi_Msts.VtStartDate</b> to <b>@Model.Pi_Msts.VtEndDate</b> </i></span><br><br>
+        </div>
+
+        <div style="margin-left: 200px;text-align:left;">
+            <span style="font-size:20px"><i>at IFFCO Aonla. </i></span><br>
+        </div>
+
+        <div style="text-align:left;margin-top:200px; font-family: sans-serif;">
+            <span style="font-size:20px">VT No.<b>@Model.Pi_Msts.VtCode</b> </span>
+        </div >
+
+        <div class="col-md-4" style="text-align:left;margin-top: 10px;font-family: sans-serif;">
+            <span style="font-size:20px">Date :<b>@DateTime.Today.ToString("dd/MM/yyyy")</b></span>
+       
+            <div class="col-md-4" style="text-align:center;margin-top:-20px;font-family: sans-serif;">
+                <span style="font-size:20px;"><b>Section Incharge</b></span>
+
+                <div class="col-md-4" style="text-align:right;margin-top:-22px;font-family: sans-serif;">
+                    <span style="font-size:20px;"> <b>Head of Department</b></span>
+            </div>
+                 
+            </div>
+               
+        </div>
+    </div>
+    
+  
+
+
+
+</body>
+</html>
+
+
+
+
+
+
+
+
+    

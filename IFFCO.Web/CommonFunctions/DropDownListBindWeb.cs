@@ -23,6 +23,29 @@ namespace IFFCO.VTMS.Web.CommonFunctions
         {
             _context = new ModelContext();
         }
+		
+		 public List<SelectListItem> CourseLOVBind()
+        {
+            var CourseLOV = _context.VtmsCourseMsts.OrderBy(x => x.CourseId).Select(x => new SelectListItem
+            {
+                Text = string.Concat(x.CourseId, " - ", x.CourseCode, " - ", x.CourseDesc),
+                Value = x.CourseId.ToString()
+
+            }).ToList();
+
+            return CourseLOV;
+        }
+		
+		public List<SelectListItem> ListStateBind()
+        {
+            var listState = _context.MState.OrderBy(x => x.StateName).Select(x => new SelectListItem
+            {
+                Text = string.Concat(x.StateCd, " - ", x.StateName),
+                Value = x.StateCd.ToString()
+            }).ToList();
+            return listState;
+        }
+
 
         public List<SelectListItem> UniversityLOVBind()
         {
@@ -186,6 +209,58 @@ public List<SelectListItem> GET_District(string StateCd)
                                  Value = Convert.ToString(dr["RECOMM_ID"])
                              }).ToList();
             return DRP_VALUE;
+        }
+		
+		public List<SelectListItem> ListDistrictBind(string StateCd)
+        {
+            var ListCourse = _context.MDistrict.Where(x => x.StateCd == StateCd).OrderBy(x=>x.DisttName).Select(x => new SelectListItem
+            {
+                Text = string.Concat(x.DisttCd, " - ", x.DisttName),
+                Value = x.DisttCd.ToString()
+            }).ToList();
+            return ListCourse;
+        }
+		
+		public List<SelectListItem> ListInstituteBind(string UniversityId)
+        {
+            var ListInstitute = _context.VtmsInstituteMsts.Where(x => x.UniversityId == UniversityId).Select(x => new SelectListItem
+            {
+                Text = string.Concat(x.InstituteCd, " - ", x.InstituteName),
+                Value = x.InstituteCd.ToString()
+            }).ToList();
+            return ListInstitute;
+
+
+        }
+		
+		public List<SelectListItem> ListUniversityBind(string DistrictName)
+        {
+            var ListUniverse = _context.VtmsUniversityMsts.Where(x => x.DistrictName == DistrictName).OrderBy(x => x.UniversityName).Select(x => new SelectListItem
+            {
+                Text = string.Concat(x.UniversityId, " - ", x.UniversityName),
+                Value = x.UniversityId.ToString()
+            }).ToList();
+            return ListUniverse;
+        }
+		
+		public List<SelectListItem> ListCourseBind()
+        {
+            var ListCourse = _context.VtmsCourseMsts.OrderBy(x => x.CourseDesc).Select(x => new SelectListItem
+            {
+                Text = x.CourseDesc.ToString(),
+                Value = x.CourseId.ToString()
+            }).ToList();
+            return ListCourse;
+        }
+		
+		public List<SelectListItem> ListBranchBind(string CourseCode)
+        {
+            var ListBranch = _context.VtmsBranchMsts.OrderBy(x => x.BranchDesc).Where(x => x.CourseCode == CourseCode).Select(x => new SelectListItem
+            {
+                Text = string.Concat(x.BranchId ," - ",  x.BranchDesc),
+                Value = x.BranchId.ToString()
+            }).ToList();
+            return ListBranch;
         }
     }
 }

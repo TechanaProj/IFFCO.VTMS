@@ -1,0 +1,379 @@
+﻿@model IFFCO.VTMS.Web.ViewModels.TRSC03ViewModel
+
+@{
+    ViewData["Title"] = "Details";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<link href="~/css/Select2.css" rel="stylesheet" />
+<script src="~/js/select2.min.js"></script>
+
+<link href="~/css/bootstrap-datepicker3.css" rel="stylesheet" />
+
+<script src="~/js/bootstrap-datepicker.min.js"></script>
+<style>
+    .user-img-edit {
+        width: 240px;
+        display: inline-block;
+        border-radius: 20px;
+        overflow: hidden;
+        border: 1px solid #b7b7b7;
+        position: relative;
+    }
+</style>
+
+<script>
+
+
+    $(document).ready(function () {
+
+       
+        var RecommPer = $("#RecommPersonalNo").val();
+        var otherRecom = $("#RecommOthersName").val();
+
+        if (RecommPer == null || RecommPer == "") {
+            $("#RecommValue").val(otherRecom);
+        }
+        else {
+            $("#RecommValue").val(RecommPer);
+
+        }
+
+        if ($("#Frecommendation option:selected").val() == 'OTHERS') {
+            $('#FRecommPno').val(null);
+            $('#FRecommPno').hide();
+            $('#FRecommPnoLabel').hide();
+            $('#FOthersRecommName').show();
+            $('#FOthersRecommNameLabel').show();
+        }
+        else {
+            $('#FRecommPno').show();
+            $('#FRecommPnoLabel').show();
+            $('#FOthersRecommName').hide();
+            $('#FOthersRecommNameLabel').hide();
+            $('#FOthersRecommName').val(null);
+        };
+
+
+        if ($('#VTPhoto').attr('src') == null || $('#VTPhoto').attr('src') == "") {
+            $("#VTPhoto").attr("src", "/images/NullEmp.png");
+
+        };
+
+
+    });
+
+
+
+
+
+</script>
+
+<div class="row">
+    <div class="col-md-12">
+
+
+<div class="content-box">
+    <div class="table-title">
+        <div class="row">
+            <div class="col-sm-6">
+                <h2></h2>
+            </div>
+            <div class="col-sm-6">
+                @*<a class="btn btn-success m-btn" asp-area="M2" asp-controller=" TRSC03" asp-action="Index" method="get"><i class="material-icons"></i><span>Back List</span></a>*@
+            </div>
+
+        </div>
+    </div>
+    <div class="tab-content" id="nav-tabContent">
+        <div class="tab-pane fade show active" id="nav-home" role="tabpanel" aria-labelledby="nav-home-tab">
+            <div class="content-box">
+                <h3 class="heading1">
+                    <span class="glyphicon glyphicon-hand-right"></span> VT Photograph
+                </h3>
+
+                <div class="row form-group">
+                    <div class="col-sm-5"></div>
+                    <div class="col-sm-4"> <span class="user-img-edit"><img src="@Model.ProfileImage" id="VTPhoto" style="width:100%;"></span></div>
+                    <div class="col-sm-3 text-right"> </div>
+                </div>
+
+
+
+
+
+
+
+                <h3 class="heading1">
+                    <span class="glyphicon glyphicon-hand-right"></span> Personal Information
+                </h3>
+
+                <div class="row form-group">
+                    <div class="col-sm-2"><label class="lebel2">VT Code</label></div>
+                    <div class="col-sm-2">
+                        <input id="CVTCode" readonly="readonly" type="text" asp-for="@Model.Pi_Msts.VtCode" class="form-control" />
+                        <span asp-validation-for="@Model.Pi_Msts.VtCode" class="text-danger"></span>
+                        <input type="hidden" asp-for="@Model.Pi_Msts.EnrolledBy" class="form-control" />
+                        <input type="hidden" asp-for="@Model.Pi_Msts.ModifiedBy" class="form-control" />
+                        <input type="hidden" asp-for="@Model.Pi_Msts.ModifiedOn" class="form-control" />
+                        <input type="hidden" asp-for="@Model.Pi_Msts.EnrolledOn" class="form-control" />
+                        <input type="hidden" asp-for="@Model.Edu_Msts.VtCode" class="form-control" />
+                        <input type="hidden" asp-for="@Model.Edu_Msts.UnitCode" class="form-control" />
+                        <input type="hidden" asp-for="@Model.Pi_Msts.UnitCode" class="form-control" />
+                        <input type="hidden" asp-for="@Model.Edu_Msts.EnrolledBy" class="form-control" />
+                        <input type="hidden" asp-for="@Model.Edu_Msts.EnrolledOn" class="form-control" />
+                        <input type="hidden" asp-for="@Model.Pi_Msts.PrevVtCode" class="form-control" />
+                        <input type="hidden" asp-for="@Model.Pi_Msts.EnrollmentStatus" class="form-control" />
+                        <input type="hidden" asp-for="@Model.Pi_Msts.Status" class="form-control" />
+                        <input type="hidden" asp-for="@Model.Edu_Msts.PrevVtCode" class="form-control" />
+                        <input type="hidden" asp-for="@Model.Edu_Msts.ModifiedBy" class="form-control" />
+                        <input type="hidden" asp-for="@Model.Edu_Msts.ModifiedOn" class="form-control" />
+                        <input type="hidden" asp-for="@Model.Doc_Msts.VtCode" class="form-control" />
+                        <input type="hidden" asp-for="@Model.Doc_Msts.UnitCode" class="form-control" />
+
+
+                    </div>
+
+                    <div class="col-sm-2 text-right"><label class="lebel2">Name <span style="color:red">*</span></label></div>
+                    <div class="col-sm-2">
+                        <input id="CName" type="text" asp-for="@Model.Pi_Msts.Name" class="form-control" readonly="readonly" />
+
+                    </div>
+
+                    <div class="col-sm-2 text-right"><label class="lebel2">Father Name <span style="color:red">*</span></label></div>
+                    <div class="col-sm-2">
+                        <input id="FFatherName" type="text" asp-for="@Model.Pi_Msts.FatherName" class="form-control" readonly />
+                    </div>
+
+                </div>
+
+                <div class="row form-group">
+                    <div class="col-sm-2"><label class="lebel2">Address <span style="color:red">*</span></label></div>
+                    <div class="col-sm-6">
+                        <input id="FAddress" type="text" asp-for="@Model.Pi_Msts.Address" class="form-control" readonly />
+                        <span asp-validation-for="@Model.Pi_Msts.Address" class="text-danger"></span>
+                    </div>
+                    <div class="col-sm-2"><label class="lebel2">Contact Number <span style="color:red">*</span></label></div>
+                    <div class="col-sm-2">
+                        <input id="FContactNo" type="number" asp-for="@Model.Pi_Msts.ContactNo" maxlength="10" max="9999999999" class="form-control" readonly />
+                        <span asp-validation-for="@Model.Pi_Msts.ContactNo" class="text-danger"></span>
+                    </div>
+                </div>
+
+                <div class="row form-group">
+                    <div class="col-sm-2"><label class="lebel2">State <span style="color:red">*</span></label></div>
+                    <div class="col-sm-2">
+                        <input type="text" id="FState" asp-for="@Model.Pi_Msts.StateName" class="form-control" readonly />
+                        <span asp-validation-for="@Model.Pi_Msts.StateName" class="text-danger"></span>
+
+                    </div>
+
+                    <div class="col-sm-2 text-right"><label class="lebel2">District <span style="color:red">*</span></label></div>
+                    <div class="col-sm-2">
+                        <input id="FDistrict1" type="text" asp-for="@Model.Pi_Msts.DistrictName" class="form-control" readonly />
+                        <span asp-validation-for="@Model.Pi_Msts.DistrictName" class="text-danger"></span>
+
+                    </div>
+
+                    <div class="col-sm-2 text-right"><label class="lebel2">Pincode <span style="color:red">*</span></label></div>
+                    <div class="col-sm-2">
+                        <input id="FPincode" type="number" maxlength="6" asp-for="@Model.Pi_Msts.Pincode" class="form-control" readonly />
+                        <span asp-validation-for="@Model.Pi_Msts.Pincode" class="text-danger"></span>
+                    </div>
+
+                </div>
+
+
+
+
+
+                <h3 class="heading1">
+                    <span class="glyphicon glyphicon-hand-right"></span> Academic Information
+                </h3>
+
+                <div class="row form-group">
+
+
+                    <div class="col-sm-2 text-right"><label class="lebel2">Course <span style="color:red">*</span></label></div>
+                    <div class="col-sm-2">
+                        <input id="FCourse" asp-for="@Model.Edu_Msts.CourseName" readonly="readonly" class="form-control" />
+
+                    </div>
+                    <div class="col-sm-2"><label class="lebel2">Branch </label></div>
+                    <div class="col-sm-2">
+                        <input type="text" id="FBranch1" readonly="readonly" asp-for="@Model.Edu_Msts.BranchName" class="form-control">
+
+                    </div>
+                    <div class="col-sm-2 text-right"> <label class="lebel2">Year <span style="color:red">*</span></label></div>
+                    <div class="col-sm-2">
+                        <input id="FYear" type="number" maxlength="1" asp-for="@Model.Edu_Msts.Year" class="form-control" readonly="readonly" />
+                    </div>
+                </div>
+
+
+
+
+                <div class="row form-group">
+                    <input type="hidden" id="hdnType" />
+                    <div class="col-sm-2"><label class="lebel2">University <span style="color:red">*</span></label></div>
+                    <div class="col-sm-2">
+                        <input type="text" id="FUniversity" asp-for="@Model.Edu_Msts.UniversityName" readonly="readonly" class="form-control" />
+
+                    </div>
+                    <div class="col-sm-2 text-right"> <label class="lebel2">Institute</label></div>
+                    <div class="col-sm-2">
+                        <input type="text" id="FInstitute1" asp-for="@Model.Edu_Msts.InstituteName" class="form-control" readonly="readonly">
+
+                    </div>
+                    <div class="col-sm-2 text-right"><label class="lebel2">Semester <span style="color:red">*</span></label></div>
+                    <div class="col-sm-2">
+                        <input id="FSemester" type="number" maxlength="1" asp-for="@Model.Edu_Msts.Semester" class="form-control" readonly="readonly" />
+
+                    </div>
+                </div>
+
+                <h3 class="heading1">
+                    <span class="glyphicon glyphicon-hand-right"></span> Other Details
+                </h3>
+
+
+                <div class="row form-group">
+                    <div class="col-sm-2"><label class="lebel2">Doctor Name <span style="color:red">*</span></label></div>
+                    <div class="col-sm-2">
+                        <input id="FDocName" type="text" asp-for="@Model.Pi_Msts.DocName" class="form-control" readonly />
+                        <span asp-validation-for="@Model.Pi_Msts.DocName" class="text-danger"></span>
+                    </div>
+
+                    <div class="col-sm-2 text-right"><label class="lebel2">Doctor Registration <span style="color:red">*</span></label></div>
+                    <div class="col-sm-2">
+                        <input id="FDocRegistrationNo" type="text" asp-for="@Model.Pi_Msts.DocRegistrationNo" class="form-control" readonly />
+                        <span asp-validation-for="@Model.Pi_Msts.DocRegistrationNo" class="text-danger"></span>
+
+                    </div>
+
+                    <div class="col-sm-2"><label class="lebel2">Training Start Date <span style="color:red">*</span></label></div>
+                    <div class="col-sm-2">
+                        <input id="FVTStartDate" type="text" asp-for="@Model.Pi_Msts.VtStartDate" class="form-control datetime" readonly />
+                        <span asp-validation-for="@Model.Pi_Msts.VtStartDate" class="text-danger"></span>
+                    </div>
+
+
+
+                </div>
+
+                <div class="row form-group">
+                    <div class="col-sm-2"><label class="lebel2">Recommendation Type <span style="color:red">*</span></label></div>
+                    <div class="col-sm-2">
+                        <input type="text" id="FRecommendation" asp-for="@Model.Pi_Msts.RecommendationType" class="form-control" readonly />
+                        <span asp-validation-for="@Model.Pi_Msts.RecommendationType class=" text-danger"></span>
+                    </div>
+                    <div class="col-sm-2 text-right" id="FRecommPnoLabel"> <label class="lebel2">Personnel No. <span style="color:red">*</span></label></div>
+                    <div class="col-sm-2 text-right" style="display: none;" id="FOthersRecommNameLabel"> <label class="lebel2">Recommender Name<span style="color:red">*</span></label></div>
+                    <div class="col-sm-2">
+                        <input id="RecommValue" type="text" class="form-control" readonly="readonly" />
+                        <input id="RecommPersonalNo" type="hidden" asp-for="@Model.Pi_Msts.RecommPno" class="form-control" readonly="readonly" />
+                        <input id="RecommOthersName" type="hidden" asp-for="@Model.Pi_Msts.OthersRecommName" class="form-control" readonly="readonly" />
+
+                    </div>
+                    <div class="col-sm-2 text-right"><label class="lebel2">Training End Date <span style="color:red">*</span></label></div>
+                    <div class="col-sm-2">
+                        <input id="FVTEndDate" type="text" asp-for="@Model.Pi_Msts.VtEndDate" class="form-control datetime" readonly />
+                        <span asp-validation-for="@Model.Pi_Msts.VtEndDate" class="text-danger"></span>
+
+                    </div>
+                </div>
+
+                <h3 class="heading1">
+                    <span class="glyphicon glyphicon-hand-right"></span> Identity Proof
+                </h3>
+                <div class="row form-group">
+                    <div class="col-sm-2"><label class="lebel2">Identity Proof Type <span style="color:red">*</span></label></div>
+                    <div class="col-sm-2">
+                        <select id="FIdentityProofType" class="form-control" disabled asp-for="@Model.Doc_Msts.VtIdType">
+                            <option value="">--Select--</option>
+                            <option value="Aadhaar Letter / Card">Aadhaar Letter / Card</option>
+                            <option value="Voter's Identity Card">Voter's Identity Card</option>
+                            <option value="Driving Licence">Driving Licence</option>
+                            <option value="Passport">Passport</option>
+                        </select>
+                    </div>
+                    <div class="col-sm-2 text-right"> <label class="lebel2">Identity Proof No.<span style="color:red">*</span></label></div>
+                    <div class="col-sm-2">
+                        <input id="FIdProofNumber" type="text" class="form-control" asp-for="@Model.Doc_Msts.VtIdDtl" readonly="readonly" />
+                    </div>
+                    <div class="col-sm-2"><label class="lebel2">Upload File<span style="color:red">*</span></label></div>
+                    <div class="col-sm-2">
+                        <div class="custom-file">
+                            @if (Model.Doc_Msts.VtIdUpload != null)
+                            {
+                                <button class="btn btn-xs" type="button" data-toggle="collapse" data-target="#collapseExample" aria-expanded="false" aria-controls="collapseExample">
+                                    View Id proof
+                                </button>
+                            }
+
+                        </div>
+                    </div>
+                </div>
+                <div class="collapse" id="collapseExample">
+                    <div class="card card-body">
+                        <iframe src="data:application/pdf;base64, @System.Convert.ToBase64String((Byte[])Model.IdProof)"
+                                style="width:100%; height:500px;" frameborder="0"></iframe>
+                    </div>
+                </div>
+
+
+
+
+            </div>
+        </div>
+
+
+
+    </div>
+
+
+</div>
+
+
+
+
+
+
+<script type="text/javascript">
+
+      
+
+    $("#Frecommendation").change(function () {
+        if ($("#Frecommendation option:selected").val() == 'OTHERS') {
+            $('#FRecommPno').val(null);
+            $('#FRecommPno').hide();
+            $('#FRecommPnoLabel').hide();
+            $('#FOthersRecommName').show();
+            $('#FOthersRecommNameLabel').show();
+        }
+        else {
+            $('#FOthersRecommName').val(null);
+            $('#FRecommPno').show();
+            $('#FRecommPnoLabel').show();
+            $('#FOthersRecommName').hide();
+            $('#FOthersRecommNameLabel').hide();
+        }
+        ;
+    });
+
+
+
+    $("#FState").change(function () {           
+        CommonAjax('/M3/FP1/DistrictDropDownList', "GET", false, "application/json", false, BindDropDown, "#FDistrict", { state: $('#FState').val(), district:null });
+    });
+
+    $("#FDistrict").change(function () {
+        var districtval = $("#FDistrict").val()
+        $("#FDistrict1").val(districtval);
+    });
+
+    
+
+    
+ 
+</script>
+

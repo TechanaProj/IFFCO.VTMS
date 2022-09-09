@@ -173,6 +173,26 @@ namespace IFFCO.VTMS.Web.CommonFunctions
 
             return DTL_VALUE;
         }
+		
+		public List<VtmsBranchMsts> GetBranchMaster(string StateCd)
+        {
+            
+
+            string sqlquery = " select B.BRANCH_ID, B.BRANCH_CODE, B.BRANCH_DESC, C.COURSE_DESC FROM VTMS_BRANCH_MSTS B JOIN VTMS_COURSE_MSTS C ON B.COURSE_CODE = C.COURSE_ID and c.course_id = '"+StateCd+"' ";
+
+            DataTable dtDTL_VALUE = new DataTable();
+            dtDTL_VALUE = _context.GetSQLQuery(sqlquery);
+            List<VtmsBranchMsts> DTL_VALUE = new List<VtmsBranchMsts>();
+            DTL_VALUE = (from DataRow dr in dtDTL_VALUE.Rows
+                         select new VtmsBranchMsts()
+                         {
+                             BranchId = (dr["BRANCH_ID"] == DBNull.Value) ? (int?) null : Convert.ToInt16(dr["BRANCH_ID"]),//Convert.toint64
+                             BranchCode = Convert.ToString(dr["BRANCH_CODE"]),
+                             BranchDesc = Convert.ToString(dr["BRANCH_DESC"]),
+                             CourseCode = Convert.ToString(dr["COURSE_DESC"])
+                         }).ToList();
+            return DTL_VALUE;
+        }
     }
 }
 

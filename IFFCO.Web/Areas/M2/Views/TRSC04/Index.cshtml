@@ -1,0 +1,266 @@
+﻿ @model IFFCO.VTMS.Web.ViewModels.TRSC04ViewModel
+
+@{
+    ViewData["Title"] = "Index";
+}
+<script src="~/js/Common.js"></script>
+
+<script>
+
+function Validate() 
+{
+        debugger;
+        if (true) 
+        {            
+            return true;
+        } 
+        else 
+        {
+            $('#FFromDate').val(Dateformate($('#FFromDate').val())).removeClass("datetime");
+            $('#FToDate').val(Dateformate($('#FToDate').val())).removeClass("datetime");
+            return true;
+        }
+ }
+
+ </script>
+
+
+<div class="plcholder-cn">
+   <div class="table-responsive">
+        <div class="table-area">
+            <div class="table-title">
+                <div class="btn-area-tbl">
+                 </div>
+            </div>
+            <div class="table-wrapper">
+               <div class="table-con">
+                    <div class="tableUp">
+                        <div class="content-box">
+                            <h3 class="sub-heading1 sub-heading2"><span>Control Parameters</span></h3>
+                            <div class="m-form">
+                                <form asp-area="M2" asp-controller="TRSC04" asp-action="Search" method="post" onsubmit="return Validate();">
+                                    <div class="m-form">
+                                        <div class="m-form-bx">
+                                            <div class="row form-sm">
+                                                     
+                                              
+
+                                                     <div class="col-sm-1 col-md-1">
+                                                        <div>
+                                                            <label class="m-lbl1 m-lbl2"> From Date</label>
+                                                        </div>
+                                                     </div>
+                                                     <div class="col-sm-2 col-md-2">
+                                                        <div>
+                                                         <input type="date" class="form-control" id="FFromDate" asp-for="@Model.FromDate" />
+                                                        </div>
+                                                     </div>
+                                                     <div class="col-sm-1 col-md-1">
+                                                        <div>
+                                                            <label class="m-lbl1 m-lbl2">End Date</label>
+                                                        </div>
+                                                     </div>
+                                                     <div class="col-sm-2 col-md-2">
+                                                        <div>
+                                                         <input type="date" class="form-control" id="FToDate" asp-for="@Model.ToDate" />
+                                                       </div>
+                                                     </div>
+                                                      <div class="col-sm-1 col-md-1">
+                                                        <div>
+                                                            <label class="m-lbl1 m-lbl2">State</label>
+                                                        </div>
+                                                     </div>
+                                                     <div class="col-sm-2 col-md-2">
+                                                       <div class="form-group">
+                                                              <select id="FState" class="form-control" onchange="PopDistrictLOV()"  asp-for="@Model.Pi_Msts.StateName" style="width:100%" asp-items="@(new SelectList(ViewBag.StateLOV,"Value","Text")) " >
+                                                           <option value="">------Select-----</option>
+                                                            <span asp-validation-for="@Model.Pi_Msts.StateName" class="text-danger"></span>
+                                                        </select>
+                                                        </div>
+                                                     </div>
+                                                     <div class="col-sm-1 col-md-1">
+                                                        <div>
+                                                            <label  class="m-lbl1 m-lbl2">District</label>
+                                                        </div>
+                                                     </div>
+                                                     <div class="col-sm-2 col-md-2">
+                                                      <div class="form-group">
+                                                        <select id="FDistrict" onchange="PopUniversityLOV()" asp-for="@Model.Pi_Msts.DistrictName" class="form-control">
+                                                           <option value="">------Select----- </option>
+                                                       </select>
+                                                      </div>
+                                                     </div>
+                                                     <div class="col-sm-1 col-md-1">
+                                                        <div>
+                                                            <label class="m-lbl1 m-lbl2">University</label>
+                                                        </div>
+                                                     </div>
+                                                     <div class="col-sm-2 col-md-2">
+                                                      <div class="form-group">
+                                                        <select id="FUniversity" onchange="PopInstituteLOV()" asp-for="@Model.Edu_Msts.UniversityName" class="form-control">
+                                                           <option value="">------Select----- </option>
+                                                       </select>
+                                                      </div>
+                                                     </div>
+                                                     <div class="col-sm-1 col-md-1">
+                                                        <div>
+                                                            <label class="m-lbl1 m-lbl2">Institute</label>
+                                                        </div>
+                                                     </div>
+                                                     <div class="col-sm-2 col-md-2">
+                                                      <div class="form-group">
+                                                        <select id="FInstitute" asp-for="@Model.Edu_Msts.InstituteName" class="form-control">
+                                                           <option value="">------Select----- </option>
+                                                       </select>
+                                                      </div>
+                                                     </div>
+                                                      <div class="col-sm-1 col-md-1">
+                                                        <div>
+                                                            <label class="m-lbl1 m-lbl2">Course</label>
+                                                        </div>
+                                                     </div>
+                                                     <div class="col-sm-2 col-md-2">
+                                                      <div class="form-group">
+                                                           <select id="FCourse" onchange="PopBranchLOV()" asp-for="@Model.Edu_Msts.CourseName"  class="form-control" asp-items="@(new SelectList(ViewBag.CourseLOV,"Value","Text")) ">
+                                                           <option value="">------Select----- </option>
+                                                       </select>
+                                                      </div>
+                                                     </div>
+                                                      <div class="col-sm-1 col-md-1">
+                                                        <div>
+                                                            <label class="m-lbl1 m-lbl2">Branch</label>
+                                                        </div>
+                                                     </div>
+                                                     <div class="col-sm-2 col-md-2">
+                                                      <div class="form-group">
+                                                        <select id="FBranch" asp-for="@Model.Edu_Msts.BranchName" class="form-control">
+                                                           <option value="">------Select----- </option>
+                                                       </select>
+                                                      </div>
+                                                     </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                   
+                                        <div class="btn-area1">
+                                            <input type="submit" id="save"  class="m-btn-1 save" value="Search" />
+                                            <input type="reset" id="reset" class="m-btn-1 btn-warning" value="Reset" />
+                                        </div>
+                                       </form>
+                                
+                            </div>
+
+                            <table class="table table-striped table-hover" id="HrmsHrdGrid">
+                                <thead>
+                                    <tr>
+                                        <th>
+                                            VT CODE
+                                        </th>
+                                        <th>
+                                            NAME
+                                        </th>
+                                        <th>
+                                            BRANCH
+                                        </th>
+                                        <th>
+                                            TRAINING DURATION
+                                        </th>
+                                        <th>
+                                            ACTIONS
+                                        </th>
+                                    </tr>
+                                 </thead>
+
+                                  <tbody>
+                    @foreach (var item in Model.View_InActive_List)
+                    {
+                        <tr>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.Vtcode)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.Name)
+                            </td>
+                            <td>
+                                  @Html.DisplayFor(modelItem => item.COURSE_DESC) - @Html.DisplayFor(modelItem => item.BRANCH_DESC)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.VtStartDate) - @Html.DisplayFor(modelItem => item.VtEndDate)
+                            </td>
+
+                            <td style=" width: 32%;">
+                                @if (item.CertFlag == null)
+                                {
+                                    <a asp-area="M2" asp-controller="TRSC03" asp-action="Create" asp-route-id="@item.Vtcode" class="Details" data-toggle="modal"><input type="button" class="btn btn-primary"  value="Print Certificate" /></a>
+                                }
+                                <input type="button" class="btn btn-danger btnSelect" value="Applicant Form" />
+                                @*<a asp-area="M2" asp-controller="TRSC03" asp-action="Create" asp-route-id="@item.Vtcode" class="Create" data-toggle="modal"><input type="button" value="CREATE CERTIFICATE"  onclick="GetIndex('M2/TRSC03/Createonclick="GetIndex('M2/TRSC03/Create') class="btn btn-success" value="Create Certificate" /></a>*@
+                                <a asp-area="M2" asp-controller="TRSC04" asp-action="Details" asp-route-id="@item.Vtcode" class="Details" data-toggle="modal"><input type="button" class="btn btn-success" value="Details"> </a>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+
+                            </table>
+                        </div>
+                    </div>
+                </div>
+             </div>
+        </div>
+    </div>
+</div>
+
+<div id="commonModalbinder" class="modal" style="display:none!important;z-index:99999999 !important;"></div>
+
+<script type="text/javascript">
+        $(document).ready(function () {
+          $('#HrmsHrdGrid').DataTable();
+          $('#FState').select2();
+          $('#FDistrict').select2();
+          $('#FUniversity').select2();
+          $('#FInstitute').select2();
+          $('#FCourse').select2();
+          $('#FBranch').select2();
+        });
+
+</script>
+
+<script>
+
+       function PopDistrictLOV() {
+        debugger;
+        $(".modalLoader").css("display", "block");
+        setTimeout(function () {
+            CommonAjax('/M2/TRSC04/DistrictLOVBindJSON', "GET", false, "application/json", false, BindDropDownWithSelectAsNull, "#FDistrict", { StateCd: $('#FState').val() });
+            $(".modalLoader").hide();
+        }, 10);
+       }
+
+       function PopUniversityLOV() {
+        debugger;
+        $(".modalLoader").css("display", "block");
+        setTimeout(function () {
+            CommonAjax('/M2/TRSC04/UniversityLOVBindJSON', "GET", false, "application/json", false, BindDropDownWithSelectAsNull, "#FUniversity", { DistrictName: $('#FDistrict').val() });
+             $(".modalLoader").hide();
+        }, 10);
+       }
+
+        function PopInstituteLOV() {
+            debugger;
+            $(".modalLoader").css("display", "block");
+            setTimeout(function() {
+                CommonAjax('/M2/TRSC04/InstituteLOVBindJSON', "GET", false, "application/json", false, BindDropDownWithSelectAsNull, "#FInstitute", { UniversityId: $('#FUniversity').val() });
+                $(".modalLoader").hide();
+            }, 10);
+        }
+       function PopBranchLOV() {
+            debugger;
+            $(".modalLoader").css("display", "block");
+            setTimeout(function() {
+               CommonAjax('/M2/TRSC04/BranchLOVBindJSON', "GET", false, "application/json", false, BindDropDownWithSelectAsNull, "#FBranch", { CourseCode: $('#FCourse').val() });
+               $(".modalLoader").hide();
+            }, 10);
+       }
+
+ </script>
+
