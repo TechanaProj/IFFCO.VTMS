@@ -23,7 +23,52 @@ namespace IFFCO.VTMS.Web.CommonFunctions
         {
             _context = new ModelContext();
         }
-		
+
+        public List<SelectListItem> listStateBind()
+        {
+            var listState = _context.MState.OrderBy(x => x.StateName).Select(x => new SelectListItem
+            {
+                Text = string.Concat(x.StateCd, " - ", x.StateName),
+                Value = x.StateCd.ToString()
+            }).ToList();
+            return listState;
+        }
+
+
+        public List<SelectListItem> ListUniversityBind()
+        {
+            var ListUniverse = _context.VtmsUniversityMsts.OrderBy(x => x.UniversityName).Select(x => new SelectListItem
+            {
+                Text = string.Concat(x.UniversityId, " - ", x.UniversityName),
+                Value = x.UniversityId.ToString()
+            }).ToList();
+            return ListUniverse;
+        }
+
+
+        public List<SelectListItem> ListBranchBind(string CourseCode)
+        {
+            var ListBranch = _context.VtmsBranchMsts.OrderBy(x => x.BranchDesc).Where(x => x.CourseCode == CourseCode).Select(x => new SelectListItem
+            {
+                Text = string.Concat(x.BranchId, " - ", x.BranchDesc),
+                Value = x.BranchId.ToString()
+            }).ToList();
+            return ListBranch;
+        }
+
+       
+
+
+        public List<SelectListItem> ListRecommBind(int unit)
+        {
+            var ListRecomm = _context.VtmsRecommMsts.Where(x => x.UnitCode == unit && x.Status == "A").Select(x => new SelectListItem
+            {
+                Text = x.RecommName.ToString(),
+                Value = x.RecommId.ToString()
+            }).ToList();  
+           return ListRecomm;
+        }
+
 		 public List<SelectListItem> CourseLOVBind()
         {
             var CourseLOV = _context.VtmsCourseMsts.OrderBy(x => x.CourseId).Select(x => new SelectListItem
@@ -210,18 +255,18 @@ public List<SelectListItem> GET_District(string StateCd)
                              }).ToList();
             return DRP_VALUE;
         }
-		
-		public List<SelectListItem> ListDistrictBind(string StateCd)
+
+        public List<SelectListItem> ListDistrictBind(string StateCd)
         {
-            var ListCourse = _context.MDistrict.Where(x => x.StateCd == StateCd).OrderBy(x=>x.DisttName).Select(x => new SelectListItem
+            var ListCourse = _context.MDistrict.Where(x => x.StateCd == StateCd).OrderBy(x => x.DisttName).Select(x => new SelectListItem
             {
                 Text = string.Concat(x.DisttCd, " - ", x.DisttName),
                 Value = x.DisttCd.ToString()
             }).ToList();
             return ListCourse;
         }
-		
-		public List<SelectListItem> ListInstituteBind(string UniversityId)
+
+        public List<SelectListItem> ListInstituteBind(string UniversityId)
         {
             var ListInstitute = _context.VtmsInstituteMsts.Where(x => x.UniversityId == UniversityId).Select(x => new SelectListItem
             {
@@ -232,8 +277,8 @@ public List<SelectListItem> GET_District(string StateCd)
 
 
         }
-		
-		public List<SelectListItem> ListUniversityBind(string DistrictName)
+
+        public List<SelectListItem> ListUniversityBind(string DistrictName)
         {
             var ListUniverse = _context.VtmsUniversityMsts.Where(x => x.DistrictName == DistrictName).OrderBy(x => x.UniversityName).Select(x => new SelectListItem
             {
@@ -242,8 +287,8 @@ public List<SelectListItem> GET_District(string StateCd)
             }).ToList();
             return ListUniverse;
         }
-		
-		public List<SelectListItem> ListCourseBind()
+
+        public List<SelectListItem> ListCourseBind()
         {
             var ListCourse = _context.VtmsCourseMsts.OrderBy(x => x.CourseDesc).Select(x => new SelectListItem
             {
@@ -252,15 +297,7 @@ public List<SelectListItem> GET_District(string StateCd)
             }).ToList();
             return ListCourse;
         }
-		
-		public List<SelectListItem> ListBranchBind(string CourseCode)
-        {
-            var ListBranch = _context.VtmsBranchMsts.OrderBy(x => x.BranchDesc).Where(x => x.CourseCode == CourseCode).Select(x => new SelectListItem
-            {
-                Text = string.Concat(x.BranchId ," - ",  x.BranchDesc),
-                Value = x.BranchId.ToString()
-            }).ToList();
-            return ListBranch;
-        }
+
+       
     }
 }

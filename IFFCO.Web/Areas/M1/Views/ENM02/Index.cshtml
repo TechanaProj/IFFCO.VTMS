@@ -1,0 +1,185 @@
+﻿@model IFFCO.VTMS.Web.ViewModels.ENM02ViewModel
+
+@{
+    //ViewData["Title"] = "Index";
+}
+<script src="~/js/Common.js"></script>
+<script type="text/javascript">
+    $(".modalLoader").hide();   
+    $(document).ready(function () {
+        $('#HrmsHrdGrid').DataTable();
+        subMenuHiddenMarker();
+    });
+</script>
+
+<div class="plcholder-cn">
+
+    <div class="table-responsive">
+        <div class="table-area">
+            <div class="table-title">
+                <div class="btn-area-tbl">
+
+                </div>
+            </div>
+            <div class="table-wrapper">
+
+
+                <div class="table-con">
+                    <div class="tableUp">
+                        <div class="content-box">
+                          
+                            <div class="btn-area-tbl">
+                                <a class="m-btn-1 addnew @Model.Insert addnewitem" asp-area="M1" asp-controller="ENM02" asp-action="Create" method="Get"><i class="material-icons"></i><span>Add Course</span></a>
+                            </div>
+
+                        </div>
+                        <div class="pd-form-area">                            
+                           
+                            <table class="table table-striped table-hover" id="HrmsHrdGrid">
+                                <thead>
+                                            <tr>
+                                                <th> COURSE ID</th>
+       
+                                                <th> COURSE CODE</th>
+        
+                                                <th> COURSE NAME</th>
+
+                                                <th> ACTIONS </th>
+                                            </tr>
+                                           
+                                             @if (Model.Status == "Create")
+                                    {
+                                        <tr id="traddpanel">
+                                            <td colspan="6">
+                                                <div>
+                                                    <form id="CreateForm" asp-area="M1" asp-controller="ENM02" asp-action="Create" method="post">
+
+                                                        <table style="width:100%">
+                                                            <tr class="update-row odd">
+                                                                <td>
+                                                                    <input type="text" asp-for="@Model.objvtmsCourseMsts.CourseId" id="Courseid" placeholder="COURSE ID" class="form-control" readonly />
+                                                                </td>
+                                                                <td>
+                                                                    <input type="text" required asp-for="@Model.objvtmsCourseMsts.CourseCode" id="CourseCode" placeholder="Course code" class="form-control" />
+                                                                </td>
+                                                                <td>
+                                                                    <input type="text" required asp-for="@Model.objvtmsCourseMsts.CourseDesc" id="CourseName" placeholder="course Name" class="form-control"  />
+                                                                </td>
+                                                                <td>
+                                                                    <input type="submit" id="createid" value="Save" class="m-btn-1 save" style="float:left;margin-right: 4px" />
+                                                                    <button class="m-btn-1 close1" type="button" onclick="GetIndex('M1/ENM02/Index')">Close</button>
+                                                                </td>
+                                                            </tr>
+                                                        </table>
+                                                    </form>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                    }
+
+                                     @if (Model.Status == "Edit")
+                                    {
+                                        <tr id="traddpanelEdit">
+                                            <td colspan="6">
+                                                <div>
+                                                    <form asp-area="M1" asp-controller="ENM02" asp-action="Edit"  method="post">
+                                                        <table style="width:100%">
+
+                                                            <tr class="update-row odd">
+                                                                <td>
+                                                                    <input type="text" asp-for="@Model.objvtmsCourseMsts.CourseId" id="Moduleid" readonly placeholder="Course ID" class="form-control" />
+
+                                                                </td>
+                                                                <td>
+                                                                    <input type="text" asp-for="@Model.objvtmsCourseMsts.CourseCode" id="SubMenuId" placeholder="Course Code" class="form-control" />
+                                                                    <input type="hidden" asp-for="@Model.objvtmsCourseMsts" id="SubMenuHiddenID" placeholder="pro ID" class="form-control" />
+                                                                </td>
+                                                                <td>
+                                                                    <input type="text" asp-for="@Model.objvtmsCourseMsts.CourseDesc" id="SubMenuName" placeholder="Course Name" class="form-control" />
+                                                                </td>
+                                                                <td>
+                                                                    <input type="submit" id="createid"  value="Update" class="m-btn-1 update" style="float:left;margin-right: 4px" />
+                                                                    <button class="m-btn-1 close1" type="button" onclick="GetIndex('M1/ENM02/Index')">Close</button>
+                                                                </td>
+                                                            </tr>
+
+                                                        </table>
+                                                    </form>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                    }
+                                           </thead>
+
+                                            <tbody>
+
+                                           @foreach (var item in Model.listVtmsCourseMsts)
+                                            {
+                                                <tr>
+                                                     <td>
+                                                        @Html.DisplayFor(modelItem => item.CourseId)
+                                                    </td>
+               
+           
+                                                     <td>
+                                                        @Html.DisplayFor(modelItem => item.CourseCode)
+                                                    </td>
+               
+           
+                                                     <td>
+                                                        @Html.DisplayFor(modelItem => item.CourseDesc)
+                                                    </td>
+
+                                                    <td>
+                                                       <a asp-area="M1" asp-controller="ENM02" asp-action="Edit" asp-route-id="@item.CourseId" asp-route-mod="@item.CourseCode" class="edit @Model.Edit glpicon addnewitem" data-toggle="modal"><i class="far fa-edit" data-toggle="tooltip" title="" data-original-title="Edit" onclick="SHOW_TR_Function('traddpanelEdit','traddpanel')"></i></a>
+                                                <a style="cursor:pointer" class="delete @Model.Delete glpicon" data-toggle="modal" onclick="divShow('/M1/ENM02/DeleteConfirmed?id=@item.CourseId&mod=@item.CourseCode');"><i class="far fa-trash-alt" data-toggle="tooltip" title="" data-original-title="Delete"></i></a>
+                                                    </td>
+               
+                                                </tr>
+                                            }
+                                            </tbody>
+                                 </table>
+                       </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+</div>
+
+<div id="commonModalbinder" class="modal" style="display:none!important;z-index:99999999 !important;"></div>
+
+
+
+<script type="text/javascript">
+    $(document).ready(function () {
+        $('#HrmsHrdGrid').DataTable();
+        subMenuHiddenMarker();
+    });
+
+     function PopDetail(row) {
+        debugger;
+        if("#createid").click()
+         {
+             GetIndex("/M1/ENM02/Create");
+         }
+         else {
+                $("#ParentMenuId").val(row);
+        GetIndex("/M1/ENM02/ViewMsts?id=" + row);
+    }
+     }
+
+     function subMenuHiddenMarker() {
+         debugger;
+         var editVal = '@Model.Status';
+        var val = $("#SubMenuId").val();
+         if (val != null && editVal == "Edit") {
+            $("#SubMenuHiddenID").val(val);
+        }
+    }
+    </script>
+
+
+
+

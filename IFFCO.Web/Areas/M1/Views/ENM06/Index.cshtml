@@ -1,0 +1,213 @@
+﻿@model IFFCO.VTMS.Web.ViewModels.ENM06ViewModel
+
+@{
+    //ViewData["Title"] = "Index";
+}
+<script src="~/js/Common.js"></script>
+<script type="text/javascript">
+    $(".modalLoader").hide();   
+</script>
+
+<div class="plcholder-cn">
+
+    <div class="table-responsive">
+        <div class="table-area">
+            <div class="table-title">
+                <div class="btn-area-tbl">
+
+                </div>
+            </div>
+            <div class="table-wrapper">
+
+
+                <div class="table-con">
+                    <div class="tableUp">
+                        <div class="content-box">
+                           @* <h3 class="sub-heading1"><span>Sub-Menu Master</span></h3>*@
+                            <div class="m-form">
+                                <div class="m-form">
+                                    <div class="m-form-bx">
+                                        <div class="row form-sm">
+                                            <div class="col-sm-1 col-md-2">
+                                                <div>
+                                                    <label class="m-lbl1 m-lbl2"> Select State  <span style="color:red;">*</span></label>
+                                                </div>
+                                            </div>
+                                            <div class="col-sm-2 col-md-2">
+                                                <div>
+                                                    <select id="ParentMenuId" asp-for="@Model.StateCd" required onchange="PopDetail(this.value);" class="form-control" style="width:100%" asp-items="@(new SelectList(Model.listStateBind,"Value","Text")) "></select>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="btn-area-tbl">
+                                <a class="m-btn-1 addnew @Model.Insert addnewitem" asp-area="M1" asp-route-id="@Model.StateCd"  asp-controller="ENM06" asp-action="Create" asp-for="@Model.objDistrict" method="Get"><i class="material-icons"></i><span>Add New District</span></a>
+                            </div>
+
+                        </div>
+                        <div class="pd-form-area">                            
+                           
+                            <table class="table table-striped table-hover" id="HrmsHrdGrid">
+                                <thead>
+                                    <tr>
+                                        <th>
+                                            District code
+                                        </th>
+                                        <th>
+                                           District Name
+                                        </th>
+                                       
+                                         <th>
+                                            State 
+                                        </th>
+                                        <th>
+                                            Status
+                                        </th>
+                                     
+                                        <th>Actions</th>
+                                    </tr>
+                                    @if (Model.Status == "Create")
+                                    {
+                                        <tr id="traddpanel">
+                                            <td colspan="6">
+                                                <div>
+                                                    <form id="CreateForm" asp-area="M1" asp-controller="ENM06" asp-action="Create" method="post">
+
+                                                        <table style="width:100%">
+                                                            <tr class="update-row odd">
+                                                                <td>
+                                                                    <input type="text" asp-for="@Model.objDistrict.DisttCd" id="Moduleid" placeholder="District Code ID" class="form-control" />
+                                                                </td>
+                                                                <td>
+                                                                    <input type="text" required asp-for="@Model.objDistrict.DisttName" id="SubMenuId" placeholder="District Name" class="form-control" />
+                                                                </td>
+                                                                <td>
+                                                                    <input type="hidden" readonly asp-for="@Model.objDistrict.StateCd" id="StateCd" placeholder="State Name" class="form-control" />
+                                                                </td>
+                                                                  <td>
+                                                                      <select id="ParentMenuId" asp-for="@Model.objDistrict.Status" required class="form-control" style="width:100">
+                                                                           <option value="A">A - Active</option>
+                                                                           <option value="I"> I - Inactive</option>
+                                                                      </select>
+                                                                  </td>
+                                                                <td>
+                                                                    <input type="submit" id="createid" value="Save" class="m-btn-1 save" style="float:left;margin-right: 4px" />
+                                                                    <button class="m-btn-1 close1" type="button" onclick="GetIndex('M1/ENM06/Index')">Close</button>
+                                                                </td>
+                                                            </tr>
+                                                        </table>
+                                                    </form>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                    }
+                                    @if (Model.Status == "Edit")
+                                    {
+                                        <tr id="traddpanelEdit">
+                                            <td colspan="6">
+                                                <div>
+                                                    <form asp-area="M1" asp-controller="ENM06" asp-action="Edit"  method="post">
+                                                        <table style="width:100%">
+
+                                                            <tr class="update-row odd">
+                                                                <td>
+                                                                    <input type="text" asp-for="@Model.objDistrict.DisttCd" id="Moduleid" readonly placeholder="Module ID" class="form-control" />
+
+                                                                </td>
+                                                                <td>
+                                                                    <input type="text" asp-for="@Model.objDistrict.DisttName" id="SubMenuName" placeholder="SubMenu Name" required class="form-control"  />
+                                                                </td>
+                                                               <td>
+                                                                 <input type="hidden" readonly asp-for="@Model.objDistrict.StateCd" id="StateCd" placeholder="State Name" class="form-control" />
+                                                                </td>
+                                                                 <td>
+                                                                      <select id="ParentMenuId" asp-for="@Model.objDistrict.Status" required class="form-control" style="width:100">
+                                                                           <option value="A">A - Active</option>
+                                                                           <option value="I">I - Inactive</option>
+                                                                      </select>
+                                                                 </td>
+                                                                <td>
+                                                                    <input type="submit" id="createid" value="Update" class="m-btn-1 update" style="float:left;margin-right: 4px" />
+                                                                    <button class="m-btn-1 close1" type="button" onclick="GetIndex('M1/ENM06/Index')">Close</button>
+                                                                </td>
+                                                            </tr>
+
+                                                        </table>
+                                                    </form>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                    }
+                                </thead>
+
+                                <tbody>
+                                    @foreach (var item in Model.listDistrict)
+                                    {
+                                        <tr>
+                                            <td>
+                                                @Html.DisplayFor(modelItem => item.DisttCd)
+                                            </td>
+                                            <td>
+                                                @Html.DisplayFor(modelItem => item.DisttName)
+                                            </td>
+                                            <td>
+                                                @Html.DisplayFor(modelItem => item.StateCd)
+                                            </td>
+                                            <td>
+                                                @Html.DisplayFor(modelItem => item.Status)
+                                            </td>
+                                            <td style=" width: 5%;">
+                                                <a asp-area="M1" asp-controller="ENM06" asp-action="Edit" asp-route-mod="@item.DisttCd" class="edit @Model.Edit glpicon addnewitem" data-toggle="modal"><i class="far fa-edit" data-toggle="tooltip" title="" data-original-title="Edit" onclick="SHOW_TR_Function('traddpanelEdit','traddpanel')"></i></a>
+@*                                                <a style="cursor:pointer" asp-area="M1" asp-controller="ENM06" asp-action="DeleteConfirmed" asp-route-id="@item.DisttCd" class="delete @Model.Delete glpicon" data-toggle="modal" onclick="divShow('/M1/ENM06/DeleteConfirmed?id=@item.DisttCd');"><i class="far fa-trash-alt" data-toggle="tooltip" title="" data-original-title="Delete"></i></a>
+*@                                               
+                                                @*<a style="cursor:pointer" class="delete @Model.Delete glpicon" data-toggle="modal" onclick="divShow('/M1/ENM06/DeleteConfirmed?id=@item.DisttCd');"><i class="far fa-trash-alt" data-toggle="tooltip" title="" data-original-title="Delete"></i></a>*@
+
+                                               <a style="cursor:pointer" class="delete @Model.Delete glpicon" data-toggle="modal" onclick="divShow('/M1/ENM06/DeleteConfirmed?id=@item.DisttCd')"><i class="far fa-trash-alt" data-toggle="tooltip" title="" data-original-title="Delete"></i></a>
+                                              
+                                            </td>
+                                        </tr>
+                                    }
+                                </tbody>
+
+                            </table>
+
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+</div>
+
+<div id="commonModalbinder" class="modal" style="display:none!important;z-index:99999999 !important;"></div>
+
+<script type="text/javascript">
+    $(document).ready(function () {
+        $('#HrmsHrdGrid').DataTable();
+        $('#ParentMenuId').select2();
+        subMenuHiddenMarker();
+    });
+
+    function PopDetail(row) {
+        debugger;
+        $("#ParentMenuId").val(row);
+        GetIndex("/M1/ENM06/ViewMsts?id=" + row);
+    }
+
+     function subMenuHiddenMarker() {
+         debugger;
+         var editVal = '@Model.Status';
+        var val = $("#SubMenuId").val();
+         if (val != null && editVal == "Edit") {
+            $("#SubMenuHiddenID").val(val);
+        }
+    }
+
+
+
+</script>
+
+

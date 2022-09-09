@@ -1,0 +1,136 @@
+﻿@model IFFCO.VTMS.Web.ViewModels.ENSC01ViewModel
+
+
+<script src="~/js/Common.js"></script>
+<script>
+
+    function Validate(row) {
+        debugger;
+        var PlantCD = '';
+        var TptrCD = '';
+        if ($('#PlantCD').val() == "") {
+            CommonAlert("Alert", "select Plant CD  ", null, null, "Warning");
+            return false;
+        }
+        else {
+            if (row == "Create" && $('#Tptr1').val() != null) {
+                PlantCD = $('#PlantCD1').val();
+                TptrCD = $('#Tptr1').val();
+                $('#TptrCdMain1').val(PlantCD + TptrCD);
+            }
+            else if (row == "Edit" && $('#Tptr2').val() != null) {
+                PlantCD = $('#PlantCD2').val();
+                TptrCD = $('#Tptr2').val();
+                $('#TptrCdMain2').val(PlantCD + TptrCD);
+            }
+
+            return true;
+        }
+    }
+
+
+</script>
+<div class="plcholder-cn">
+    <div class="table-responsive">
+        <div class="table-area">
+           <div class="table-wrapper">
+                <div class="table-con">
+                    <div class="tableUp">
+                        <div class="content-box">
+                            <h3 class="sub-heading1"><span>VT Enrollment</span></h3>
+                            <div class="btn-area-tbl">
+                                <a class="m-btn-1 addnew @Model.Insert addnewitem" asp-area="M1" asp-route-id="@Model.UnitCode" asp-controller="ENSC01" asp-action="Create" method="Get"><i class="material-icons"></i><span>Add New VT</span></a>
+                            </div>
+                            @*<div class="pd-form-area">*@
+
+                            <table class="compact nowrap table table-striped table-hover" style='width:90%' ;" id="HrmsHrdGrid">
+                                <thead>
+                                    <tr>
+                                       
+                                         <th>
+                                           VT Code
+                                        </th>
+                                        <th>
+                                            Name
+                                        </th>
+                                         <th>
+                                            Course
+                                        </th>
+                                        <th>
+                                           Recommended By
+                                        </th>
+                                        <th>Actions</th>
+                                    </tr>
+
+
+                                <tbody>
+                                    @foreach (var item in Model.View_List)
+                                    {
+                                        <tr>
+                                           
+                                             <td>
+                                                @Html.DisplayFor(modelItem => item.Vtcode)
+                                            </td>
+                                            <td>
+                                                @Html.DisplayFor(modelItem => item.Name)
+                                            </td>  
+                                            <td>
+                                                @Html.DisplayFor(modelItem => item.COURSE_DESC) - @Html.DisplayFor(modelItem => item.BRANCH_DESC) 
+                                            </td> 
+                                             <td>
+                                                @Html.DisplayFor(modelItem => item.RecommendedBy)
+                                            </td>
+                                            <td style=" width: 5%;">
+                                                <a asp-area="M1" asp-controller="ENSC01" asp-action="Edit" asp-route-id="@item.Vtcode" class="edit @Model.Edit glpicon addnewitem" data-toggle="modal"><i class="far fa-edit" data-toggle="tooltip" title="" data-original-title="Edit" ></i></a>
+                                                <a style="cursor:pointer" class="delete @Model.Delete glpicon" data-toggle="modal" onclick="divShow('/M1/ENSC01/DeleteConfirmed?id=@item.Vtcode');"><i class="far fa-trash-alt" data-toggle="tooltip" title="" data-original-title="Delete"></i></a>
+                                            </td>
+                                        </tr>
+                                    }
+                                </tbody>
+                            </table>
+                            <div class="m-form">
+                                <div class="m-form-bx">
+
+                                    </div>
+
+                                </div>
+                            </div>
+
+
+                        </div>
+
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+</div>
+
+<div id="commonModalbinder" class="modal" style="display:none!important;z-index:99999999 !important;"></div>
+
+<script type="text/javascript">
+    $(document).ready(function () {
+        debugger;       
+        $('#HrmsHrdGrid').DataTable({
+            order: [[0, "asce"]]
+        });
+
+        $('#HrmsHrdGrid').DataTable();
+        BindGridWithIdCol([0, 1, 2, 3, 4, 5, 6, 7], [0, 1, 2, 3, 4, 5, 6, 7], '#HrmsHrdGrid', "Monthly Wage-Rate Master");
+    });
+
+
+     function subMenuHiddenMarker() {
+         debugger;
+         var editVal = '@Model.Status';
+        var val = $("#SubMenuId").val();
+         if (val != null && editVal == "Edit") {
+            $("#SubMenuHiddenID").val(val);
+        }
+    }
+
+
+</script>
+
+

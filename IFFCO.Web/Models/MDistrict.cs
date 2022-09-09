@@ -1,9 +1,10 @@
-﻿using System;
+﻿using IFFCO.HRMS.Repository.Pattern;
+using System;
 using System.Collections.Generic;
 
 namespace IFFCO.VTMS.Web.Models
 {
-    public partial class MDistrict
+    public partial class MDistrict : Entity
     {
         public string DisttCd { get; set; }
         public string DisttName { get; set; }

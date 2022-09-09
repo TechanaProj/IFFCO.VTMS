@@ -1,9 +1,10 @@
-﻿using System;
+﻿using IFFCO.HRMS.Repository.Pattern;
+using System;
 using System.Collections.Generic;
 
 namespace IFFCO.VTMS.Web.Models
 {
-    public partial class MState
+    public partial class MState : Entity
     {
         public string StateCd { get; set; }
         public string StateName { get; set; }

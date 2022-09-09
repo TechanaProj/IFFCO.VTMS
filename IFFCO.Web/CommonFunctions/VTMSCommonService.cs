@@ -24,7 +24,28 @@ namespace IFFCO.VTMS.Web.CommonFunctions
         {
             _context = new ModelContext();
         }
-        
+
+        public List<MDistrict> GetDistrictMaster(string stateCd)
+        {
+
+            string sqlquery = "SELECT D.DISTT_CD,D.DISTT_NAME,CASE D.STATUS WHEN 'A' THEN 'Active' else 'Inactive' END STATUS, S.STATE_NAME FROM M_DISTRICT D JOIN M_STATE S ON D.STATE_CD = S.STATE_CD WHERE D.STATE_CD = '" + stateCd + "'";
+
+
+            DataTable dtDTL_VALUE = new DataTable();
+            dtDTL_VALUE = _context.GetSQLQuery(sqlquery);
+            List<MDistrict> DTL_VALUE = new List<MDistrict>();
+            DTL_VALUE = (from DataRow dr in dtDTL_VALUE.Rows
+                         select new MDistrict()
+                         {
+                             DisttCd = Convert.ToString(dr["DISTT_CD"]),
+                             DisttName = Convert.ToString(dr["DISTT_NAME"]),
+                             Status = Convert.ToString(dr["STATUS"]),
+                             StateCd = Convert.ToString(dr["STATE_NAME"])
+                         }).ToList();
+            return DTL_VALUE;
+
+
+        }
         public string Get_AcceptedVTCode_PK(int unit)
         {
             string a = string.Empty;
