@@ -43,6 +43,68 @@ namespace IFFCO.VTMS.Web.CommonFunctions
                 return a;
             }
         }
+	
+	 public string GetVTProfileImage(string EmpId, int unit)
+        {
+            try
+            {
+                return this.ConvertBlobToString(_context.VtmsEnrollDoc.Where(x => x.VtCode == EmpId).Where(x => x.UnitCode == unit).FirstOrDefault().VtPhoto);
+            }
+            catch (NullReferenceException)
+            {
+
+                return null;
+            }
+
+        }
+
+        public byte[] GetVTIdProof(string EmpId, int unit)       
+        {
+            try
+            {
+                return _context.VtmsEnrollDoc.Where(x => x.VtCode == EmpId).Where(x => x.UnitCode == unit).FirstOrDefault().VtIdUpload;
+                //return this.ConvertPdfBlobToString(_context.VtmsEnrollDoc.Where(x => x.Vtcode == EmpId).Where(x => x.UnitCode == unit).FirstOrDefault().VtIdUpload);
+            }
+            catch (NullReferenceException)
+            {
+
+                return null;
+            }
+
+        }
+
+
+        public string ConvertBlobToString(byte[] blob)
+        {
+            try
+            {
+                string result;
+                string imgString = Convert.ToBase64String(blob);
+                result = Convert.ToString("data:image/.jpg;base64,") + imgString;
+                return result;
+            }
+            catch (Exception)
+            {
+                return null;
+            }
+
+        }
+	 public List<VtmsUniversityMsts> getuniversity()
+        {
+            string query = "SELECT A.UNIVERSITY_ID,A.UNIVERSITY_NAME , A.DISTRICT_NAME , B.DISTT_CD , B.DISTT_NAME FROM  VTMS_UNIVERSITY_MSTS A, M_DISTRICT B WHERE A.DISTRICT_NAME = TRIM(B.DISTT_CD(+))";
+            DataTable dt = new DataTable();
+            dt = _context.GetSQLQuery(query);
+            List<VtmsUniversityMsts> dt_value = new List<VtmsUniversityMsts>();
+            dt_value = (from DataRow dr in dt.Rows
+                        select new VtmsUniversityMsts()
+                        {
+                            UniversityName = Convert.ToString(dr["UNIVERSITY_NAME"]),
+                            DistrictName = Convert.ToString(dr["DISTT_NAME"]),
+                            UniversityId = Convert.ToInt32(dr["UNIVERSITY_ID"]),
+                            //DisttName = Convert.ToString(dr["DISTT_NAME"])
+                        }).ToList();
+            return dt_value;
+        }
 
         public List<VCompleteVTInfo> VtCompleteDTl()
         {

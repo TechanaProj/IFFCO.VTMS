@@ -1,0 +1,96 @@
+﻿@model IFFCO.VTMS.Web.ViewModels.ENSC02ViewModel
+
+@{
+    //ViewData["Title"] = "Index";
+    //Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<script type="text/javascript">
+
+    $(document).ready(function () {
+        var table = $('#HrmsGrid').DataTable();
+        BindGrid(table);
+    });
+</script>
+
+<script src="~/js/Common.js"></script>
+<div class="plcholder-cn">
+
+    <div class="table-responsive">
+        <div class="table-area">
+          @*  <div class="table-title">
+                
+            </div>*@
+            <div class="table-wrapper">
+                 <div class="table-con">
+                    <div class="tableUp">
+                      <div class="pd-form-area">                            
+                           
+                            <table class="table table-striped table-hover" id="HrmsGrid">
+                                            <thead>
+                                              <tr>
+                                            @*     <th style="width:10%;padding-left: 9px;">@Html.DisplayNameFor(model => Model.VCompleteVTInfo.Vtcode)</th>
+                                                 <th style="padding-left: 10px;">  @Html.DisplayNameFor(model => model.VCompleteVTInfo.Name)</th>
+                                                 <th style="padding-left: 10px;">  @Html.DisplayNameFor(model => model.VCompleteVTInfo.BranchName)</th>*@
+                                                  <th style="padding-left: 10px;">  VT Code</th>
+                                                   <th style="padding-left: 10px;">  Name</th>
+                                                    <th style="padding-left: 10px;">  Branch Name</th>
+                                                 <th style="padding-left: 10px;">  Recommended By</th>
+                                                 <th style="padding-left: 10px;">  Enrolled Status</th>
+                                                 <th style="padding-left: 38px;">Actions</th>
+                                             </tr>
+                                          </thead>
+                                           <tbody>
+                                                @foreach (var item in Model.vCompleteVTInfos)
+                                                {
+                                                    <tr>
+                                                         <td>
+                                                             @Html.DisplayFor(modelItem => item.Vtcode)
+                                                         </td>
+                                                         <td>
+                                                             @Html.DisplayFor(modelItem => item.Name)
+                                                         </td>
+                                                         <td>
+                                                             @Html.DisplayFor(modelItem => item.COURSE_DESC) - @Html.DisplayFor(modelItem => item.BRANCH_DESC)
+                                                         </td>
+                                                         <td>
+                                                             @Html.DisplayFor(modelItem => item.RecommendedBy)
+                                                         </td>
+                                                         <td>
+                                                             @Html.DisplayFor(modelItem =>item.STATUS_DESC)
+                                                         </td>
+                                                         <td  style=" width: 35%; color: white">
+                                                             @if(item.Status == "I")
+                                                             {
+                                                             <input type="button" onclick="GetIndex('M1/ENSC02/AcceptConfirmed?id=@item.Vtcode')" value="Accept & Generate VT Number" class="btn btn-success" />
+                                                             }
+                                                             @if (item.Status == "A")
+                                                            {
+                                                             <input type="button" onclick="GetIndex('M1/ENSC02/RejectConfirmed?id=@item.Vtcode')" value="Reject" class="btn btn-danger" />
+                                                            }
+                                                            @if(item.Status == "N" )
+                                                            {
+                                                                 <input type="button" onclick="GetIndex('M1/ENSC02/AcceptConfirmed?id=@item.Vtcode')" value="Accept & Generate VT Number" class="btn btn-success" />
+                                                                 <input type="button" onclick="GetIndex('M1/ENSC02/RejectConfirmed?id=@item.Vtcode')" value="Reject" class="btn btn-danger" />
+                                                            }
+                                                         </td>
+                                                    </tr>  
+                                                 }   
+                                           </tbody>
+                            </table>
+                     </div>
+                   </div>
+                </div>
+           </div>
+       </div>
+   </div>
+</div>                 
+<div id="commonModalbinder" class="modal" style="display:none!important;z-index:99999999 !important;"></div>
+<script>
+        function AcceptConfirm(vtcode) {
+             window.location.href = "/M1/ENSC02/AcceptConfirmed/" + vtcode;
+        }
+        function RejectConfirm(vtcode) {           
+          window.location.href = "/M1/ENSC02/RejectConfirmed/" + vtcode;
+        }
+ </script>
