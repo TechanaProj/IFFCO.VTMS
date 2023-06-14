@@ -24,6 +24,8 @@ namespace IFFCO.VTMS.Web.CommonFunctions
             _context = new ModelContext();
         }
 
+
+        
         public List<SelectListItem> listStateBind()
         {
             var listState = _context.MState.OrderBy(x => x.StateName).Select(x => new SelectListItem
@@ -152,7 +154,7 @@ namespace IFFCO.VTMS.Web.CommonFunctions
             return Status;
         }
 
- public List<SelectListItem> Getinstitue(string UNIVERSITY_ID)
+        public List<SelectListItem> Getinstitue(string UNIVERSITY_ID)
         {
             string sqlquery = "SELECT  * FROM VTMS_INSTITUTE_MSTS WHERE UNIVERSITY_ID='"+ UNIVERSITY_ID + "'";
             DataTable dtDRP_VALUE = _context.GetSQLQuery(sqlquery);
@@ -165,7 +167,7 @@ namespace IFFCO.VTMS.Web.CommonFunctions
             return DRP_VALUE;
         }
 
- public List<SelectListItem> Getbranch(string Course_Code)
+        public List<SelectListItem> Getbranch(string Course_Code)
         {
             string sqlquery = "SELECT  * FROM VTMS_branch_MSTS where course_code='"+ Course_Code + "'";
             DataTable dtDRP_VALUE = _context.GetSQLQuery(sqlquery);
@@ -179,7 +181,7 @@ namespace IFFCO.VTMS.Web.CommonFunctions
             return DRP_VALUE;
         }
 
-public List<SelectListItem> Getuniveristy()
+       public List<SelectListItem> Getuniveristy()
         {
             string sqlquery = "SELECT  * FROM VTMS_UNIVERSITY_MSTS ORDER BY UNIVERSITY_NAME";
             DataTable dtDRP_VALUE = _context.GetSQLQuery(sqlquery);
@@ -191,7 +193,7 @@ public List<SelectListItem> Getuniveristy()
                              }).ToList();
             return DRP_VALUE;
         }
- public List<SelectListItem> GetCourse()
+       public List<SelectListItem> GetCourse()
         {
             string sqlquery = "SELECT  * FROM VTMS_COURSE_MSTS ORDER BY COURSE_DESC";
             DataTable dtDRP_VALUE = _context.GetSQLQuery(sqlquery);
@@ -203,7 +205,7 @@ public List<SelectListItem> Getuniveristy()
                              }).ToList();
             return DRP_VALUE;
         }
-public List<SelectListItem> GetState()
+       public List<SelectListItem> GetState()
         {
             string sqlquery = "SELECT * FROM  M_STATE ORDER BY STATE_NAME";
             DataTable dtDRP_VALUE = _context.GetSQLQuery(sqlquery);
@@ -215,7 +217,7 @@ public List<SelectListItem> GetState()
                              }).ToList();
             return DRP_VALUE;
         }
-public List<SelectListItem> GET_District()
+       public List<SelectListItem> GET_District()
         {
             string sqlquery = "SELECT * FROM M_DISTRICT ORDER BY DISTT_NAME";
             DataTable dtDRP_VALUE = _context.GetSQLQuery(sqlquery);
@@ -228,7 +230,7 @@ public List<SelectListItem> GET_District()
                              }).ToList();
             return DRP_VALUE;
         }
-public List<SelectListItem> GET_District(string StateCd)
+      public List<SelectListItem> GET_District(string StateCd)
         {           
             string sqlquery = "select * from M_DISTRICT where  STATE_CD='" + StateCd + "'";
             DataTable dtDRP_VALUE = _context.GetSQLQuery(sqlquery);
@@ -243,7 +245,20 @@ public List<SelectListItem> GET_District(string StateCd)
                              }).ToList();
             return DRP_VALUE;
         }
- public List<SelectListItem> Getrecommendation()
+
+        public List<SelectListItem> GET_Status()
+        {
+            string sqlquery = "SELECT * FROM  VTMS_VT_STATUS_MSTS ORDER BY STATUS_DESC";
+            DataTable dtDRP_VALUE = _context.GetSQLQuery(sqlquery);
+            var DRP_VALUE = (from DataRow dr in dtDRP_VALUE.Rows
+                             select new SelectListItem
+                             {
+                                 Text = Convert.ToString(dr["STATUS_DESC"]),
+                                 Value = Convert.ToString(dr["STATUS_ID"])
+                             }).ToList();
+            return DRP_VALUE;
+        }
+        public List<SelectListItem> Getrecommendation()
         {
             string sqlquery = "SELECT * FROM  VTMS_RECOMM_MSTS ORDER BY RECOMM_NAME";
             DataTable dtDRP_VALUE = _context.GetSQLQuery(sqlquery);

@@ -64,7 +64,7 @@ namespace IFFCO.VTMS.Web.Areas.M1.Controllers
             string a = string.Empty;
             try
             {
-               var max = _context.VtmsEnrollPi.AsEnumerable().Where(x => x.Status == "A").Where(x => x.EnrollmentStatus == "Enrolled").Where(x => x.UnitCode == unit).OrderByDescending(x => x.VtCode).FirstOrDefault();
+               var max = _context.VtmsEnrollPi.AsEnumerable().Where(x => x.Status == "A").Where(x => x.EnrollmentStatus == "Accepted").Where(x => x.UnitCode == unit).OrderByDescending(x => x.VtCode).FirstOrDefault();
                // var max2= _context.VtmsEnrollPi.Where(x=>x.Status=="I").Where(x=>x.EnrollmentStatus=="Rejected").Where(x=>x.UnitCode==unit).OrderByDescending(x => x.VtCode).FirstOrDefault();
                 // if (max.ToString().Length > 6)
                 //var vali = max.VtCode.Substring(9);
@@ -136,8 +136,10 @@ namespace IFFCO.VTMS.Web.Areas.M1.Controllers
                     vtmsenrollpi.ModifiedBy = Convert.ToInt32(HttpContext.Session.GetInt32("EmpID"));
                     vtmsenrollpi.Status = "I";
                     vtmsenrollpi.EnrollmentStatus = "Rejected";
-                    vtmsenrollpi.VtCode = eNSC02ViewModel.vtpinfo.PrevVtCode;
                     vtmsenrollpi.PrevVtCode = id;
+                    //vtmsenrollpi.VtCode = eNSC02ViewModel.vtpinfo.PrevVtCode;
+                    vtmsenrollpi.VtCode = vtmsenrollpi.PrevVtCode;
+
                     _context.Update(vtmsenrollpi);
                     await _context.SaveChangesAsync();
 

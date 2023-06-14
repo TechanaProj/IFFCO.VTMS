@@ -159,7 +159,7 @@
 
                                              <div class="col-sm-2 col-md-2">
                                                     <div>
-                                                        <label class="m-lbl1 m-lbl2" id="OthersRecomLabel"> Others Name </label>
+                                                        <label class="m-lbl1 m-lbl2" id="OthersRecomLabel" hidden> Others Name </label>
                                                     </div>
                                              </div>
                                              <div class="col-sm-2 col-md-2">
@@ -177,10 +177,8 @@
                                              </div>
                                              <div class="col-sm-2 col-md-2">
                                                 <div>
-                                                  <select id="FEnrollStatus" asp-for="@Model.Msts.EnrollmentStatus" class="form-control">
-                                                    <option value="Enrolled">Enrolled</option>
-                                                    <option value="Rejected">Rejected</option>
-                                                    <option value="">Both</option>
+                                                  <select id="FEnrollStatus" asp-for="@Model.Msts.STATUS_DESC" class="form-control" asp-items="@(new SelectList(ViewBag.Status,"Value","Text"))">
+                                                    <option value="">--Select--</option>
                                                 </select>
                                                 </div>
                                              </div>
@@ -221,10 +219,10 @@
                                        @* <th>
                                            TRAINING PERIOD
                                         </th>*@
-                                       @*
+                                       
                                         <th>
                                             VT CODE
-                                        </th>*@
+                                        </th>
                                         <th>
                                             COURSE
                                         </th>
@@ -238,14 +236,14 @@
                                  </thead>
                                    <tbody>
                       
-                     @*@if(Model.List_msts != null) 
+                     @if(Model.List_msts != null) 
                      {     
                     foreach (var item in Model.List_msts)
                     {
                         <tr>
-                            <td>
+                           @* <td>
                                 @Html.DisplayFor(modelItem => item.)
-                            </td>
+                            </td>*@
                            <td>
                                 @Html.DisplayFor(modelItem => item.Vtcode)
                             </td>
@@ -264,7 +262,7 @@
                              </td>
                         </tr>
                       }
-                    }*@
+                    }
                             </tbody>
                             </table>
 
@@ -306,8 +304,10 @@
             $('#FState').select2();
             $('#FCourse').select2();
             $('#FBranch').select2();
-           
-             });
+            $('#FInstitute').select2();
+            $('#FDistrict').select2();
+
+    });
            
          function PopDistrictLOV() {
                 debugger;
@@ -360,8 +360,6 @@
                         $(".modalLoader").hide();
                     }, 10);
                 }
-
-
 
 
         </script>

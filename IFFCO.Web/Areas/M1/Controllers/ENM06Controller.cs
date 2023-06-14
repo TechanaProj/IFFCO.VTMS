@@ -238,7 +238,7 @@ namespace IFFCO.VTMS.Web.Areas.M1.Controllers
                         {
                             _context.MDistrict.Remove(DeleteDataTemp);
                             _context.SaveChanges();
-                            CommonViewModel.Message = "Districtcode - " + id;
+                            CommonViewModel.Message = "District Code - " + id;
                             CommonViewModel.Alert = "Delete";
                             CommonViewModel.Status = "Delete";
                             CommonViewModel.ErrorMessage = "";

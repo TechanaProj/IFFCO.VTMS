@@ -63,6 +63,28 @@
                                                             <input type="text" readonly class="form-control" asp-for="@Model.Pi_Msts.VtCode" id="VTCode" />
                                                         </div>
                                                     </div>
+
+                                                    <div class="col-sm-1 col-md-2">
+                                                        <div>
+                                                            <label class="m-lbl1 m-lbl2">VT Start Date :</label>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-sm-2 col-md-2">
+                                                        <div>
+                                                            <input type="date" class="form-control" asp-for="@Model.Pi_Msts.VtStartDate" id="VTStartDate" />
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-sm-1 col-md-2">
+                                                        <div>
+                                                            <label class="m-lbl1 m-lbl2">VT End Date :</label>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-sm-2 col-md-2">
+                                                        <div>
+                                                            <input type="date" class="form-control" asp-for="@Model.Pi_Msts.VtEndDate" id="VTEndDate" />
+                                                        </div>
+                                                    </div>
+
                                                     <div class="col-sm-1 col-md-2">
                                                         <div>
                                                             <label class="m-lbl1 m-lbl2">Name :</label>
@@ -70,7 +92,7 @@
                                                     </div>
                                                     <div class="col-sm-2 col-md-2">
                                                         <div>
-                                                            <input type="text" class="form-control" onkeyup="this.value = this.value.toUpperCase();" asp-for="@Model.Pi_Msts.Name" id="Name"  />
+                                                            <input type="text" class="form-control" onkeyup="this.value = this.value.toUpperCase();" asp-for="@Model.Pi_Msts.Name" id="Name" required />
                                                              </div>
                                                     </div>
                                                     <div class="col-sm-1 col-md-2">
@@ -80,7 +102,7 @@
                                                     </div>
                                                     <div class="col-sm-2 col-md-2">
                                                         <div>
-                                                            <input type="text" class="form-control" onkeyup="this.value = this.value.toUpperCase();" asp-for="@Model.Pi_Msts.FatherName" id="Fname" />
+                                                            <input type="text" class="form-control" onkeyup="this.value = this.value.toUpperCase();" asp-for="@Model.Pi_Msts.FatherName" id="Fname" required />
                                                         </div>
                                                     </div>
                                                     <div class="col-sm-1 col-md-2">
@@ -90,7 +112,7 @@
                                                     </div>
                                                     <div class="col-sm-2 col-md-2">
                                                         <div>
-                                                            <input type="text" class="form-control" onkeyup="this.value = this.value.toUpperCase();" asp-for="@Model.Pi_Msts.Address" id="Address" />
+                                                            <input type="text" class="form-control" onkeyup="this.value = this.value.toUpperCase();" asp-for="@Model.Pi_Msts.Address" id="Address" required />
                                                         </div>
                                                     </div>
                                                      <div class="col-sm-1 col-md-2">
@@ -100,7 +122,7 @@
                                                     </div>
                                                     <div class="col-sm-2 col-md-2">
                                                         <div>
-                                                            <input type="number" max="9999999999" class="form-control" asp-for="@Model.Pi_Msts.ContactNo" id="MobileNo" />
+                                                            <input type="number"  class="form-control" asp-for="@Model.Pi_Msts.ContactNo" id="MobileNo" required />
                                                         </div>
                                                     </div>
                                                     </div>
@@ -244,8 +266,61 @@
                                                                                    
                                                                                 </select>
                                                                         </div>
-                                                                     </div>
-                                                                      <div class="col-sm-2 col-md-2">
+                                                                 </div>
+                                                        <div class="col-sm-2 col-md-2">
+                                                            <div>
+                                                                <label class="m-lbl1 m-lbl2" id="FRecommPnoLabel"> Personnel No. </label>
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-sm-2 col-md-2">
+                                                            <div>
+                                                                <input id="FRecommPno" maxlength="6" type="number" asp-for="@Model.Pi_Msts.RecommPno" class="form-control" />
+                                                            </div>
+
+                                                        </div>
+
+
+                                                        <div class="col-sm-2 col-md-2">
+                                                            <div>
+                                                                <label class="m-lbl1 m-lbl2" id="OthersRecomLabel" hidden> Others Name </label>
+                                                            </div>
+                                                        </div>
+                                                        <div>
+                                                            <div class="col-sm-2 col-md-2">
+                                                                <select id="OthersRecommName" style="display: none;" typ="text" asp-for="@Model.Pi_Msts.OthersRecommName" class="form-control" asp-items="@(new SelectList(ViewBag.RecommList,"Value","Text")) ">
+                                                                    <option value="">--Select--</option>
+                                                                </select>
+                                                            </div>
+                                                        </div>
+
+                                                        
+                                                       @* <div class="col-sm-2 col-md-2">
+                                                            <div>
+                                                                <label class="m-lbl1 m-lbl2" id="FRecommPnoLabel"> Personnel No. </label>
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-sm-2 col-md-2">
+                                                            <div>
+                                                                <input id="FRecommPno" maxlength="6" type="number" asp-for="@Model.Pi_Msts.RecommPno" class="form-control" />
+                                                            </div>
+
+                                                        </div>
+
+
+                                                        <div class="col-sm-2 col-md-2">
+                                                            <div>
+                                                                <label class="m-lbl1 m-lbl2" id="OthersRecomLabel" hidden> Others Name </label>
+                                                            </div>
+                                                        </div>
+                                                        <div>
+                                                            <div class="col-sm-2 col-md-2">
+                                                                <select id="OthersRecommName" style="display: none;" typ="text" asp-for="@Model.Pi_Msts.OthersRecommName" class="form-control" asp-items="@(new SelectList(ViewBag.RecommList,"Value","Text")) ">
+                                                                    <option value="">--Select--</option>
+                                                                </select>
+                                                            </div>
+                                                        </div>*@
+
+                                                                      @*<div class="col-sm-2 col-md-2">
                                                                             <div>
                                                                                 <label class="m-lbl1 m-lbl2" id="FRecommPnoLabel"> Personnel No. </label>
                                                                             </div>
@@ -278,12 +353,12 @@
                                                                                 <option value="">--Select--</option>
                                                                             </select>
                                                                             </div>
-                                                                        </div>
-
+                                                                        </div>*@
                                                            </div>
                                                       </div>
                                                  </div>
                                             </div>
+                                         
                                           <br>
                                         <div class="btn-area-fixed" align="center">
                                             <div>
@@ -304,26 +379,47 @@
 <div id="commonModalbinder" class="modal" style="display:none!important;z-index:99999999 !important;"></div>
 
 <script type="text/javascript">
+   
 
-            $("#Frecommendation").change(function () {
-                    if ($("#Frecommendation option:selected").val() == 'OTHERS') {
-                        $('#FRecommPno').hide();
-                        $('#FRecommPnoLabel').hide();
-                        $('#FOthersRecommName').hide();
-                        $('#FOthersRecommNameLabel').hide();
-                        $('#RecomNm').hide();
-                        $('#RecommPno').hide();
-                        $('#OthersRecomLabel').show();
-                        $('#OthersRecommName').show();
-                }else {
-                        $('#FRecommPno').show();
-                        $('#FRecommPnoLabel').show();
-                        $('#FOthersRecommName').hide();
-                        $('#FOthersRecommNameLabel').hide();
-                        $('#OthersRecomLabel').hide();
-                        $('#OthersRecommName').hide();
-                };
-            });
+    $("#Frecommendation").change(function () {
+        if ($("#Frecommendation option:selected").val() == 'OTHERS') {
+            $('#OthersRecomLabel').show();
+            $('#OthersRecommName').show();
+            $('#FRecommPno').hide();
+            $('#FRecommPnoLabel').hide();
+            $('#RecomNm').hide();
+            $('#RecommPno').hide();
+            
+        }
+        else {
+            $('#FRecommPno').show();
+            $('#FRecommPnoLabel').show();
+            $('#OthersRecomLabel').hide();
+            $('#OthersRecommName').hide();
+        }
+        ;
+    });
+
+
+            //$("#Frecommendation").change(function () {
+            //        if ($("#Frecommendation option:selected").val() == 'OTHERS') {
+            //            $('#FRecommPno').hide();
+            //            $('#FRecommPnoLabel').hide();
+            //            $('#FOthersRecommName').hide();
+            //            $('#FOthersRecommNameLabel').hide();
+            //            $('#RecomNm').hide();
+            //            $('#RecommPno').hide();
+            //            $('#OthersRecomLabel').show();
+            //            $('#OthersRecommName').show();
+            //    }else {
+            //            $('#FRecommPno').show();
+            //            $('#FRecommPnoLabel').show();
+            //            $('#FOthersRecommName').hide();
+            //            $('#FOthersRecommNameLabel').hide();
+            //            $('#OthersRecomLabel').hide();
+            //            $('#OthersRecommName').hide();
+            //    };
+            //});
 
 
         $(document).ready(function () { 
@@ -332,7 +428,9 @@
             $("#Frecommendation").change()
         });
 
-
+        function ValidationMobile(){
+            var regex = 
+        }
    
 
        //function PopDistrictLOV() {

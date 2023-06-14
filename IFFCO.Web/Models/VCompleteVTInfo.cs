@@ -9,7 +9,7 @@ namespace IFFCO.VTMS.Web.Models
           public decimal? UnitCode { get; set; }
           public string Name { get; set; }
           public string FatherName { get; set; }
-          public Double ContactNo { get; set; }
+          public Double? ContactNo { get; set; }
           public string Address { get; set; }
           public string DistrictName { get; set; }
           public string StateName { get; set; }

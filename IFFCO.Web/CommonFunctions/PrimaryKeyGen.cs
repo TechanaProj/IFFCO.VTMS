@@ -41,7 +41,7 @@ namespace IFFCO.VTMS.Web.CommonFunctions
             try
             {
 
-                var max = _context.VtmsEnrollPi.AsEnumerable().Where(x => (x.Status == null) || (x.Status == "I")).Where(x => (x.EnrollmentStatus == null) || (x.EnrollmentStatus == "Rejected")).Where(x => x.UnitCode == unit).OrderByDescending(x => x.VtCode).FirstOrDefault();
+                var max = _context.VtmsEnrollPi.AsEnumerable().Where(x => (x.Status == null) || (x.Status == "I") || (x.Status == "N")).Where(x => (x.EnrollmentStatus == null) || (x.EnrollmentStatus == "Rejected")).Where(x => x.UnitCode == unit).OrderByDescending(x => x.VtCode).FirstOrDefault();
                 // a = unit + DateTime.Today.AddMonths(-3).ToString("yy") + (Convert.ToInt32(max.Vtcode.Substring(3, 3)) + 1).ToString().PadLeft(3, '0');
                 AMax = (Convert.ToInt32(max.VtCode.Substring(3, 3)));
 

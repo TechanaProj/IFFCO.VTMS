@@ -29,13 +29,7 @@ $(document).ready(function ( ) {
     //    $("#BranchCode").val('CS');
     //}
 
-    
-         
-        
-
-    
    
-    
 
      //console.log(acronym);
       //var trimStr = $.trim(myStr);
@@ -88,9 +82,7 @@ $(document).ready(function ( ) {
                                                     <div>
                                                          <select id="CourseCode" asp-for="@Model.CourseCode" required onchange="PopDetail(this.value);" class="form-control" style="width:550px" asp-items="@(new SelectList(Model.CourseLOVBind,"Value","Text")) "></select>
                                                   </div>
-
                                                </div>
-                                        
                                     </div>
                                 </div>
                             </div>

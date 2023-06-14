@@ -8,6 +8,8 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
+using NPOI.SS.Formula.Functions;
+using NPOI.Util;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -57,12 +59,20 @@ namespace IFFCO.VTMS.Web.Areas.M1.Controllers
             var CourseLOV = dropDownListBindWeb.ListCourseBind();
             //var UniversityLOV = dropDownListBindWeb.ListUniversityBind();
             int unit = Convert.ToInt32(HttpContext.Session.GetString("UnitCode"));
-            var RecommLOV = dropDownListBindWeb.ListRecommBind(unit); 
+            var RecommLOV = dropDownListBindWeb.ListRecommBind(unit);
+            var RecommList = RecommLOV.Select(x => x.Value).ToList();
+
             var StateLov = dropDownListBindWeb.ListStateBind();
             ViewBag.CourseList = CourseLOV.ToList();
-            //ViewBag.UniversityList = UniversityLOV.ToList();
+
+           
+
             ViewBag.RecommList = RecommLOV.ToList();
             ViewBag.StateList = StateLov.ToList();
+            CommonViewModel.Pi_Msts = new VtmsEnrollPi();
+            CommonViewModel.Edu_Msts = new VtmsEnrollEdu();
+
+
 
             CommonViewModel.AreaName = this.ControllerContext.RouteData.Values["area"].ToString();
             CommonViewModel.SelectedMenu = this.ControllerContext.RouteData.Values["controller"].ToString();
@@ -72,12 +82,15 @@ namespace IFFCO.VTMS.Web.Areas.M1.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create(ENSC01ViewModel eNSC01ViewModel)
+        public async Task<IActionResult> Create(ENSC01ViewModel eNSC01ViewModel, int unit)
         {
             try
+
             {
+               
                 if (ModelState.IsValid)
                 {
+                   
                     eNSC01ViewModel.Pi_Msts.VtCode = primaryKeyGen.Get_EnrolledVTCode_PK(Convert.ToInt32(HttpContext.Session.GetString("UnitCode")));
                     eNSC01ViewModel.Pi_Msts.EnrolledOn = eNSC01ViewModel.Edu_Msts.EnrolledOn = DateTime.Now;
                     eNSC01ViewModel.Pi_Msts.EnrolledBy = eNSC01ViewModel.Edu_Msts.EnrolledBy = Convert.ToInt32(HttpContext.Session.GetInt32("EmpID"));
@@ -85,12 +98,16 @@ namespace IFFCO.VTMS.Web.Areas.M1.Controllers
                     eNSC01ViewModel.Edu_Msts.EnrolledBy = eNSC01ViewModel.Edu_Msts.EnrolledBy = Convert.ToInt32(HttpContext.Session.GetInt32("EmpID"));
                     eNSC01ViewModel.Edu_Msts.VtCode = eNSC01ViewModel.Pi_Msts.VtCode;
                     eNSC01ViewModel.Edu_Msts.UnitCode = eNSC01ViewModel.Pi_Msts.UnitCode = Convert.ToInt32(HttpContext.Session.GetString("UnitCode"));
+                    string selectedRecommName = eNSC01ViewModel.Pi_Msts.OthersRecommName;
+                    eNSC01ViewModel.Pi_Msts.OthersRecommName = selectedRecommName;
+
+                    eNSC01ViewModel.Pi_Msts.RecommPno = Convert.ToInt64(eNSC01ViewModel.RecommPno);
                     eNSC01ViewModel.Pi_Msts.OthersRecommName = eNSC01ViewModel.OthersRecommName;
                     eNSC01ViewModel.Pi_Msts.Status = "N";
-                    if (eNSC01ViewModel.Edu_Msts.BranchName == "null") { eNSC01ViewModel.Edu_Msts.BranchName = String.Empty; }
+                    if (eNSC01ViewModel.Edu_Msts.BranchName == "null") { eNSC01ViewModel.Edu_Msts.BranchName = String.Empty;}
                     _context.Add(eNSC01ViewModel.Pi_Msts);
                     _context.Add(eNSC01ViewModel.Edu_Msts);
-                   
+
                     await _context.SaveChangesAsync();
                     CommonViewModel.Message = eNSC01ViewModel.Pi_Msts.VtCode + " | " + eNSC01ViewModel.Pi_Msts.Name;
                     CommonViewModel.Alert = "Create";
@@ -99,12 +116,13 @@ namespace IFFCO.VTMS.Web.Areas.M1.Controllers
                 }
                 else
                 {
-                    CommonViewModel.Message = "Invalid Course Details. Try Again!";
-                    CommonViewModel.ErrorMessage = "Invalid Course Details. Try Again!";
+                    CommonViewModel.Message = "Invalid VT Details. Try Again!";
+                    CommonViewModel.ErrorMessage = "Invalid VT Details. Try Again!";
                     CommonViewModel.Alert = "Warning";
                     CommonViewModel.Status = "Warning";
                 }
             }
+
             catch (Exception ex)
             {
                 commonException.GetCommonExcepton(CommonViewModel, ex);
@@ -175,8 +193,8 @@ namespace IFFCO.VTMS.Web.Areas.M1.Controllers
             }
             else
             {
-                CommonViewModel.Message = "District Cd Unavailable";
-                CommonViewModel.ErrorMessage = "District Cd Unavailable";
+                CommonViewModel.Message = "VT Cd Unavailable";
+                CommonViewModel.ErrorMessage = "VT Cd Unavailable";
                 CommonViewModel.Alert = "Warning";
                 CommonViewModel.Status = "Warning";
             }
@@ -222,19 +240,16 @@ namespace IFFCO.VTMS.Web.Areas.M1.Controllers
                     _context.SaveChanges();
                     _context.VtmsEnrollEdu.Update(EdObj);
                     _context.SaveChanges();
-                  
+                    
 
-
-                   
-                    // CommonViewModel.Message = "District Code" + eNSC01ViewModel.objDistrict.DisttCd;
                     CommonViewModel.Alert = "Update";
                     CommonViewModel.Status = "Update";
                     CommonViewModel.ErrorMessage = "";
                 }
                 else
                 {
-                    CommonViewModel.Message = "Invalid District";
-                    CommonViewModel.ErrorMessage = "Invalid District";
+                    CommonViewModel.Message = "Invalid VT";
+                    CommonViewModel.ErrorMessage = "Invalid VT";
                     CommonViewModel.Alert = "Warning";
                     CommonViewModel.Status = "Warning";
                 }
@@ -259,18 +274,17 @@ namespace IFFCO.VTMS.Web.Areas.M1.Controllers
                 {
                     if (id != null)
                     {
-                        int count = _context.VtmsEnrollPi.Where(x => x.VtCode.Equals(id)).ToList().Count;
-                        int EdCount = _context.VtmsEnrollEdu.Where(x => x.VtCode.Equals(id)).ToList().Count;
+                        int count = _context.VtmsEnrollPi.Where(x => x.VtCode.Equals(id)).Where(x=>x.EnrollmentStatus == "Accepted").ToList().Count;
                         var DeleteDataTemp = _context.VtmsEnrollPi.Find(id);
                         var DeleteData = _context.VtmsEnrollEdu.Find(id);
                         
-                        if (DeleteDataTemp != null && DeleteData != null && count == 0 && EdCount == 0)
+                        if (DeleteDataTemp != null && DeleteData != null && count > 0)
                         {
                             _context.VtmsEnrollPi.Remove(DeleteDataTemp);
                             _context.SaveChanges();
                             _context.VtmsEnrollEdu.Remove(DeleteData);
                             _context.SaveChanges();
-                            CommonViewModel.Message = "Districtcode - " + id;
+                            CommonViewModel.Message = "VT vide Code - " + id;
                             CommonViewModel.Alert = "Delete";
                             CommonViewModel.Status = "Delete";
                             CommonViewModel.ErrorMessage = "";
@@ -286,8 +300,8 @@ namespace IFFCO.VTMS.Web.Areas.M1.Controllers
                     }
                     else
                     {
-                        CommonViewModel.Message = "District Cd Unavailable";
-                        CommonViewModel.ErrorMessage = "District Cd Unavailable";
+                        CommonViewModel.Message = "VT Unavailable";
+                        CommonViewModel.ErrorMessage = "VT Unavailable";
                         CommonViewModel.Alert = "Warning";
                         CommonViewModel.Status = "Warning";
                     }

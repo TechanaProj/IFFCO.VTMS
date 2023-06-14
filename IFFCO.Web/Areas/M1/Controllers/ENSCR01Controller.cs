@@ -45,6 +45,7 @@ namespace IFFCO.VTMS.Web.Areas.M1.Controllers
            // ViewBag.UniversityList = UniversityLOV.ToList();
             ViewBag.RecommList = RecommLOV.ToList();
             ViewBag.StateList = StateLov.ToList();
+            ViewBag.Status = dropDownListBindWeb.GET_Status();
             return View(CommonViewModel);
         }
 
@@ -84,7 +85,7 @@ namespace IFFCO.VTMS.Web.Areas.M1.Controllers
             var str = "SELECT COURSE_NAME, BRANCH_NAME, COUNT(BRANCH_NAME) COUNT";
             if (string.IsNullOrWhiteSpace(eNSCR01ViewModel.Msts.InstituteName) || eNSCR01ViewModel.Msts.InstituteName == "null") { str += ",'' INSTITUTE_NAME"; } else { str += ",INSTITUTE_NAME"; }
             if (string.IsNullOrWhiteSpace(eNSCR01ViewModel.Msts.UniversityName) || eNSCR01ViewModel.Msts.UniversityName == "null") { str += ",'' UNIVERSITY_NAME"; } else { str += ",UNIVERSITY_NAME"; }
-            str += " FROM V_COMPLETE_VTINFO WHERE (ENROLLED_ON BETWEEN '" + eNSCR01ViewModel.VtStartDate.ToString("dd-MMM-yyyy") + "' AND '" + eNSCR01ViewModel.VtEndDate.ToString("dd-MMM-yyyy") + "') AND BRANCH_NAME IS NOT NULL AND UNIT_CODE = " + unit + " AND ENROLLMENT_STATUS LIKE '%" + eNSCR01ViewModel.Msts.EnrollmentStatus + "%' AND COURSE_NAME LIKE '%" + eNSCR01ViewModel.Msts.CourseName + "%' ";
+            str += " FROM V_COMPLETE_VT_INFO WHERE (ENROLLED_ON BETWEEN '" + eNSCR01ViewModel.VtStartDate.ToString("dd-MMM-yyyy") + "' AND '" + eNSCR01ViewModel.VtEndDate.ToString("dd-MMM-yyyy") + "') AND BRANCH_NAME IS NOT NULL AND UNIT_CODE = " + unit + " AND ENROLLMENT_STATUS LIKE '%" + eNSCR01ViewModel.Msts.EnrollmentStatus + "%' AND COURSE_NAME LIKE '%" + eNSCR01ViewModel.Msts.CourseName + "%' ";
             if (!string.IsNullOrWhiteSpace(eNSCR01ViewModel.Msts.InstituteName) && eNSCR01ViewModel.Msts.InstituteName != "null") { str += "AND INSTITUTE_NAME LIKE '%" + eNSCR01ViewModel.Msts.InstituteName + "%'"; }
             if (!string.IsNullOrWhiteSpace(eNSCR01ViewModel.Msts.UniversityName) && eNSCR01ViewModel.Msts.UniversityName != "null") { str += "AND UNIVERSITY_NAME LIKE '%" + eNSCR01ViewModel.Msts.UniversityName + "%'"; }
             str += " GROUP BY COURSE_NAME, BRANCH_NAME  ";
@@ -114,7 +115,7 @@ namespace IFFCO.VTMS.Web.Areas.M1.Controllers
             var str = "SELECT COURSE_NAME, COUNT(COURSE_NAME) COUNT";
             if (string.IsNullOrWhiteSpace(eNSCR01ViewModel.Msts.InstituteName) || eNSCR01ViewModel.Msts.InstituteName == "null") { str += ",'' INSTITUTE_NAME"; } else { str += ",INSTITUTE_NAME"; }
             if (string.IsNullOrWhiteSpace(eNSCR01ViewModel.Msts.UniversityName) || eNSCR01ViewModel.Msts.UniversityName == "null") { str += ",'' UNIVERSITY_NAME"; } else { str += ",UNIVERSITY_NAME"; }
-            str += " FROM V_COMPLETE_VTINFO WHERE  (ENROLLED_ON BETWEEN '" + eNSCR01ViewModel.VtStartDate.ToString("dd-MMM-yyyy") + "' AND '" + eNSCR01ViewModel.VtEndDate.ToString("dd-MMM-yyyy") + "') AND UNIT_CODE = " + unit + " AND ENROLLMENT_STATUS LIKE '%" + eNSCR01ViewModel.Msts.EnrollmentStatus + "%' AND COURSE_NAME LIKE '%" + eNSCR01ViewModel.Msts.CourseName + "%' ";
+            str += " FROM V_COMPLETE_VT_INFO WHERE  (ENROLLED_ON BETWEEN '" + eNSCR01ViewModel.VtStartDate.ToString("dd-MMM-yyyy") + "' AND '" + eNSCR01ViewModel.VtEndDate.ToString("dd-MMM-yyyy") + "') AND UNIT_CODE = " + unit + " AND ENROLLMENT_STATUS LIKE '%" + eNSCR01ViewModel.Msts.EnrollmentStatus + "%' AND COURSE_NAME LIKE '%" + eNSCR01ViewModel.Msts.CourseName + "%' ";
             if (!string.IsNullOrWhiteSpace(eNSCR01ViewModel.Msts.InstituteName) && eNSCR01ViewModel.Msts.InstituteName != "null") { str += "AND INSTITUTE_NAME LIKE '%" + eNSCR01ViewModel.Msts.InstituteName + "%'"; }
             if (!string.IsNullOrWhiteSpace(eNSCR01ViewModel.Msts.UniversityName) && eNSCR01ViewModel.Msts.UniversityName != "null") { str += "AND UNIVERSITY_NAME LIKE '%" + eNSCR01ViewModel.Msts.UniversityName + "%'"; }
             str += " GROUP BY COURSE_NAME  ";
@@ -144,7 +145,7 @@ namespace IFFCO.VTMS.Web.Areas.M1.Controllers
             int unit = Convert.ToInt32(HttpContext.Session.GetString("UnitCode"));
             var str = "SELECT INSTITUTE_NAME, COUNT(INSTITUTE_NAME) COUNT, UNIVERSITY_NAME";
             //     if (string.IsNullOrWhiteSpace(ENSCR01ViewModel.Msts.UniversityName) || ENSCR01ViewModel.Msts.UniversityName == "null") { str += ",'' UNIVERSITY_NAME"; } else { str += ",UNIVERSITY_NAME"; }
-            str += " FROM V_COMPLETE_VTINFO WHERE  (ENROLLED_ON BETWEEN '" + eNSCR01ViewModel.VtStartDate.ToString("dd-MMM-yyyy") + "' AND '" + eNSCR01ViewModel.VtEndDate.ToString("dd-MMM-yyyy") + "') AND UNIT_CODE = " + unit + " AND ENROLLMENT_STATUS LIKE '%" + eNSCR01ViewModel.Msts.EnrollmentStatus + "%'  ";
+            str += " FROM V_COMPLETE_VT_INFO WHERE  (ENROLLED_ON BETWEEN '" + eNSCR01ViewModel.VtStartDate.ToString("dd-MMM-yyyy") + "' AND '" + eNSCR01ViewModel.VtEndDate.ToString("dd-MMM-yyyy") + "') AND UNIT_CODE = " + unit + " AND STATUS_DESC LIKE '%" + eNSCR01ViewModel.Msts.EnrollmentStatus + "%'  ";
             if (!string.IsNullOrWhiteSpace(eNSCR01ViewModel.Msts.InstituteName) && eNSCR01ViewModel.Msts.InstituteName != "null") { str += "AND INSTITUTE_NAME LIKE '%" + eNSCR01ViewModel.Msts.InstituteName + "%'"; }
             if (!string.IsNullOrWhiteSpace(eNSCR01ViewModel.Msts.UniversityName) && eNSCR01ViewModel.Msts.UniversityName != "null") { str += "AND UNIVERSITY_NAME LIKE '%" + eNSCR01ViewModel.Msts.UniversityName + "%'"; }
             str += " GROUP BY INSTITUTE_NAME, UNIVERSITY_NAME  ";
@@ -170,7 +171,7 @@ namespace IFFCO.VTMS.Web.Areas.M1.Controllers
 
             int unit = Convert.ToInt32(HttpContext.Session.GetString("UnitCode"));
             var str = "SELECT RECOMMENDED_BY, count(RECOMMENDED_BY) COUNT, RECOMMENDATION_TYPE ";
-            str += " FROM V_COMPLETE_VTINFO WHERE  (ENROLLED_ON BETWEEN '" + eNSCR01ViewModel.VtStartDate.ToString("dd-MMM-yyyy") + "' AND '" + eNSCR01ViewModel.VtEndDate.ToString("dd-MMM-yyyy") + "') AND UNIT_CODE = " + unit + " AND RECOMMENDATION_TYPE LIKE '%" + eNSCR01ViewModel.Msts.RecommendationType + "%'   ";
+            str += " FROM V_COMPLETE_VT_INFO WHERE  (ENROLLED_ON BETWEEN '" + eNSCR01ViewModel.VtStartDate.ToString("dd-MMM-yyyy") + "' AND '" + eNSCR01ViewModel.VtEndDate.ToString("dd-MMM-yyyy") + "') AND UNIT_CODE = " + unit + " AND RECOMMENDATION_TYPE LIKE '%" + eNSCR01ViewModel.Msts.RecommendationType + "%'   ";
             str += " GROUP BY RECOMMENDED_BY, RECOMMENDATION_TYPE ";
             str += " ORDER BY RECOMMENDED_BY ";
 
@@ -270,7 +271,7 @@ namespace IFFCO.VTMS.Web.Areas.M1.Controllers
         {
             if (eNSCR01ViewModel.VtStartDate != null && eNSCR01ViewModel.VtEndDate != null)
             {
-                string Vtcode = eNSCR01ViewModel.OthersRecommName;
+                var Vtcode = eNSCR01ViewModel.OthersRecommName;
                 CommonViewModel.ReportType = eNSCR01ViewModel.ReportType;
                 switch (eNSCR01ViewModel.ReportType)
                 {

@@ -147,7 +147,8 @@ namespace IFFCO.VTMS.Web.CommonFunctions
                              FatherName = Convert.ToString(dr["FATHER_NAME"]),
                              COURSE_DESC = Convert.ToString(dr["COURSE_DESC"]),
                              BRANCH_DESC = Convert.ToString(dr["BRANCH_DESC"]),
-                             ContactNo = Convert.ToDouble(dr["CONTACT_NO"]),
+                             ContactNo = (dr["CONTACT_NO"] == DBNull.Value) ? (double?)null : Convert.ToDouble(dr["CONTACT_NO"]),//Convert.toint64
+                            // ContactNo = Convert.ToDouble(dr["CONTACT_NO"]),
                              Address = Convert.ToString(dr["ADDRESS"]),
                              DistrictName = Convert.ToString(dr["DISTRICT_NAME"]),
                              StateName = Convert.ToString(dr["STATE_NAME"]),
