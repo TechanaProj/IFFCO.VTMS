@@ -23,6 +23,7 @@ namespace IFFCO.VTMS.Web.ViewModels
         public DateTime FromDate { get; set; }
         public DateTime ToDate { get; set; }
         public string Status { get; set; }
+        public string InstituteName { get; set; }
 
         // test for charts
         //public List<ChartModel> ChartList { get; set; }
