@@ -121,6 +121,9 @@ function Validate()
                                                                     <select id="DistrictName-Create" asp-for="@Model.vtmsInstitiute.DistrictName" required class="form-control" style="width:100%" >"<option>----------Select----------</option>"</select> @*asp-items="@(new SelectList(Model.DistrictLOV,"Value","Text")) "*@
                                                                 </td>
                                                                 <td>
+                                                                    <select id="UniversityName-Create" asp-for="@Model.vtmsInstitiute.UniversityId" required class="form-control" style="width:100%">"<option>----------Select----------</option>"</select> @*asp-items="@(new SelectList(Model.DistrictLOV,"Value","Text")) "*@
+                                                                </td>
+                                                                <td>
                                                                     <input type="submit" id="createid" value="Save" class="m-btn-1 save" style="float:left;margin-right: 4px" />
                                                                     <button class="m-btn-1 close1" type="button" onclick="GetIndex('M1/ENM03/Index')">Close</button>
                                                                 </td>

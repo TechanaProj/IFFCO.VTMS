@@ -6,7 +6,7 @@ namespace IFFCO.VTMS.Web.Models
 {
     public partial class VtmsUniversityMsts :Entity
     {
-        public decimal UniversityId { get; set; }
+        public int UniversityId { get; set; }
         public string UniversityName { get; set; }
         public string DistrictName { get; set; }
         public decimal? CreatedBy { get; set; }

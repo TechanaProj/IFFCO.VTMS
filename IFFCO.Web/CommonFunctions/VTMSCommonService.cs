@@ -132,7 +132,7 @@ namespace IFFCO.VTMS.Web.CommonFunctions
             
             string sqlquery = "SELECT VT_CODE, UNIT_CODE, NAME, FATHER_NAME, CONTACT_NO, ADDRESS, DISTRICT_NAME, STATE_NAME, PINCODE, ENROLLED_ON, BRANCH_DESC , COURSE_DESC,   ";
             sqlquery += " DOC_NAME, DOC_REGISTRATION_NO, RECOMMENDATION_TYPE, VT_START_DATE, VT_END_DATE, STATUS, STATUS_DESC, YEAR, SEMESTER, BRANCH_NAME, INSTITUTE_NAME, UNIVERSITY_NAME,   ";
-            sqlquery += " RECOMM_PNO, CERT_FLAG FROM V_COMPLETE_VT_INFO WHERE STATUS IN ('A','N','I')";
+            sqlquery += " RECOMM_PNO,RECOMM_ID,RECOMM_NAME,OTHERS_RECOMM_NAME, CERT_FLAG FROM V_COMPLETE_VT_INFO WHERE STATUS IN ('A','N','I')";
 
             DataTable dtDTL_VALUE = new DataTable();
             dtDTL_VALUE = _context.GetSQLQuery(sqlquery);
@@ -167,7 +167,14 @@ namespace IFFCO.VTMS.Web.CommonFunctions
                              InstituteName = Convert.ToString(dr["INSTITUTE_NAME"]),
                              UniversityName = Convert.ToString(dr["UNIVERSITY_NAME"]),
                              RecommendedBy = Convert.ToString(dr["RECOMM_PNO"]),
-                             CertFlag = Convert.ToString(dr["CERT_FLAG"])
+                             RecommName= Convert.ToString(dr["RECOMM_NAME"]),
+                             OtherRecommName= Convert.ToString(dr["OTHERS_RECOMM_NAME"]),
+                             RecommId = Convert.ToString(dr["RECOMM_ID"]),
+                            // RecommPno = (dr["RECOMM_PNO"] == DBNull.Value) ? (int?)null : Convert.ToInt32(dr["RECOMM_PNO"]),   //int nullable
+                             RecommPno = (dr["RECOMM_PNO"] == DBNull.Value) ? 0 : Convert.ToInt32(dr["RECOMM_PNO"]),
+
+
+            CertFlag = Convert.ToString(dr["CERT_FLAG"])
                          }).ToList();
             return DTL_VALUE;
         }
@@ -200,7 +207,7 @@ namespace IFFCO.VTMS.Web.CommonFunctions
         {
             
 
-            string sqlquery = " select B.BRANCH_ID, B.BRANCH_CODE, B.BRANCH_DESC, C.COURSE_DESC FROM VTMS_BRANCH_MSTS B JOIN VTMS_COURSE_MSTS C ON B.COURSE_CODE = C.COURSE_ID and c.course_id = '"+StateCd+"' ";
+            string sqlquery = "select B.BRANCH_ID, B.BRANCH_CODE, B.BRANCH_DESC, C.COURSE_DESC FROM VTMS_BRANCH_MSTS B JOIN VTMS_COURSE_MSTS C ON B.COURSE_CODE = C.COURSE_ID and c.course_id = '"+StateCd+"' ";
 
             DataTable dtDTL_VALUE = new DataTable();
             dtDTL_VALUE = _context.GetSQLQuery(sqlquery);

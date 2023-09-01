@@ -78,7 +78,7 @@
                                                         <table style="width:100%">
                                                             <tr class="update-row odd">
                                                                 <td>
-                                                                    <input type="text" asp-for="@Model.objDistrict.DisttCd" id="Moduleid" placeholder="District Code ID" class="form-control" />
+                                                                    <input type="text" asp-for="@Model.objDistrict.DisttCd" readonly id="Moduleid" placeholder="District Code ID" class="form-control" />
                                                                 </td>
                                                                 <td>
                                                                     <input type="text" required asp-for="@Model.objDistrict.DisttName" id="SubMenuId" placeholder="District Name" class="form-control" />
@@ -86,6 +86,7 @@
                                                                 <td>
                                                                     <input type="hidden" readonly asp-for="@Model.objDistrict.StateCd" id="StateCd" placeholder="State Name" class="form-control" />
                                                                 </td>
+                                                                
                                                                   <td>
                                                                       <select id="ParentMenuId" asp-for="@Model.objDistrict.Status" required class="form-control" style="width:100">
                                                                            <option value="A">A - Active</option>

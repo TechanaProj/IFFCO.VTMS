@@ -246,119 +246,54 @@
                                             </div>
                                         </div>
 
-                                         <h3 class="sub-heading1 sub-heading2"><span> TRAINING & RECOMMENDATION INFORMATION </span></h3>
+                                        <h3 class="sub-heading1 sub-heading2"><span> TRAINING & RECOMMENDATION INFORMATION </span></h3>
+
+                                        <div class="m-form">
+                                            <div class="m-form-bx">
+                                                <div class="row form-sm">
+                                                    <div class="col-sm-1 col-md-2">
+                                                        <div>
+                                                            <label class="m-lbl1 m-lbl2">Recommendation Type :</label>
+                                                        </div>
+                                                    </div>
+
                                                     
-                                                     <div class="m-form">
-                                                     <div class="m-form">
-                                                        <div class="m-form-bx">
-                                                            <div class="row form-sm">
-                                                                <div class="col-sm-1 col-md-2">
-                                                                    <div>
-                                                                        <label class="m-lbl1 m-lbl2">Recommendation Type :</label>
-                                                                    </div>
-                                                                </div>
 
-                                                                 <div class="col-sm-2 col-md-2">
-                                                                        <div>
-                                                                                 <select id="Frecommendation" asp-for="@Model.Pi_Msts.RecommendationType" class="form-control">
-                                                                                    <option value="IFFCO" selected>IFFCO Employee</option>
-                                                                                    <option value="OTHERS">Others</option>
-                                                                                   
-                                                                                </select>
-                                                                        </div>
-                                                                 </div>
-                                                        <div class="col-sm-2 col-md-2">
-                                                            <div>
-                                                                <label class="m-lbl1 m-lbl2" id="FRecommPnoLabel"> Personnel No. </label>
-                                                            </div>
-                                                        </div>
-                                                        <div class="col-sm-2 col-md-2">
-                                                            <div>
-                                                                <input id="FRecommPno" maxlength="6" type="number" asp-for="@Model.Pi_Msts.RecommPno" class="form-control" />
-                                                            </div>
-
-                                                        </div>
-
-
-                                                        <div class="col-sm-2 col-md-2">
-                                                            <div>
-                                                                <label class="m-lbl1 m-lbl2" id="OthersRecomLabel" hidden> Others Name </label>
-                                                            </div>
-                                                        </div>
+                                                   <div class="col-sm-2 col-md-2">
                                                         <div>
-                                                            <div class="col-sm-2 col-md-2">
-                                                                <select id="OthersRecommName" style="display: none;" typ="text" asp-for="@Model.Pi_Msts.OthersRecommName" class="form-control" asp-items="@(new SelectList(ViewBag.RecommList,"Value","Text")) ">
-                                                                    <option value="">--Select--</option>
-                                                                </select>
-                                                            </div>
+                                                            <select id="Frecommendation" asp-for="@Model.Pi_Msts.RecommendationType" class="form-control">
+                                                                <option value="IFFCO" selected>IFFCO Employee</option>
+                                                                <option value="OTHERS">Others</option>
+                                                            </select>
                                                         </div>
-
-                                                        
-                                                       @* <div class="col-sm-2 col-md-2">
-                                                            <div>
-                                                                <label class="m-lbl1 m-lbl2" id="FRecommPnoLabel"> Personnel No. </label>
-                                                            </div>
-                                                        </div>
-                                                        <div class="col-sm-2 col-md-2">
-                                                            <div>
-                                                                <input id="FRecommPno" maxlength="6" type="number" asp-for="@Model.Pi_Msts.RecommPno" class="form-control" />
-                                                            </div>
-
-                                                        </div>
-
-
-                                                        <div class="col-sm-2 col-md-2">
-                                                            <div>
-                                                                <label class="m-lbl1 m-lbl2" id="OthersRecomLabel" hidden> Others Name </label>
-                                                            </div>
-                                                        </div>
+                                                    </div>
+                                                    <div class="col-sm-2 col-md-2">
                                                         <div>
-                                                            <div class="col-sm-2 col-md-2">
-                                                                <select id="OthersRecommName" style="display: none;" typ="text" asp-for="@Model.Pi_Msts.OthersRecommName" class="form-control" asp-items="@(new SelectList(ViewBag.RecommList,"Value","Text")) ">
-                                                                    <option value="">--Select--</option>
-                                                                </select>
-                                                            </div>
-                                                        </div>*@
-
-                                                                      @*<div class="col-sm-2 col-md-2">
-                                                                            <div>
-                                                                                <label class="m-lbl1 m-lbl2" id="FRecommPnoLabel"> Personnel No. </label>
-                                                                            </div>
-                                                                       </div> 
-                                                                       <div class="col-sm-2 col-md-2">
-                                                                           <div>
-                                                                                <input id="FRecommPno" maxlength="6" type="number" asp-for="@Model.RecommPno" class="form-control" />
-                                                                           </div>
-
-                                                                       </div>
-
-                                                                     <div class="col-sm-2 col-md-2">
-                                                                            <div>
-                                                                                <label class="m-lbl1 m-lbl2" id="RecomNm"> Recommender Name </label>
-                                                                            </div>
-                                                                     </div>
-                                                                     <div class="col-sm-2 col-md-2">
-                                                                        <div>
-                                                                            <input id="RecommPno" maxlength="6" type="number" asp-for="@Model.RecommPno" class="form-control" /> 
-                                                                        </div>
-                                                                     </div>
-                                                                       <div class="col-sm-2 col-md-2">
-                                                                            <div>
-                                                                                <label class="m-lbl1 m-lbl2" id="OthersRecomLabel"> Others Name </label>
-                                                                            </div>
-                                                                     </div>
-                                                                      <div>
-                                                                           <div class="col-sm-2 col-md-2">
-                                                                            <select id="OthersRecommName" style="display: none;" typ="text" asp-for="@Model.Pi_Msts.OthersRecommName" class="form-control" asp-items="@(new SelectList(ViewBag.RecommList,"Value","Text")) ">
-                                                                                <option value="">--Select--</option>
-                                                                            </select>
-                                                                            </div>
-                                                                        </div>*@
-                                                           </div>
-                                                      </div>
-                                                 </div>
+                                                            <label class="m-lbl1 m-lbl2" id="FRecommPnoLabel">Personnel No.</label>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-sm-2 col-md-2">
+                                                        <div>
+                                                            <input id="FRecommPno" maxlength="6" type="number" asp-for="@Model.Pi_Msts.RecommPno" class="form-control" />
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-sm-2 col-md-2">
+                                                        <div>
+                                                            <label class="m-lbl1 m-lbl2" id="OthersRecomLabel" hidden>Others Name</label>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-sm-2 col-md-2">
+                                                        <div>
+                                                             <select id="OthersRecommName" style="display: none;" type="text" asp-for="@Model.Pi_Msts.OthersRecommName" class="form-control" asp-items="@(new SelectList(ViewBag.RecommList,"Value","Text")) "></select>
+                                                                        
+                                                          
+                                                        </div>
+                                                    </div>
+                                                </div>
                                             </div>
-                                         
+                                        </div>
+
+                                           
                                           <br>
                                         <div class="btn-area-fixed" align="center">
                                             <div>
@@ -379,48 +314,21 @@
 <div id="commonModalbinder" class="modal" style="display:none!important;z-index:99999999 !important;"></div>
 
 <script type="text/javascript">
-   
 
+    
     $("#Frecommendation").change(function () {
-        if ($("#Frecommendation option:selected").val() == 'OTHERS') {
-            $('#OthersRecomLabel').show();
-            $('#OthersRecommName').show();
-            $('#FRecommPno').hide();
-            $('#FRecommPnoLabel').hide();
-            $('#RecomNm').hide();
-            $('#RecommPno').hide();
-            
-        }
-        else {
+        if ($("#Frecommendation option:selected").val() == 'IFFCO') {
             $('#FRecommPno').show();
             $('#FRecommPnoLabel').show();
             $('#OthersRecomLabel').hide();
             $('#OthersRecommName').hide();
+        } else {
+            $('#FRecommPno').hide();
+            $('#FRecommPnoLabel').hide();
+            $('#OthersRecomLabel').show();
+            $('#OthersRecommName').show();
         }
-        ;
     });
-
-
-            //$("#Frecommendation").change(function () {
-            //        if ($("#Frecommendation option:selected").val() == 'OTHERS') {
-            //            $('#FRecommPno').hide();
-            //            $('#FRecommPnoLabel').hide();
-            //            $('#FOthersRecommName').hide();
-            //            $('#FOthersRecommNameLabel').hide();
-            //            $('#RecomNm').hide();
-            //            $('#RecommPno').hide();
-            //            $('#OthersRecomLabel').show();
-            //            $('#OthersRecommName').show();
-            //    }else {
-            //            $('#FRecommPno').show();
-            //            $('#FRecommPnoLabel').show();
-            //            $('#FOthersRecommName').hide();
-            //            $('#FOthersRecommNameLabel').hide();
-            //            $('#OthersRecomLabel').hide();
-            //            $('#OthersRecommName').hide();
-            //    };
-            //});
-
 
         $(document).ready(function () { 
             PopInstituteLOV();

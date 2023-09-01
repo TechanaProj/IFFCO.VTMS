@@ -19,6 +19,9 @@ namespace IFFCO.VTMS.Web.ViewModels
 
         public string OthersRecommName { get; set; }
         public List<SelectList> ListOtherRecomm { get; set; }
+
+        public List<SelectListItem> RECOMMNAME { get; set; }
+        
         public decimal? RecommPno { get; set; }
 
         public string ReportType { get; set; }

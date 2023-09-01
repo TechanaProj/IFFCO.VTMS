@@ -93,6 +93,7 @@ namespace IFFCO.VTMS.Web.Areas.M1.Controllers
             int user = Convert.ToInt32(HttpContext.Session.GetInt32("EmpID"));
             var code = Get_AcceptedVTCode_PK(unit);
             // Updating PI
+
             string sqlquery = "UPDATE VTMS_ENROLL_PI ";
             sqlquery = sqlquery + "SET VT_CODE = '" + code + "',";
             sqlquery = sqlquery + "STATUS = 'A',";
@@ -103,6 +104,7 @@ namespace IFFCO.VTMS.Web.Areas.M1.Controllers
             sqlquery = sqlquery + "WHERE VT_CODE = '" + id + "' AND  UNIT_CODE = '" + unit + "' ";
             int responsepi = _context.insertUpdateToDB(sqlquery);
             // Updating Edu
+
             sqlquery = "UPDATE VTMS_ENROLL_EDU ";
             sqlquery = sqlquery + "SET VT_CODE = '" + code + "', ";
             sqlquery = sqlquery + "PREV_VT_CODE = '" + id + "',";
@@ -111,6 +113,7 @@ namespace IFFCO.VTMS.Web.Areas.M1.Controllers
             sqlquery = sqlquery + "WHERE VT_CODE = '" + id + "' AND  UNIT_CODE = '" + unit + "' ";
             int responseedu = _context.insertUpdateToDB(sqlquery);
             // Inserting in Doc
+
             sqlquery = "insert into VTMS_ENROLL_DOC(VT_CODE, UNIT_CODE) VALUES('";
             sqlquery = sqlquery + code + "', ";
             sqlquery = sqlquery + unit + ") ";

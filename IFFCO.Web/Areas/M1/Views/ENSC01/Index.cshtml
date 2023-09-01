@@ -57,8 +57,11 @@
                                             Course
                                         </th>
                                         <th>
-                                           Recommended By
+                                           Recommended By(IFFCO Employee)
                                         </th>
+                                        <th>
+                                           Recommended By(Others)
+                                        </th> 
                                         <th>Actions</th>
                                     </tr>
 
@@ -78,7 +81,11 @@
                                                 @Html.DisplayFor(modelItem => item.COURSE_DESC) - @Html.DisplayFor(modelItem => item.BRANCH_DESC) 
                                             </td> 
                                              <td>
-                                                @Html.DisplayFor(modelItem => item.RecommendedBy)
+                                                @Html.DisplayFor(modelItem => item.RecommName) - @Html.DisplayFor(modelItem => item.RecommPno)
+                                                
+                                            </td>
+                                            <td>
+                                                 @Html.DisplayFor(modelItem => item.OtherRecommName) 
                                             </td>
                                             <td style=" width: 5%;">
                                                 <a asp-area="M1" asp-controller="ENSC01" asp-action="Edit" asp-route-id="@item.Vtcode" class="edit @Model.Edit glpicon addnewitem" data-toggle="modal"><i class="far fa-edit" data-toggle="tooltip" title="" data-original-title="Edit" ></i></a>

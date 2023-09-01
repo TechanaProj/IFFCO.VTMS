@@ -58,7 +58,24 @@ namespace IFFCO.VTMS.Web.CommonFunctions
             return ListBranch;
         }
 
-       
+        public List<SelectListItem> GetRecommNameLOV(string unit)
+        {
+            string sqlquery = " select recomm_id, recomm_name, unit_code from VTMS_RECOMM_MSTS";
+            DataTable dtDRP_VALUE = _context.GetSQLQuery(sqlquery);
+            List<SelectListItem> DRP_VALUE = new List<SelectListItem>();
+            DRP_VALUE = (from DataRow dr in dtDRP_VALUE.Rows
+                         select new SelectListItem()
+                         {
+                             Text = Convert.ToString(dr["recomm_name"]) + " - " + Convert.ToString(dr["recomm_id"]),
+                             Value = Convert.ToString(dr["recomm_id"])
+
+
+                         }).ToList();
+
+            return DRP_VALUE;
+
+        }
+
 
 
         public List<SelectListItem> ListRecommBind(int unit)
@@ -72,7 +89,7 @@ namespace IFFCO.VTMS.Web.CommonFunctions
         }
 
 		 public List<SelectListItem> CourseLOVBind()
-        {
+         {
             var CourseLOV = _context.VtmsCourseMsts.OrderBy(x => x.CourseId).Select(x => new SelectListItem
             {
                 Text = string.Concat(x.CourseId, " - ", x.CourseCode, " - ", x.CourseDesc),
@@ -81,7 +98,7 @@ namespace IFFCO.VTMS.Web.CommonFunctions
             }).ToList();
 
             return CourseLOV;
-        }
+         }
 		
 		public List<SelectListItem> ListStateBind()
         {

@@ -254,7 +254,8 @@
                                         </div>
 
                                          <h3 class="sub-heading1 sub-heading2"><span> TRAINING & RECOMMENDATION INFORMATION </span></h3>
-                                                    
+                                    
+
                                                  <div class="m-form">
                                                    <div class="m-form">
                                                      <div class="m-form-bx">
@@ -295,9 +296,9 @@
                                                         </div>
                                                         <div>
                                                             <div class="col-sm-2 col-md-2">
-                                                            <select id="OthersRecommName" style="display: none;" typ="text" asp-for="@Model.Pi_Msts.OthersRecommName" class="form-control" asp-items="@(new SelectList(ViewBag.RecommList,"Value","Text")) ">
-                                                                    <option value="">--Select--</option>
-                                                                </select>
+                                                           
+                                                                <select style="width:80%;" id="OthersRecommName" asp-for="@Model.Pi_Msts.OthersRecommName" class="form-control WhCd"  asp-items="@(new SelectList(Model.RECOMMNAME,"Value","Text"))"></select>
+
                                                             </div>
                                                         </div>
                                                     
@@ -306,7 +307,8 @@
                                                      </div>
                                                    </div>
                                                  </div>
-                                            </div>
+                                    </div>
+
                                           <br>
                                         <div class="btn-area-fixed" align="center">
                                             <div>
@@ -325,35 +327,10 @@
 
 <div id="commonModalbinder" class="modal" style="display:none!important;z-index:99999999 !important;"></div>
 
+
+
+
 <script type="text/javascript">
-
-     //$(document).ready(function () {
-     //       $('#FInstitute').select2();
-     //       $('#FStateForUniversity').select2();
-     //       $('#FDistrictForUniversity').select2();
-     //       $('#FCourse').select2();
-     //       $('#FBranch').select2();
-           
-     //        });
-
-     //       $("#Frecommendation").change(function () {
-     //           if ($("#Frecommendation option:selected").val() == 'OTHERS') {
-     //               $('#FRecommPno').hide();
-     //               $('#FRecommPnoLabel').hide(); 
-     //               $('#RecomNm').hide();
-     //               $('#RecommPno').hide();
-     //               $('#OthersRecomLabel').show();  
-     //               $('#OthersRecommName').show();
-     //       }
-     //           else {
-     //               $('#FRecommPno').show();
-     //               $('#FRecommPnoLabel').show();
-     //               $('#OthersRecomLabel').hide();
-     //               $('#OthersRecommName').hide();
-     //       }
-     //       ;
-     //       });
-
 
     $("#Frecommendation").change(function () {
         if ($("#Frecommendation option:selected").val() == 'IFFCO') {
@@ -361,17 +338,14 @@
             $('#FRecommPnoLabel').show();
             $('#OthersRecomLabel').hide();
             $('#OthersRecommName').hide();
-        }
-        else {
+        } else {
             $('#FRecommPno').hide();
             $('#FRecommPnoLabel').hide();
-            $('#RecomNm').hide();
-            $('#RecommPno').hide();
             $('#OthersRecomLabel').show();
             $('#OthersRecommName').show();
         }
-        ;
     });
+
 
 
 

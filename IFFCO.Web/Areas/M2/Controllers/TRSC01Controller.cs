@@ -207,7 +207,7 @@ namespace IFFCO.VTMS.Web.Areas.M2.Controllers
         }
         // GET: M2/TRSC01/edit
         public async Task<IActionResult> Edit(string id)
-        {
+         {
             CommonService commonService = new CommonService();
             if (id == null)
             {
@@ -274,8 +274,9 @@ namespace IFFCO.VTMS.Web.Areas.M2.Controllers
                         tRSC01ViewModel.Doc_Msts.ModifiedBy = Convert.ToInt32(HttpContext.Session.GetInt32("EmpID"));
                         tRSC01ViewModel.Doc_Msts.ModifiedOn = DateTime.Now;
                     }
-                    VtmsEnrollPi objpi = new VtmsEnrollPi();
-                    objpi = _context.VtmsEnrollPi.FirstOrDefault(x => x.VtCode.Equals(tRSC01ViewModel.Pi_Msts.VtCode));
+                   // VtmsEnrollPi objpi = new VtmsEnrollPi();
+                    VtmsEnrollPi objpi = _context.VtmsEnrollPi.FirstOrDefault(x => x.VtCode.Equals(tRSC01ViewModel.Pi_Msts.VtCode));
+                   
                     objpi.Status = tRSC01ViewModel.Status;
                     objpi.StateName = tRSC01ViewModel.Pi_Msts.StateName;
                     objpi.ModifiedBy = Convert.ToInt32(HttpContext.Session.GetInt32("EmpID"));
@@ -300,8 +301,8 @@ namespace IFFCO.VTMS.Web.Areas.M2.Controllers
 
 
                     VtmsEnrollEdu objedu = new VtmsEnrollEdu();
-                    objedu = _context.VtmsEnrollEdu.FirstOrDefault(x => x.VtCode.Equals(tRSC01ViewModel.Edu_Msts.VtCode));
-                    objedu.UniversityName= tRSC01ViewModel.Edu_Msts.UniversityName;
+                    objedu = _context.VtmsEnrollEdu.FirstOrDefault(x => x.VtCode.Equals(tRSC01ViewModel.Pi_Msts.VtCode));
+                    objedu.UniversityName= tRSC01ViewModel.Edu_Msts.UniversityName.ToString();
                     objedu.InstituteName = tRSC01ViewModel.Edu_Msts.InstituteName;
                     objedu.CourseName= tRSC01ViewModel.Edu_Msts.CourseName;
                     objedu.BranchName= tRSC01ViewModel.Edu_Msts.BranchName;
@@ -312,7 +313,7 @@ namespace IFFCO.VTMS.Web.Areas.M2.Controllers
 
                     VtmsEnrollDoc objdoc = new VtmsEnrollDoc();
                     objdoc= await _context.VtmsEnrollDoc.FirstOrDefaultAsync(x => x.VtCode == tRSC01ViewModel.Pi_Msts.VtCode && x.UnitCode == tRSC01ViewModel.Pi_Msts.UnitCode);
-                    objdoc.VtCode= tRSC01ViewModel.Doc_Msts.VtCode;
+                   // objdoc.VtCode= tRSC01ViewModel.Doc_Msts.VtCode;
                     objdoc.VtIdType= tRSC01ViewModel.Doc_Msts.VtIdType; 
                    // objdoc.
                     objdoc.VtPhoto = tRSC01ViewModel.Doc_Msts.VtPhoto;
@@ -324,23 +325,42 @@ namespace IFFCO.VTMS.Web.Areas.M2.Controllers
                     // var vtmsdocmsts = await _context.VtmsEnrollDoc.FirstOrDefaultAsync(x => x.VtCode == tRSC01ViewModel.Pi_Msts.VtCode && x.UnitCode == tRSC01ViewModel.Pi_Msts.UnitCode); 
                     //vtmsdocmsts.VtIdType = tRSC01ViewModel.Doc_Msts.VtIdType;
                     // vtmsdocmsts.VtIdDtl = tRSC01ViewModel.Doc_Msts.VtIdDtl;
-                    await _context.SaveChangesAsync();
-                    TempData["Status"] = "Update";
-                    TempData["Alert"] = "Update";
-                    TempData["Message"] = tRSC01ViewModel.Pi_Msts.Name;                   
+                    //await _context.SaveChangesAsync();
+                    _context.SaveChanges();
+
+
+                    //TempData["Status"] = "Update";
+                    //TempData["Alert"] = "Update";
+                    //TempData["Message"] = tRSC01ViewModel.Pi_Msts.Name;                   
+
+                    CommonViewModel.Message = tRSC01ViewModel.Pi_Msts.Name;
+                    CommonViewModel.Alert = "Update";
+                    CommonViewModel.Status = "Update";
+                    CommonViewModel.ErrorMessage = "";
                 }
-                catch (DbUpdateConcurrencyException)
+
+               // catch (DbUpdateConcurrencyException)
+                //{
+                //    if (!vTPersonalInfoExists(tRSC01ViewModel.Pi_Msts.VtCode))
+                //    {
+                //        return NotFound();
+                //    }
+                //    else
+                //    {
+                //        throw;
+                //    }
+                //}
+                //return RedirectToAction(nameof(Index));
+                 catch (Exception ex)
                 {
-                    if (!vTPersonalInfoExists(tRSC01ViewModel.Pi_Msts.VtCode))
-                    {
-                        return NotFound();
-                    }
-                    else
-                    {
-                        throw;
-                    }
+                    commonException.GetCommonExcepton(CommonViewModel, ex);
+                    CommonViewModel.AreaName = this.ControllerContext.RouteData.Values["area"].ToString();
+                    CommonViewModel.SelectedMenu = this.ControllerContext.RouteData.Values["controller"].ToString();
+                    return Json(CommonViewModel);
                 }
-                return RedirectToAction(nameof(Index));
+                CommonViewModel.AreaName = this.ControllerContext.RouteData.Values["area"].ToString();
+                CommonViewModel.SelectedMenu = this.ControllerContext.RouteData.Values["controller"].ToString();
+                return Json(CommonViewModel);
             }
             return View(tRSC01ViewModel);
         }

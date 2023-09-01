@@ -31,6 +31,14 @@ namespace IFFCO.VTMS.Web.Models
           public string InstituteName { get; set; }
           public string UniversityName { get; set; }
           public string RecommendedBy { get; set; }
+         // public string RECOMM_NAME	{ get; set; }
+         public string RecommName	{ get; set; }
+        //public string OTHERS_RECOMM_NAME { get; set; }
+
+        public string RecommId { get; set; }
+        public int RecommPno { get; set; }
+        public string OtherRecommName{ get; set; }
+
           public string CertFlag { get; set; }
         public string STATUS_DESC { get; internal set; }
     }

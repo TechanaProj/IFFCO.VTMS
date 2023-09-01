@@ -18,6 +18,7 @@ namespace IFFCO.VTMS.Web.ViewModels
         public string VTCode { get; set; }
         public string Pincode { get; set; }
         public int UnitCode { get; set; }
+
       //  public string ActionMode { get; set; }
     }
 }

@@ -71,15 +71,29 @@ namespace IFFCO.VTMS.Web.Areas.M1.Controllers
                 int PersonnelNumber = Convert.ToInt32(HttpContext.Session.GetInt32("EmpID"));
                 if (!string.IsNullOrWhiteSpace(eNM02ViewModel.objvtmsCourseMsts.CourseDesc))
                 {
-                    eNM02ViewModel.objvtmsCourseMsts.CourseId = _context.VtmsCourseMsts.OrderByDescending(x => x.CourseId).FirstOrDefault().CourseId + 1;
-                    eNM02ViewModel.objvtmsCourseMsts.CreatedDateTime = DateTime.UtcNow;
-                    eNM02ViewModel.objvtmsCourseMsts.CreatedBy = Convert.ToString(PersonnelNumber);
-                    _context.VtmsCourseMsts.Add(eNM02ViewModel.objvtmsCourseMsts);
-                    await _context.SaveChangesAsync();
-                    CommonViewModel.Message = "Course Name " + Convert.ToString(eNM02ViewModel.objvtmsCourseMsts.CourseCode);
-                    CommonViewModel.Alert = "Create";
-                    CommonViewModel.Status = "Create";
-                    CommonViewModel.ErrorMessage = "";
+                    
+                    bool isCourseDescUnique = !_context.VtmsCourseMsts.Any(x => x.CourseDesc == eNM02ViewModel.objvtmsCourseMsts.CourseDesc);
+
+                    if (isCourseDescUnique)
+                    {
+                        eNM02ViewModel.objvtmsCourseMsts.CourseId = _context.VtmsCourseMsts.OrderByDescending(x => x.CourseId).FirstOrDefault().CourseId + 1;
+                        eNM02ViewModel.objvtmsCourseMsts.CreatedDateTime = DateTime.UtcNow;
+                        eNM02ViewModel.objvtmsCourseMsts.CreatedBy = Convert.ToString(PersonnelNumber);
+                        _context.VtmsCourseMsts.Add(eNM02ViewModel.objvtmsCourseMsts);
+                        await _context.SaveChangesAsync();
+                        CommonViewModel.Message = "Course Name " + Convert.ToString(eNM02ViewModel.objvtmsCourseMsts.CourseCode);
+                        CommonViewModel.Alert = "Create";
+                        CommonViewModel.Status = "Create";
+                        CommonViewModel.ErrorMessage = "";
+                    }
+                    else
+                    {
+                        CommonViewModel.Message = "Course Name already Exist!";
+                        CommonViewModel.ErrorMessage = "Course Name already Exist!";
+                        CommonViewModel.Alert = "Warning";
+                        CommonViewModel.Status = "Warning";
+
+                    }
                 }
                 else
                 {

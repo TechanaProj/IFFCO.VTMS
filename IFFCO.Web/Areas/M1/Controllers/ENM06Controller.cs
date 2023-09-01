@@ -82,23 +82,22 @@ namespace IFFCO.VTMS.Web.Areas.M1.Controllers
         }
 
         // GET: ENM06Controller/Create
+        
         public ActionResult Create(string id)
         {
-            if (!string.IsNullOrWhiteSpace(id))
-            {
-                var ObjIid = new MDistrict() { StateCd = id };
-                CommonViewModel.listDistrict = _context.MDistrict.Where(x => x.StateCd == id).ToList();
-                CommonViewModel.listDistrict = vTMSCommonService.GetDistrictMaster(id);
-                CommonViewModel.objDistrict = ObjIid;
-                CommonViewModel.listStateBind = dropDownListBindWeb.ListStateBind();
-                CommonViewModel.StateCd = id;
-            }
-            
+
+            var ObjBid = new MDistrict() { DisttCd = _context.MDistrict.OrderByDescending(x => x.DisttCd).FirstOrDefault().DisttCd + 1 };
+            CommonViewModel.listDistrict = vTMSCommonService.GetDistrictMaster(id);
+            CommonViewModel.objDistrict = ObjBid;
+            CommonViewModel.objDistrict.StateCd = id;
+            CommonViewModel.listStateBind = dropDownListBindWeb.ListStateBind();
             CommonViewModel.AreaName = this.ControllerContext.RouteData.Values["area"].ToString();
             CommonViewModel.SelectedMenu = this.ControllerContext.RouteData.Values["controller"].ToString();
             CommonViewModel.Status = "Create";
             return View("Index", CommonViewModel);
         }
+
+        
         // POST: ENM06Controller/Create
         [HttpPost]
         [ValidateAntiForgeryToken]
@@ -107,16 +106,14 @@ namespace IFFCO.VTMS.Web.Areas.M1.Controllers
             try
             {
                 int PersonnelNumber = Convert.ToInt32(HttpContext.Session.GetInt32("EmpID"));
-                if (!string.IsNullOrWhiteSpace(eNM06ViewModel.objDistrict.DisttCd))
+                if (!string.IsNullOrWhiteSpace(eNM06ViewModel.objDistrict.DisttName))
                 {
-                MDistrict ObjDis = new MDistrict();
-                ObjDis.DisttCd = eNM06ViewModel.objDistrict.DisttCd;
-                ObjDis.DisttName = eNM06ViewModel.objDistrict.DisttName;
-                ObjDis.CreationDate = eNM06ViewModel.objDistrict.CreationDate;
-                ObjDis.Status = eNM06ViewModel.objDistrict.Status;
-                ObjDis.CreationDate = DateTime.Now;
-                ObjDis.StateCd = eNM06ViewModel.objDistrict.StateCd;
-                _context.MDistrict.Add(ObjDis);
+                    var disctcode = _context.MDistrict.FirstOrDefault().DisttCd;
+
+                    eNM06ViewModel.objDistrict.DisttCd = _context.MDistrict.OrderByDescending(x => x.DisttCd).FirstOrDefault().DisttCd + 1;
+                    eNM06ViewModel.objDistrict.CreationDate = DateTime.Now;
+                    eNM06ViewModel.objDistrict.CreatedBy = PersonnelNumber.ToString();
+                    _context.MDistrict.Add(eNM06ViewModel.objDistrict);
 
             
                     await _context.SaveChangesAsync();

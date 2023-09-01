@@ -49,8 +49,10 @@ namespace IFFCO.VTMS.Web.Areas.M1.Controllers
         // GET: ENM04Controller/Create
         public ActionResult Create(string id)
         {
+           
             int UnitCode = Convert.ToInt32(HttpContext.Session.GetString("UnitCode"));
-            var ObjRid = new VtmsRecommMsts() {RecommId = id};
+            var ObjRid = new VtmsRecommMsts() {RecommId = Convert.ToString(_context.VtmsRecommMsts.OrderByDescending(x => x.RecommId).FirstOrDefault().RecommId + 1) };
+           
             CommonViewModel.vtmsRecommendationlist = _context.VtmsRecommMsts.Where(x => x.UnitCode == UnitCode).ToList();
             CommonViewModel.vtmsRecommendation = ObjRid;
             CommonViewModel.AreaName = this.ControllerContext.RouteData.Values["area"].ToString();
@@ -59,6 +61,7 @@ namespace IFFCO.VTMS.Web.Areas.M1.Controllers
             return View("Index", CommonViewModel);
         }
 
+       
         // POST: ENM05Controller/Create/INSERTION
         [HttpPost]
         [ValidateAntiForgeryToken]

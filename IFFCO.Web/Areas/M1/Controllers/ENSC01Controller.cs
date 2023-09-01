@@ -64,15 +64,17 @@ namespace IFFCO.VTMS.Web.Areas.M1.Controllers
 
             var StateLov = dropDownListBindWeb.ListStateBind();
             ViewBag.CourseList = CourseLOV.ToList();
-
+            
            
+            var RecomNameLOV = dropDownListBindWeb.GetRecommNameLOV("NPA");
+            var RecommName = RecomNameLOV.Select(x => x.Value).ToList();
+            CommonViewModel.RECOMMNAME = RecomNameLOV;
 
             ViewBag.RecommList = RecommLOV.ToList();
             ViewBag.StateList = StateLov.ToList();
+           
             CommonViewModel.Pi_Msts = new VtmsEnrollPi();
             CommonViewModel.Edu_Msts = new VtmsEnrollEdu();
-
-
 
             CommonViewModel.AreaName = this.ControllerContext.RouteData.Values["area"].ToString();
             CommonViewModel.SelectedMenu = this.ControllerContext.RouteData.Values["controller"].ToString();
@@ -84,13 +86,11 @@ namespace IFFCO.VTMS.Web.Areas.M1.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create(ENSC01ViewModel eNSC01ViewModel, int unit)
         {
+            
             try
-
             {
-               
                 if (ModelState.IsValid)
                 {
-                   
                     eNSC01ViewModel.Pi_Msts.VtCode = primaryKeyGen.Get_EnrolledVTCode_PK(Convert.ToInt32(HttpContext.Session.GetString("UnitCode")));
                     eNSC01ViewModel.Pi_Msts.EnrolledOn = eNSC01ViewModel.Edu_Msts.EnrolledOn = DateTime.Now;
                     eNSC01ViewModel.Pi_Msts.EnrolledBy = eNSC01ViewModel.Edu_Msts.EnrolledBy = Convert.ToInt32(HttpContext.Session.GetInt32("EmpID"));
@@ -100,9 +100,9 @@ namespace IFFCO.VTMS.Web.Areas.M1.Controllers
                     eNSC01ViewModel.Edu_Msts.UnitCode = eNSC01ViewModel.Pi_Msts.UnitCode = Convert.ToInt32(HttpContext.Session.GetString("UnitCode"));
                     string selectedRecommName = eNSC01ViewModel.Pi_Msts.OthersRecommName;
                     eNSC01ViewModel.Pi_Msts.OthersRecommName = selectedRecommName;
-
+                    
                     eNSC01ViewModel.Pi_Msts.RecommPno = Convert.ToInt64(eNSC01ViewModel.RecommPno);
-                    eNSC01ViewModel.Pi_Msts.OthersRecommName = eNSC01ViewModel.OthersRecommName;
+                    //eNSC01ViewModel.Pi_Msts.OthersRecommName = eNSC01ViewModel.OthersRecommName;
                     eNSC01ViewModel.Pi_Msts.Status = "N";
                     if (eNSC01ViewModel.Edu_Msts.BranchName == "null") { eNSC01ViewModel.Edu_Msts.BranchName = String.Empty;}
                     _context.Add(eNSC01ViewModel.Pi_Msts);
@@ -187,7 +187,7 @@ namespace IFFCO.VTMS.Web.Areas.M1.Controllers
                 var UniversityList = dropDownListBindWeb.ListUniversityBind();
                 ViewBag.UniversityList = UniversityList;
 
-                var RecommLOV = dropDownListBindWeb.ListRecommBind(unit);
+                var RecommLOV = dropDownListBindWeb.ListRecommBind(unit); 
                 ViewBag.RecommList = RecommLOV.ToList();
 
             }
@@ -231,17 +231,22 @@ namespace IFFCO.VTMS.Web.Areas.M1.Controllers
                     EdObj.ModifiedBy = Convert.ToInt32(HttpContext.Session.GetInt32("EmpID"));
                     EdObj.ModifiedOn = DateTime.Now;
                     PiObj.RecommendationType = eNSC01ViewModel.Pi_Msts.RecommendationType;
-                    PiObj.RecommPno = eNSC01ViewModel.Pi_Msts.RecommPno;
-                    PiObj.OthersRecommName = eNSC01ViewModel.Pi_Msts.OthersRecommName;
-
+                    if (PiObj.RecommendationType == "IFFCO")
+                    {
+                        PiObj.RecommPno = eNSC01ViewModel.Pi_Msts.RecommPno;
+                    }
+                    else
+                    {
+                        PiObj.OthersRecommName = eNSC01ViewModel.Pi_Msts.OthersRecommName;
+                    }
 
 
                     _context.VtmsEnrollPi.Update(PiObj);
                     _context.SaveChanges();
                     _context.VtmsEnrollEdu.Update(EdObj);
                     _context.SaveChanges();
-                    
 
+                    CommonViewModel.Message = "VT Code" + eNSC01ViewModel.Pi_Msts.VtCode;
                     CommonViewModel.Alert = "Update";
                     CommonViewModel.Status = "Update";
                     CommonViewModel.ErrorMessage = "";

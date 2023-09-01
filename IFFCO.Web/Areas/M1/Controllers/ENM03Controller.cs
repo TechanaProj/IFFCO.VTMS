@@ -58,22 +58,7 @@ namespace IFFCO.VTMS.Web.Areas.M1.Controllers
             return View(CommonViewModel);
         }
 
-        // GET: ENM03Controller/Create
-        public ActionResult Create(int id)
-        {
-            var UniversityLOV = dropDownListBindWeb.UniversityLOVBind();
-            var ObjIid = new VtmsInstituteMsts() { InstituteCd = _context.VtmsInstituteMsts.OrderByDescending(x => x.InstituteCd).FirstOrDefault().InstituteCd + 1 };
-            //CommonViewModel.vtmsInstitiutelist = _context.VtmsInstituteMsts.Where(x => x.UniversityId == UniversityLOV.FirstOrDefault().Value).ToList();
-            CommonViewModel.vtmsInstitiutelist = vTMSCommonService.GetInstituteMaster(UniversityLOV.FirstOrDefault().Value);
-            CommonViewModel.vtmsInstitiute = ObjIid;
-            CommonViewModel.UniversityLOV = dropDownListBindWeb.UniversityLOVBind();
-            CommonViewModel.StateLOV = dropDownListBindWeb.StateLOVBind();
-            CommonViewModel.DistrictLOV = dropDownListBindWeb.DistrictLOVBind();
-            CommonViewModel.AreaName = this.ControllerContext.RouteData.Values["area"].ToString();
-            CommonViewModel.SelectedMenu = this.ControllerContext.RouteData.Values["controller"].ToString();
-            CommonViewModel.Status = "Create";
-            return View("Index", CommonViewModel);
-        }
+       
 
         public JsonResult ddl1(string StateCd)
         {
@@ -110,6 +95,24 @@ namespace IFFCO.VTMS.Web.Areas.M1.Controllers
             return view;
         }
 
+        // GET: ENM03Controller/Create
+        public ActionResult Create(string id)
+        {
+
+            var ObjIid = new VtmsInstituteMsts() { InstituteCd = _context.VtmsInstituteMsts.OrderByDescending(x => x.InstituteCd).FirstOrDefault().InstituteCd + 1 };
+            //CommonViewModel.vtmsInstitiutelist = _context.VtmsInstituteMsts.Where(x => x.UniversityId == UniversityLOV.FirstOrDefault().Value).ToList();
+            // CommonViewModel.vtmsInstitiutelist = vTMSCommonService.GetInstituteMaster(UniversityLOV.FirstOrDefault().Value);
+            CommonViewModel.vtmsInstitiutelist = vTMSCommonService.GetInstituteMaster(id);
+            CommonViewModel.vtmsInstitiute = ObjIid;
+            CommonViewModel.UniversityId = id;
+            CommonViewModel.UniversityLOV = dropDownListBindWeb.UniversityLOVBind();
+            CommonViewModel.StateLOV = dropDownListBindWeb.StateLOVBind();
+            CommonViewModel.DistrictLOV = dropDownListBindWeb.DistrictLOVBind();
+            CommonViewModel.AreaName = this.ControllerContext.RouteData.Values["area"].ToString();
+            CommonViewModel.SelectedMenu = this.ControllerContext.RouteData.Values["controller"].ToString();
+            CommonViewModel.Status = "Create";
+            return View("Index", CommonViewModel);
+        }
 
         // POST: ENM03Controller/Create/INSERTION/UPDATE
         [HttpPost]

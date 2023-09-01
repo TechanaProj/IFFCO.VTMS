@@ -43,11 +43,12 @@ namespace IFFCO.VTMS.Web.Areas.M1.Controllers
             primaryKeyGen = new PrimaryKeyGen();
         }
 
-        // GET: ENM01Controllernc
+        // GET: ENM01Controllern
         public ActionResult Index(string id)
         {
             var CourseLOV = dropDownListBindWeb.CourseLOVBind();
             CommonViewModel.CourseLOVBind = CourseLOV;
+
             CommonViewModel.CourseCode = CourseLOV.FirstOrDefault().Value;
             //var data = _context.VtmsBranchMsts.Where(x => x.CourseCode == CourseLOV.FirstOrDefault().Value).ToList();
             var data = vTMSCommonService.GetBranchMaster(CourseLOV.FirstOrDefault().Value);
@@ -87,7 +88,6 @@ namespace IFFCO.VTMS.Web.Areas.M1.Controllers
         {
             
             var ObjBid = new VtmsBranchMsts() { BranchId = _context.VtmsBranchMsts.OrderByDescending(x => x.BranchId).FirstOrDefault().BranchId + 1 };
-            //CommonViewModel.VtmsBranchMstsList = _context.VtmsBranchMsts.Where(x => x.CourseCode==id ).ToList();
             CommonViewModel.VtmsBranchMstsList = vTMSCommonService.GetBranchMaster(id);
             CommonViewModel.Branch = ObjBid;
             CommonViewModel.CourseCode = id;
