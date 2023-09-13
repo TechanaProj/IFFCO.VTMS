@@ -64,10 +64,10 @@
                                                              {
                                                              <input type="button" onclick="GetIndex('M1/ENSC02/AcceptConfirmed?id=@item.Vtcode')" value="Accept & Generate VT Number" class="btn btn-success" />
                                                              }
-                                                             @if (item.Status == "A")
-                                                            {
-                                                             <input type="button" onclick="GetIndex('M1/ENSC02/RejectConfirmed?id=@item.Vtcode')" value="Reject" class="btn btn-danger" />
-                                                            }
+                                                                 @if (item.Status == "A")
+                                                                {
+                                                                 <input type="button" onclick="GetIndex('M1/ENSC02/RejectConfirmed?id=@item.Vtcode')" value="Reject" class="btn btn-danger" />
+                                                                }
                                                             @if(item.Status == "N" )
                                                             {
                                                                  <input type="button" onclick="GetIndex('M1/ENSC02/AcceptConfirmed?id=@item.Vtcode')" value="Accept & Generate VT Number" class="btn btn-success" />

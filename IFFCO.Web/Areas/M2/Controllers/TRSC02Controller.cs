@@ -56,12 +56,14 @@ namespace IFFCO.VTMS.Web.Areas.M2.Controllers
             }
 
                 CommonViewModel.vCompleteVTInfos = new List<VCompleteVTInfo>();
-                CommonViewModel.vCompleteVTInfos = vTMSCommonService.VtCompleteDTl();
+               // CommonViewModel.vCompleteVTInfos = vTMSCommonService.VtCompleteDTl();
                 CommonViewModel.FromDate = DateTime.Today.AddMonths(-1); // Declaring from-date as the 1st day of the current month
                 CommonViewModel.ToDate = DateTime.Today;    // Declaring to-date as the current date.
 
             return View(CommonViewModel);
         }
+
+
 
 
         // GET: M2/TRSC02/Details/5
@@ -91,6 +93,9 @@ namespace IFFCO.VTMS.Web.Areas.M2.Controllers
             try
             {
                 CommonViewModel = GetVtList(Convert.ToDateTime(trsc02ViewModel.FromDate), Convert.ToDateTime(trsc02ViewModel.ToDate), trsc02ViewModel.Status); // Populating the VT List using the 'GetVtList' function declared in same file 
+                CommonViewModel.Status = trsc02ViewModel.Status;
+                CommonViewModel.FromDate = trsc02ViewModel.FromDate;
+                CommonViewModel.ToDate = trsc02ViewModel.ToDate;
                 TempData["CommonViewModel"] = JsonConvert.SerializeObject(CommonViewModel); // Serializing the entire view model
                 CommonViewModel.IsAlertBox = false;
                 CommonViewModel.SelectedAction = "GetListSearch";   // Method which will be called after this method gets complete. The form will be de-serialized in Get-List-Search
@@ -105,6 +110,10 @@ namespace IFFCO.VTMS.Web.Areas.M2.Controllers
             }
             return Json(CommonViewModel);
         }
+
+
+       
+
 
         [HttpPost]
         public TRSC02ViewModel GetVtList(DateTime? FromDate, DateTime? ToDate, string Status)
@@ -121,6 +130,11 @@ namespace IFFCO.VTMS.Web.Areas.M2.Controllers
             return CommonViewModel;
         }
 
+
+
+
+
+
         public async Task<IActionResult> GetListSearch()
         {
             int PersonnelNumber = Convert.ToInt32(HttpContext.Session.GetInt32("EmpID"));
@@ -130,6 +144,7 @@ namespace IFFCO.VTMS.Web.Areas.M2.Controllers
             CommonViewModel = JsonConvert.DeserializeObject<TRSC02ViewModel>(TempData["CommonViewModel"].ToString());
             return View("Index", CommonViewModel);
         }
+
 
         // GET: M2/TRSC02/Edit/5
         public async Task<IActionResult> Edit(string id)

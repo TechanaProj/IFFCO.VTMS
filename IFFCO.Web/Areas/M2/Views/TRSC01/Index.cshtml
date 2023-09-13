@@ -24,48 +24,48 @@
             <div class="table-wrapper">
                  <div class="table-con">
                     <div class="tableUp">
-                      <div class="pd-form-area">                            
+                          <div class="pd-form-area">                            
                            
-                            <table class="table table-striped table-hover" id="HrmsGrid">
-                                            <thead>
-                                              <tr>
-                                                  <th style="width:10%;padding-left: 9px;">@Html.DisplayNameFor(model => Model.Pi_Msts.VtCode)</th>
-                                                  <th style="padding-left: 10px;">  @Html.DisplayNameFor(model => model.Pi_Msts.Name)</th>
-                                                  <th style="padding-left: 10px;">  Branch Name</th>
-                                                  <th style="padding-left: 10px;">  Recommended By</th>
-                                                  <th style="padding-left: 38px;">Actions</th>
-                                             </tr>
-                                          </thead>
-                                           <tbody>
-                                               @foreach (var item in Model.View_List)
-                                    {
-                                        <tr>
-                                            <td>
-                                                @Html.DisplayFor(modelItem => item.Vtcode)
-                                            </td>
-                                            <td>
-                                                 @Html.DisplayFor(modelItem => item.Name)
-                                            </td>
-                                            <td>
-                                               @Html.DisplayFor(modelItem => item.COURSE_DESC) - @Html.DisplayFor(modelItem => item.BRANCH_DESC)
-                                            </td>
-                                            <td>
-                                                @Html.DisplayFor(modelItem => item.RecommendedBy)
-                                            </td>
-                                            <td>                                               
+                                <table class="table table-striped table-hover" id="HrmsGrid">
+                                                <thead>
+                                                  <tr>
+                                                      <th style="width:10%;padding-left: 9px;">@Html.DisplayNameFor(model => Model.Pi_Msts.VtCode)</th>
+                                                      <th style="padding-left: 10px;">  @Html.DisplayNameFor(model => model.Pi_Msts.Name)</th>
+                                                      <th style="padding-left: 10px;">  Branch Name</th>
+                                                      <th style="padding-left: 10px;">  Recommended By</th>
+                                                      <th style="padding-left: 38px;">Actions</th>
+                                                 </tr>
+                                              </thead>
+                                               <tbody>
+                                                   @foreach (var item in Model.View_List)
+                                                      {
+                                                        <tr>
+                                                            <td>
+                                                                @Html.DisplayFor(modelItem => item.Vtcode)
+                                                            </td>
+                                                            <td>
+                                                                    @Html.DisplayFor(modelItem => item.Name)
+                                                            </td>
+                                                            <td>
+                                                                @Html.DisplayFor(modelItem => item.COURSE_DESC) - @Html.DisplayFor(modelItem => item.BRANCH_DESC)
+                                                            </td>
+                                                            <td>
+                                                                @Html.DisplayFor(modelItem => item.RecommendedBy)
+                                                            </td>
+                                                            <td>                                               
                                           
                                    
-                                                <a asp-area="M2"  asp-controller="TRSC01" asp-action="Edit" asp-route-id="@item.Vtcode" asp-route-mod="@item.Vtcode" class="edit @Model.Edit glpicon addnewitem"  data-toggle="modal"><i class="far fa-edit" data-toggle="tooltip" title="" data-original-title="Edit" onclick="SHOW_TR_Function('traddpanelEdit','traddpanel')"></i></a> 
-@*                                                <a asp-area="M2" asp-controller="TRSC01" asp-action="Edit" asp-route-id="@item.Vtcode" class="edit @Model.Edit" data-toggle="modal"><i style="padding-left: 31px;" class="material-icons" data-toggle="tooltip" title="" data-original-title="Edit" onclick="SHOW_TR_Function('traddpanelEdit','traddpanel')"></i></a>
-*@                                                <a asp-area="M2" asp-controller="TRSC01" asp-action="Details" asp-route-id="@item.Vtcode" class="@Model.Select glpicon addnewitem" data-toggle="modal">
-                                                <i class='fa fa-eye' data-toggle='tooltip' title='View details' data-original-title='Details'></i>                                               
-                                            </a>
-                                            </td>
-                                        </tr>
-                                    }
-                                </tbody>
-                            </table>
-                     </div>
+                                                                <a asp-area="M2"  asp-controller="TRSC01" asp-action="Edit" asp-route-id="@item.Vtcode" asp-route-mod="@item.Vtcode" class="edit @Model.Edit glpicon addnewitem"  data-toggle="modal"><i class="far fa-edit" data-toggle="tooltip" title="" data-original-title="Edit" onclick="SHOW_TR_Function('traddpanelEdit','traddpanel')"></i></a> 
+                @*                                              <a asp-area="M2" asp-controller="TRSC01" asp-action="Edit" asp-route-id="@item.Vtcode" class="edit @Model.Edit" data-toggle="modal"><i style="padding-left: 31px;" class="material-icons" data-toggle="tooltip" title="" data-original-title="Edit" onclick="SHOW_TR_Function('traddpanelEdit','traddpanel')"></i></a>
+                *@                                              <a asp-area="M2" asp-controller="TRSC01" asp-action="Details" asp-route-id="@item.Vtcode" class="@Model.Select glpicon addnewitem" data-toggle="modal">
+                                                                <i class='fa fa-eye' data-toggle='tooltip' title='View details' data-original-title='Details'></i>                                               
+                                                            </a>
+                                                            </td>
+                                                        </tr>
+                                                     }
+                                              </tbody>
+                                </table>
+                         </div>
                    </div>
                 </div>
            </div>

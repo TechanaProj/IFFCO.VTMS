@@ -71,20 +71,21 @@ namespace IFFCO.VTMS.Web.Areas.M2.Controllers
                         UniversityName = tRSC04ViewModel.Edu_Msts.UniversityName,
                         InstituteName = tRSC04ViewModel.Edu_Msts.InstituteName,
                         BranchName = tRSC04ViewModel.Edu_Msts.BranchName,
+                        //CourseName = tRSC04ViewModel.Edu_Msts.CourseName,
                     };
                 };
                 
                 
                 TempData["CommonViewModel"] = JsonConvert.SerializeObject(CommonViewModel); // Serializing the entire view model
                 CommonViewModel.IsAlertBox = false;
-                CommonViewModel.SelectedAction = "GetListSearch";   // Method which will be called after this method gets complete. The form will be de-serialized in Get-List-Search
+                CommonViewModel.SelectedAction = "GetListSearch";  // Method which will be called after this method gets complete. The form will be de-serialized in Get-List-Search
                 CommonViewModel.ErrorMessage = "";
                 CommonViewModel.AreaName = this.ControllerContext.RouteData.Values["area"].ToString(); // Populating Area name for forming the page URL
                 CommonViewModel.SelectedMenu = this.ControllerContext.RouteData.Values["controller"].ToString(); // Populating Menu name for forming the page URL
             }
             catch (Exception ex)
             {
-
+             
 
 
             }
@@ -102,7 +103,7 @@ namespace IFFCO.VTMS.Web.Areas.M2.Controllers
             if (string.IsNullOrEmpty(tRSC04ViewModel.Edu_Msts.InstituteName)) { query = query + "AND A.INSTITUTE_NAME LIKE '%" + tRSC04ViewModel.Edu_Msts.InstituteName + "%' "; }
             if (string.IsNullOrEmpty(tRSC04ViewModel.Edu_Msts.UniversityName)) { query = query + "AND a.UNIVERSITY_NAME LIKE '%" + tRSC04ViewModel.Edu_Msts.UniversityName + "%' "; }
             if (string.IsNullOrEmpty(tRSC04ViewModel.Edu_Msts.BranchName)) { query = query + "AND A.BRANCH_NAME LIKE '%" + tRSC04ViewModel.Edu_Msts.BranchName + "%' "; }
-            if (string.IsNullOrEmpty(tRSC04ViewModel.Edu_Msts.CourseName)) { query = query + "AND A.COURSE_NAME LIKE '%" + tRSC04ViewModel.Edu_Msts.CourseName + "%' "; }
+            if (string.IsNullOrEmpty(tRSC04ViewModel.Edu_Msts.CourseName)) { query = query + "AND A.COURSE_DESC LIKE '%" + tRSC04ViewModel.Edu_Msts.CourseName + "%' "; }
             query = query + "AND A.UNIT_CODE LIKE '%" + unit + "%' ";
 
 

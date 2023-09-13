@@ -127,8 +127,16 @@ function Validate()
                                                  @Html.DisplayFor(modelItem => item.COURSE_DESC) - @Html.DisplayFor(modelItem => item.BRANCH_DESC)
                                             </td>
                                             <td>
-                                                @Html.DisplayFor(modelItem => item.VtStartDate) - @Html.DisplayFor(modelItem => item.VtEndDate)
+@*
+                                            @item.VtStartDate.ToShortDateString()
+*@
+                                            
+
+                                            @Html.DisplayFor(modelItem => item.VtStartDate) - @Html.DisplayFor(modelItem => item.VtEndDate)
+
                                             </td>
+  
+
                                             <td style=" width: 5%;">
                                                 <a asp-area="M2" asp-controller="TRSC02" asp-action="Edit" asp-route-id="@item.Vtcode" class="edit @Model.Edit glpicon addnewitem" data-toggle="modal"><i class="far fa-edit" data-toggle="tooltip" title="" data-original-title="Edit" onclick="SHOW_TR_Function('traddpanelEdit','traddpanel')"></i></a>
                                                 <a asp-area="M2" asp-controller="TRSC02" asp-action="Details" asp-route-id="@item.Vtcode" class="@Model.Select glpicon addnewitem" data-toggle="modal">

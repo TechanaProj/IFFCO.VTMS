@@ -133,18 +133,22 @@ namespace IFFCO.VTMS.Web.Areas.M2.Controllers
             CommonViewModel.Pi_Msts = await _context.VtmsEnrollPi.FirstOrDefaultAsync(x => x.VtCode == id && x.UnitCode == unit);
 
             CommonViewModel.Edu_Msts = new VtmsEnrollEdu();
-            CommonViewModel.Edu_Msts = await _context.VtmsEnrollEdu.FirstOrDefaultAsync(x => x.VtCode == id && x.UnitCode == unit);
+            CommonViewModel.Edu_Msts = await _context.VtmsEnrollEdu.FirstOrDefaultAsync(x => x.VtCode == id && x.UnitCode == unit); 
+
             CommonViewModel.ProfileImage = vTMSCommonService.GetVTProfileImage(id, unit);
+
             CommonViewModel.Doc_Msts = new VtmsEnrollDoc();
             CommonViewModel.Doc_Msts = await _context.VtmsEnrollDoc.FirstOrDefaultAsync(x => x.VtCode == id && x.UnitCode == unit);
+
             byte[] idproof = vTMSCommonService.GetVTIdProof(id, unit);
+
             if (idproof != null && idproof.Length > 0) { CommonViewModel.IdProof = vTMSCommonService.GetVTIdProof(id, unit); } else { CommonViewModel.IdProof = new byte[] { }; };
             if (CommonViewModel.Pi_Msts == null)
             {
                 return NotFound();
             }
 
-            return View(CommonViewModel);
+            return View("Details", CommonViewModel);
         }
 
         [HttpGet]
@@ -171,6 +175,7 @@ namespace IFFCO.VTMS.Web.Areas.M2.Controllers
         // POST: M3/FP3/Create
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
+
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create([Bind("VtCode,UnitCode,Name,FatherName,ContactNo,Address,DistrictName,StateName,Pincode,DocName,DocRegistrationNo,RecommendationType,OthersRecommName,RecommPno,VtStartDate,VtEndDate,Status,EnrollmentStatus,EnrolledBy,EnrolledOn,ManagedBy,ManagedOn,ModifiedBy,ModifiedOn,PrevVtCode")] VtmsEnrollPi vtmsEnrollPi)
@@ -184,7 +189,8 @@ namespace IFFCO.VTMS.Web.Areas.M2.Controllers
             return View(vtmsEnrollPi);
         }
 
-
+        //RDLC
+    
 
         public JsonResult GetReport(string id)
         {
@@ -202,6 +208,8 @@ namespace IFFCO.VTMS.Web.Areas.M2.Controllers
             return Json(Report);
 
         }
+
+
         // GET: M3/FP3/Edit/5
         public async Task<IActionResult> Edit(string id)
         {
@@ -221,6 +229,7 @@ namespace IFFCO.VTMS.Web.Areas.M2.Controllers
         // POST: M3/FP3/Edit/5
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
+
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(string id, [Bind("VtCode,UnitCode,Name,FatherName,ContactNo,Address,DistrictName,StateName,Pincode,DocName,DocRegistrationNo,RecommendationType,OthersRecommName,RecommPno,VtStartDate,VtEndDate,Status,EnrollmentStatus,EnrolledBy,EnrolledOn,ManagedBy,ManagedOn,ModifiedBy,ModifiedOn,PrevVtCode")] VtmsEnrollPi vtmsEnrollPi)

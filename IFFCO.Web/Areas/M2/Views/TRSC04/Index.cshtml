@@ -43,8 +43,6 @@ function Validate()
                                         <div class="m-form-bx">
                                             <div class="row form-sm">
                                                      
-                                              
-
                                                      <div class="col-sm-1 col-md-1">
                                                         <div>
                                                             <label class="m-lbl1 m-lbl2"> From Date</label>
@@ -194,7 +192,7 @@ function Validate()
                                     <a asp-area="M2" asp-controller="TRSC03" asp-action="Create" asp-route-id="@item.Vtcode" class="Details" data-toggle="modal"><input type="button" class="btn btn-primary"  value="Print Certificate" /></a>
                                 }
                                 <input type="button" class="btn btn-danger btnSelect" value="Applicant Form" />
-                                @*<a asp-area="M2" asp-controller="TRSC03" asp-action="Create" asp-route-id="@item.Vtcode" class="Create" data-toggle="modal"><input type="button" value="CREATE CERTIFICATE"  onclick="GetIndex('M2/TRSC03/Createonclick="GetIndex('M2/TRSC03/Create') class="btn btn-success" value="Create Certificate" /></a>*@
+
                                 <a asp-area="M2" asp-controller="TRSC04" asp-action="Details" asp-route-id="@item.Vtcode" class="Details" data-toggle="modal"><input type="button" class="btn btn-success" value="Details"> </a>
                             </td>
                         </tr>

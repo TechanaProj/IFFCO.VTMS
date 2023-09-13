@@ -200,9 +200,10 @@ namespace IFFCO.VTMS.Web.Areas.M2.Controllers
                 CommonViewModel.ErrorMessage = Convert.ToString(TempData["ErrorMessage"]);
             }
             CommonViewModel.View_List = new List<VCompleteVTInfo>();
-            CommonViewModel.View_List = vTMSCommonService.VtCompleteDTl().Where(x => x.Status == "A")/*.Where(x => x.EnrollmentStatus == "Enrolled")*/.Where(x => x.VtEndDate == null || x.VtEndDate >= DateTime.Today.AddDays(-7)).Where(x => x.UnitCode == unit).ToList();
-            //CommonViewModel.Edu_Msts = new VtmsEnrollEdu();
-            CommonViewModel.Pi_Msts = new VtmsEnrollPi();
+            CommonViewModel.View_List = vTMSCommonService.VtCompleteDTl();
+           // CommonViewModel.View_List = vTMSCommonService.VtCompleteDTl().Where(x => x.Status == "A")/*.Where(x => x.EnrollmentStatus == "Enrolled")*/.Where(x => x.VtEndDate == null || x.VtEndDate >= DateTime.Today.AddDays(-7)).Where(x => x.UnitCode == unit).ToList();
+           //CommonViewModel.Edu_Msts = new VtmsEnrollEdu();
+           CommonViewModel.Pi_Msts = new VtmsEnrollPi();
             return View(CommonViewModel);
         }
         // GET: M2/TRSC01/edit
