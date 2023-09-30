@@ -85,7 +85,7 @@ namespace IFFCO.VTMS.Web.Areas.M2.Controllers
             ViewBag.ReviewLOV = reviewList;
             CommonViewModel.AreaName = this.ControllerContext.RouteData.Values["area"].ToString();
             CommonViewModel.SelectedMenu = this.ControllerContext.RouteData.Values["controller"].ToString();
-            return View("Edit", CommonViewModel);
+            return View("Details", CommonViewModel);
         }
 
         public IActionResult Query(TRSC02ViewModel trsc02ViewModel, string Status)

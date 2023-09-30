@@ -1,7 +1,7 @@
 ﻿@model IFFCO.VTMS.Web.ViewModels.TRSC01ViewModel
 
 @{
-    //ViewData["Title"] = "Edit";
+            //ViewData["Title"] = "Edit";
     //Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
@@ -13,7 +13,7 @@
 
 <script type="text/javascript">
     $(".modalLoader").hide();
-    </script>
+</script>
 
 <script src="~/js/bootstrap-datepicker.min.js"></script>
 <style>
@@ -80,9 +80,59 @@
         if ($('#VTPhoto').attr('src') == null || $('#VTPhoto').attr('src') == "") {
             $("#VTPhoto").attr("src", "/images/NullEmp.png");
             $("#VTPhotoButton").attr("type", "button");
-          
-        };     
+
+        };
     });
+
+    function fnUploadImage() {
+        debugger;
+
+        $(".modalLoader").css("display", "block");
+
+        //Add the Field values to FormData object.
+        var formData = new FormData();
+
+        formData.append("vtCode", $("#VtCode").val());
+        formData.append("Vt_uploadPhoto", $("#Vt_uploadPhoto")[0].files[0]);
+        formData.append("Id_ProofFile", $("#Id_ProofFile")[0].files[0]);
+
+        $.ajax({
+            type: 'POST',
+            url: '@Url.Content("~")/M2/TRSC01/UploadFile',
+            data: formData,
+            processData: false,
+            contentType: false
+        }).done(function (response) {
+            $(".modalLoader").css("display", "none");
+            //do something with response
+            debugger;
+            var contentId;
+            if (response.selectedAction == null) {
+                contentId = "/" + response.areaName + "/" + response.selectedMenu + "/Edit?id="+$("#VtCode").val();
+            }
+            else {
+                contentId = "/" + response.areaName + "/" + response.selectedMenu + "/" + response.selectedAction;
+            }
+
+            //CommonAlert(response.alert, response.message, window.location.origin + contentId);
+            url = window.location.origin + contentId;
+            if (response.isAlertBox) {
+                if (response.errorMessage != "") {
+                    CommonAlert(response.alert, response.message, SubmitPopup, url, "error");
+                } else {
+                    CommonAlert(response.alert, response.message, SubmitPopup, url, "alert", "create");
+
+                }
+            } else {
+                url = window.location.origin + contentId;
+                $(".modalLoader").hide();
+                GetIndex(url);
+            }
+
+        });
+    }
+
+
 </script>
 
 <div class="plcholder-cn">
@@ -94,400 +144,422 @@
                 <div class="table-con">
                     <div class="tableUp">
                         <div class="content-box">
-                            <form asp-action="Edit" method="post" asp-area="M2" asp-controller="TRSC01" enctype="multipart/form-data" onsubmit="return Validation()">
-                                <h3 class="sub-heading1 sub-heading2"><span>VT Photograph</span></h3>                         
-                                    <div class="m-form">
-                                        <div class="m-form-bx">
-                                            <div class="row form-sm">
-                                              @*  <h3 class="heading1">
-                                                    <span class="glyphicon glyphicon-hand-right">VT Photograph</span> 
-                                                </h3> *@
+                            <form asp-action="Edit" method="post" id="idFormCl" asp-area="M2" asp-controller="TRSC01" enctype="multipart/form-data" onsubmit="return Validation()">
+                                <h3 class="sub-heading1 sub-heading2"><span>VT Photograph</span></h3>
+                                <div class="m-form">
+                                    <div class="m-form-bx">
+                                        <div class="row form-sm">
+                                           
                                             <div class="row form-group">
-                                             <div class="col-sm-5"></div>
-                                                <div class="col-sm-4"> <span class="user-img-edit"><img src="@Model.ProfileImage" id="VTPhoto" style="width:100%;"></span></div>
-                                                     <div  class="col-sm-2 text-right"> <input type="hidden" style="color:white" class="btn btn-success" id="VTPhotoButton" onclick="divshow()" style="text-align:center" value="Upload Picture" /></div>
-                                                    </div>
-                                                 </div>
-                                               </div>
-                                           </div>
-                               
+                                                <div class="col-sm-5"></div>
+                                                <div class="col-sm-4"> <span class="user-img-edit">
+                                                <img src="@Model.ProfileImage" id="VTPhoto" style="width:100%;"></span></div>
 
-                                  <h3 class="sub-heading1 sub-heading2"><span>Personal Information</span></h3>                             
+                                                <div class="col-sm-9 col-md-4">
+                                                    <div class="form-group border border-secondary">
+                                                        <label class="lebel2">Document Upload</label>
+                                                        <input type="file" name="Vt_uploadPhoto" id="Vt_uploadPhoto" />
+                                                        <span asp-validation-for="@Model.Doc_Msts.VtPhoto" class="text-danger"></span>
+                                                    </div>
+                                                </div>
 
-                                    <div class="m-form">
-                                        <div class="m-form-bx">
-                                            <div class="row form-sm">
-                                                <div class="col-sm-1 col-md-2">
-                                                    <div>
-                                                        <label class="m-lbl1 m-lbl2">Vt Code :</label>
-                                                    </div>
-                                                </div>
-                                                <div class="col-sm-2 col-md-2">
-                                                    <div>
-                                                         <input type="text" readonly class="form-control" asp-for="@Model.Pi_Msts.VtCode" id="VtCode"/>
-                                                    </div>
-                                                </div>
-                                                
-                                                <div class="col-sm-1 col-md-2">
-                                                    <div>
-                                                        <label class="m-lbl1 m-lbl2">Name :</label>
-                                                    </div>
-                                                </div>
-                                                <div class="col-sm-2 col-md-2">
-                                                    <div>
-                                                        <input type="text" class="form-control" onkeyup="this.value = this.value.toUpperCase();" asp-for="@Model.Pi_Msts.Name" id="EnrolledBy" required />
-                                                    </div>
-                                                </div>
-                                                <div class="col-sm-1 col-md-2">
-                                                    <div>
-                                                         <label class="m-lbl1 m-lbl2">Father Name :</label>
-                                                    </div>
-                                                </div>
-                                                <div class="col-sm-2 col-md-2">
-                                                    <div>
-                                                        <input type="text" class="form-control" onkeyup="this.value = this.value.toUpperCase();" asp-for="@Model.Pi_Msts.FatherName" id="EnrolledOn" />
-                                                    </div>
-                                                </div>
-                                                 <div class="col-sm-1 col-md-2">
-                                                    <div>
-                                                        <label class="m-lbl1 m-lbl2">Address :</label>
-                                                    </div>
-                                                </div>
-                                                 <div class="col-sm-2 col-md-2">
-                                                    <div>
-                                                        <input type="text" class="form-control" onkeyup="this.value = this.value.toUpperCase();" asp-for="@Model.Pi_Msts.Address" id="ModifiedBy" />
-                                                    </div>
-                                                </div>
-                                                  <div class="col-sm-1 col-md-2">
-                                                    <div>
-                                                        <label class="m-lbl1 m-lbl2">Contact No :</label>
-                                                    </div>
-                                                </div>
-                                                 <div class="col-sm-2 col-md-2">
-                                                    <div>
-                                                        <input type="number"  class="form-control" asp-for="@Model.Pi_Msts.ContactNo" id="ModifiedOn" />
-                                                    </div>
-                                                </div>
-                                                 <div class="col-sm-1 col-md-2">
-                                                    <div>
-                                                         <label class="m-lbl1 m-lbl2">State :</label>
-                                                    </div>
-                                                </div>
-                                                 <div class="col-sm-2 col-md-2">
-                                                    <div>
-                                                         <select id="FState" class="form-control" onchange="PopDistrictLOV()" asp-for="@Model.Pi_Msts.StateName" style="width:100%" asp-items="@(new SelectList(ViewBag.StateLOV,"Value","Text")) " >
-                                                             <option value="0">--Select--</option>
-                                                        </select>
-                                                    </div>
-                                                </div>
-                                                 <div class="col-sm-1 col-md-2">
-                                                    <div>
-                                                         <label class="m-lbl1 m-lbl2">District :</label>
-                                                    </div>
-                                                </div>
-                                                 <div class="col-sm-2 col-md-2">
-@*                                                      <input id="FDistrict1" type="hidden" asp-for="@Model.Pi_Msts.DistrictName" class="form-control" required />
-*@                                                   <select id="FDistrict" required asp-for="@Model.Pi_Msts.DistrictName"  class="form-control" style="width:100%">
-                                                        <option value="">--Select--</option>
-                                                     </select>
-                                                      <span asp-validation-for="@Model.Pi_Msts.DistrictName" class="text-danger"></span>
-                                                  @*  <div>
-                                                        <select id="FDistrict" required class="form-control" asp-for="@Model.Pi_Msts.DistrictName" style="width:100%" asp-items="@(new SelectList(ViewBag.DistrictLov,"Value","Text")) " >
-                                                            <option value="">--Select--</option>
-                                                        </select>
-                                                   <span asp-validation-for="@Model.Pi_Msts.DistrictName" class="text-danger"></span>
-                                                    </div>*@
-                                                </div>
-                                                 <div class="col-sm-1 col-md-2">
-                                                    <div>
-                                                        <label class="m-lbl1 m-lbl2">Pincode :</label>
-                                                    </div>
-                                                </div>
-                                                 <div class="col-sm-2 col-md-2">
-                                                    <div>
-                                                        <input id="FPincode" type="number" maxlength="6" asp-for="@Model.Pi_Msts.Pincode" class="form-control" required />
-                                                         <span asp-validation-for="@Model.Pi_Msts.Pincode" class="text-danger"></span>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>                               
-                                    <input type="hidden" asp-for="@Model.Pi_Msts.UnitCode" class="form-control" />
-                                <h3 class="sub-heading1 sub-heading2"><span>Academic Information</span></h3>                             
-
-                                    <div class="m-form">
-                                        <div class="m-form-bx">
-                                            <div class="row form-sm">
-                                                <div class="col-sm-1 col-md-2">
-                                                    <div>
-                                                        <label class="m-lbl1 m-lbl2">Course :</label>
-                                                    </div>
-                                                </div>
-                                                 <div class="col-sm-2 col-md-2">
-                                                    <div>
-                                                           <select id="course" required class="form-control" onchange="PopBranchLOV()" style="width:100%" asp-for="@Model.Edu_Msts.CourseName" asp-items="@(new SelectList(ViewBag.CourseLOV,"Value","Text"))" >
-                                                        <option value="">--Select--</option>
-                                                     </select>
-@*                                                      <span asp-validation-for="@Model.Edu_Msts.CourseName" class="text-danger"></span>   
-*@                                                      
-                                                    </div>
-                                                </div>                                              
-                                                
-                                                <div class="col-sm-1 col-md-2">
-                                                    <div>
-                                                        <label class="m-lbl1 m-lbl2">Branch :</label>
-                                                    </div>
-                                                </div>
-                                                <div class="col-sm-2 col-md-2">
-                                                    <div>
-                                                         <select id="branch" asp-for="@Model.Edu_Msts.BranchName" class="form-control"  style="width:100%">
-                                                        <option value="">--Select--</option>
-                                                     </select>
-@*                                                     <span asp-validation-for="@Model.Edu_Msts.BranchName" class="text-danger"></span>
-*@                                                        <input type="hidden" id="branchHidden" asp-for="@Model.Edu_Msts.BranchName" class="form-control" />
-                                                    </div>
-                                                </div>   
-                                                <div class="col-sm-1 col-md-2">
-                                                    <div>
-                                                        <label class="m-lbl1 m-lbl2">Year :</label>
-                                                    </div>
-                                                </div>
-                                                <div class="col-sm-2 col-md-2">
-                                                    <div>
-                                                        <input type="text" class="form-control" asp-for="@Model.Edu_Msts.Year" onkeyup="this.value = this.value.toUpperCase();" id="IfscCode" required />
-                                                    </div>
-                                                </div>
-                                                 <div class="col-sm-1 col-md-2">
-                                                    <div>
-                                                        <label class="m-lbl1 m-lbl2">University :</label>
-                                                    </div>
-                                                </div>
-                                                 <div class="col-sm-2 col-md-2">
-                                                    <div>
-                                                         <select id="university" required class="form-control" asp-for="@Model.Edu_Msts.UniversityName" onchange="PopinstituteLOV()" style="width:100%" asp-items="@(new SelectList(ViewBag.UniversityLOV,"Value","Text"))">
-                                                        <option value="">--Select--</option>
-                                                     </select>
-@*                                                     <span asp-validation-for="@Model.Edu_Msts.UniversityName" class="text-danger"></span>
-*@                                                    </div>
+                                                <div class="col-sm-2 text-right">
+                                                    <input type="button" class="btn btn-success" id="VTPhotoButton" onclick="fnUploadImage()" style="color:white;text-align:center" value="Upload Picture" />
                                                 </div>  
-                                                  <div class="col-sm-1 col-md-2">
-                                                    <div>
-                                                        <label class="m-lbl1 m-lbl2">Institute :</label>
-                                                    </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+
+                                <h3 class="sub-heading1 sub-heading2"><span>Personal Information</span></h3>
+
+                                <div class="m-form">
+                                    <div class="m-form-bx">
+                                        <div class="row form-sm">
+                                            <div class="col-sm-1 col-md-2">
+                                                <div>
+                                                    <label class="m-lbl1 m-lbl2">Vt Code :</label>
                                                 </div>
-                                                <div class="col-sm-2 col-md-2">
-                                                    <div>
-                                                         <select id="Institute" asp-for="@Model.Edu_Msts.InstituteName" required class="form-control" style="width:100%">
+                                            </div>
+
+                                            <div class="col-sm-2 col-md-2">
+                                                <div>
+                                                    <input type="text" readonly class="form-control" asp-for="@Model.Pi_Msts.VtCode" id="VtCode" />
+                                                </div>
+                                            </div>
+
+                                            <div class="col-sm-1 col-md-2">
+                                                <div>
+                                                    <label class="m-lbl1 m-lbl2">Name :</label>
+                                                </div>
+                                            </div>
+                                            <div class="col-sm-2 col-md-2">
+                                                <div>
+                                                    <input type="text" class="form-control" onkeyup="this.value = this.value.toUpperCase();" asp-for="@Model.Pi_Msts.Name" id="EnrolledBy" required />
+                                                </div>
+                                            </div>
+                                            <div class="col-sm-1 col-md-2">
+                                                <div>
+                                                    <label class="m-lbl1 m-lbl2">Father Name :</label>
+                                                </div>
+                                            </div>
+                                            <div class="col-sm-2 col-md-2">
+                                                <div>
+                                                    <input type="text" class="form-control" onkeyup="this.value = this.value.toUpperCase();" asp-for="@Model.Pi_Msts.FatherName" id="EnrolledOn" />
+                                                </div>
+                                            </div>
+                                            <div class="col-sm-1 col-md-2">
+                                                <div>
+                                                    <label class="m-lbl1 m-lbl2">Address :</label>
+                                                </div>
+                                            </div>
+                                            <div class="col-sm-2 col-md-2">
+                                                <div>
+                                                    <input type="text" class="form-control" onkeyup="this.value = this.value.toUpperCase();" asp-for="@Model.Pi_Msts.Address" id="ModifiedBy" />
+                                                </div>
+                                            </div>
+                                            <div class="col-sm-1 col-md-2">
+                                                <div>
+                                                    <label class="m-lbl1 m-lbl2">Contact No :</label>
+                                                </div>
+                                            </div>
+                                            <div class="col-sm-2 col-md-2">
+                                                <div>
+                                                    <input type="number" class="form-control" asp-for="@Model.Pi_Msts.ContactNo" id="ModifiedOn" />
+                                                </div>
+                                            </div>
+                                            <div class="col-sm-1 col-md-2">
+                                                <div>
+                                                    <label class="m-lbl1 m-lbl2">State :</label>
+                                                </div>
+                                            </div>
+                                            <div class="col-sm-2 col-md-2">
+                                                <div>
+                                                    <select id="FState" class="form-control" onchange="PopDistrictLOV()" asp-for="@Model.Pi_Msts.StateName" style="width:100%" asp-items="@(new SelectList(ViewBag.StateLOV,"Value","Text")) ">
+                                                        <option value="0">--Select--</option>
+                                                    </select>
+                                                </div>
+                                            </div>
+                                            <div class="col-sm-1 col-md-2">
+                                                <div>
+                                                    <label class="m-lbl1 m-lbl2">District :</label>
+                                                </div>
+                                            </div>
+                                            <div class="col-sm-2 col-md-2">
+                                                <select id="FDistrict"  asp-for="@Model.Pi_Msts.DistrictName" class="form-control" style="width:100%">
+                                                    <option value="">--Select--</option>
+                                                </select>
+                                                @*<span asp-validation-for="@Model.Pi_Msts.DistrictName" class="text-danger"></span>*@
+                                                <input type="hidden" id="Districthidden" asp-for="@Model.Pi_Msts.DistrictName" class="form-control" />
+                                                
+                                            </div>
+                                            <div class="col-sm-1 col-md-2">
+                                                <div>
+                                                    <label class="m-lbl1 m-lbl2">Pincode :</label>
+                                                </div>
+                                            </div>
+                                            <div class="col-sm-2 col-md-2">
+                                                <div>
+                                                    <input id="FPincode" type="number" maxlength="6" asp-for="@Model.Pi_Msts.Pincode" class="form-control"  />
+                                                    <span asp-validation-for="@Model.Pi_Msts.Pincode" class="text-danger"></span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <input type="hidden" asp-for="@Model.Pi_Msts.UnitCode" class="form-control" />
+                                <h3 class="sub-heading1 sub-heading2"><span>Academic Information</span></h3>
+
+                                <div class="m-form">
+                                    <div class="m-form-bx">
+                                        <div class="row form-sm">
+                                            <div class="col-sm-1 col-md-2">
+                                                <div>
+                                                    <label class="m-lbl1 m-lbl2">Course :</label>
+                                                </div>
+                                            </div>
+                                            <div class="col-sm-2 col-md-2">
+                                                <div>
+                                                    <select id="course" required class="form-control" onchange="PopBranchLOV()" style="width:100%" asp-for="@Model.Edu_Msts.CourseName" asp-items="@(new SelectList(ViewBag.CourseLOV,"Value","Text"))">
                                                         <option value="">--Select--</option>
-                                                     </select>
-                                                     <input type="hidden" id="InstituteHidden" asp-for="@Model.Edu_Msts.InstituteName" class="form-control" />
-@*                                                     <span asp-validation-for="@Model.Edu_Msts.InstituteName" class="text-danger"></span>
-*@                                                     
-                                                    </div>
+                                                    </select>
+                                                    @*                                                      <span asp-validation-for="@Model.Edu_Msts.CourseName" class="text-danger"></span>
+                                                    *@
                                                 </div>
-                                                 <div class="col-sm-1 col-md-2">
-                                                    <div>
-                                                        <label class="m-lbl1 m-lbl2">Semester :</label>
-                                                    </div>
+                                            </div>
+
+                                            <div class="col-sm-1 col-md-2">
+                                                <div>
+                                                    <label class="m-lbl1 m-lbl2">Branch :</label>
                                                 </div>
-                                                 <div class="col-sm-2 col-md-2">
-                                                    <div>
-                                                        <input type="text" class="form-control" asp-for="@Model.Edu_Msts.Semester" id="Semester" required />
-                                                    </div>
+                                            </div>
+                                            <div class="col-sm-2 col-md-2">
+                                                <div>
+                                                    <select id="branch" asp-for="@Model.Edu_Msts.BranchName" class="form-control" style="width:100%">
+                                                        <option value="">--Select--</option>
+                                                    </select>
+                                                    @*                                                     <span asp-validation-for="@Model.Edu_Msts.BranchName" class="text-danger"></span>
+                                                    *@                                                        <input type="hidden" id="branchHidden" asp-for="@Model.Edu_Msts.BranchName" class="form-control" />
+                                                </div>
+                                            </div>
+                                            <div class="col-sm-1 col-md-2">
+                                                <div>
+                                                    <label class="m-lbl1 m-lbl2">Year :</label>
+                                                </div>
+                                            </div>
+                                            <div class="col-sm-2 col-md-2">
+                                                <div>
+                                                    <input type="text" class="form-control" asp-for="@Model.Edu_Msts.Year" onkeyup="this.value = this.value.toUpperCase();" id="IfscCode" required />
+                                                </div>
+                                            </div>
+                                            <div class="col-sm-1 col-md-2">
+                                                <div>
+                                                    <label class="m-lbl1 m-lbl2">University :</label>
+                                                </div>
+                                            </div>
+                                            <div class="col-sm-2 col-md-2">
+                                                <div>
+                                                    <select id="university" required class="form-control" asp-for="@Model.Edu_Msts.UniversityName" onchange="PopinstituteLOV()" style="width:100%" asp-items="@(new SelectList(ViewBag.UniversityLOV,"Value","Text"))">
+                                                        <option value="">--Select--</option>
+                                                    </select>
+                                                    @*                                                     <span asp-validation-for="@Model.Edu_Msts.UniversityName" class="text-danger"></span>
+                                                    *@
+                                                </div>
+                                            </div>
+                                            <div class="col-sm-1 col-md-2">
+                                                <div>
+                                                    <label class="m-lbl1 m-lbl2">Institute :</label>
+                                                </div>
+                                            </div>
+                                            <div class="col-sm-2 col-md-2">
+                                                <div>
+                                                    <select id="Institute" asp-for="@Model.Edu_Msts.InstituteName" required class="form-control" style="width:100%">
+                                                        <option value="">--Select--</option>
+                                                    </select>
+                                                    <input type="hidden" id="InstituteHidden" asp-for="@Model.Edu_Msts.InstituteName" class="form-control" />
+                                                    @*                                                     <span asp-validation-for="@Model.Edu_Msts.InstituteName" class="text-danger"></span>
+                                                    *@
+                                                </div>
+                                            </div>
+                                            <div class="col-sm-1 col-md-2">
+                                                <div>
+                                                    <label class="m-lbl1 m-lbl2">Semester :</label>
+                                                </div>
+                                            </div>
+                                            <div class="col-sm-2 col-md-2">
+                                                <div>
+                                                    <input type="text" class="form-control" asp-for="@Model.Edu_Msts.Semester" id="Semester" required />
                                                 </div>
                                             </div>
                                         </div>
                                     </div>
+                                </div>
 
 
-                                     <h3 class="sub-heading1 sub-heading2"><span>Other Details</span></h3>                             
+                                <h3 class="sub-heading1 sub-heading2"><span>Other Details</span></h3>
 
-                                    <div class="m-form">
-                                        <div class="m-form-bx">
-                                            <div class="row form-sm">
-                                                <div class="col-sm-1 col-md-2">
-                                                    <div>
-                                                        <label class="m-lbl1 m-lbl2">Doctor Name :</label>
-                                                    </div>
+                                <div class="m-form">
+                                    <div class="m-form-bx">
+                                        <div class="row form-sm">
+                                            <div class="col-sm-1 col-md-2">
+                                                <div>
+                                                    <label class="m-lbl1 m-lbl2">Doctor Name :</label>
                                                 </div>
+                                            </div>
+                                            <div class="col-sm-2 col-md-2">
+                                                <div>
+                                                    <input type="text" class="form-control" asp-for="@Model.Pi_Msts.DocName" id="CourseName" required />
+                                                </div>
+                                            </div>
+
+                                            <div class="col-sm-1 col-md-2">
+                                                <div>
+                                                    <label class="m-lbl1 m-lbl2">Doctor Registration :</label>
+                                                </div>
+                                            </div>
+                                            <div class="col-sm-2 col-md-2">
+                                                <div>
+                                                    <input type="text" class="form-control" asp-for="@Model.Pi_Msts.DocRegistrationNo" id="BankCode" required />
+                                                </div>
+                                            </div>
+                                            <div class="col-sm-1 col-md-2">
+                                                <div>
+                                                    <label class="m-lbl1 m-lbl2">Training Start Date :</label>
+                                                </div>
+                                            </div>
+                                            <div class="col-sm-2 col-md-2">
+                                                <div>
+                                                    <input type="date" class="form-control" asp-for="@Model.Pi_Msts.VtStartDate" onkeyup="this.value = this.value.toUpperCase();" id="IfscCode" required />
+                                                </div>
+                                            </div>
+                                            <div class="col-sm-1 col-md-2">
+                                                <div>
+                                                    <label class="m-lbl1 m-lbl2">Recommendation Type :</label>
+                                                </div>
+                                            </div>
+
+                                            <div class="col-sm-2 col-md-2">
+                                                <div>
+                                                    <select id="Frecommendation" asp-for="@Model.Pi_Msts.RecommendationType" class="form-control">
+                                                        <option value="IFFCO" selected>IFFCO Employee</option>
+                                                        <option value="OTHERS">Others</option>
+                                                    </select>
+                                                </div>
+                                            </div>
+                                            <div class="col-sm-2 col-md-2">
+                                                <div>
+                                                    <label class="m-lbl1 m-lbl2" id="FRecommPnoLabel"> Personnel No. </label>
+                                                </div>
+                                            </div>
+                                            <div class="col-sm-2 col-md-2">
+                                                <div>
+                                                    <input id="FRecommPno" maxlength="6" type="number" asp-for="@Model.Pi_Msts.RecommPno" class="form-control"/>
+                                                </div>
+
+                                            </div>
+
+                                            <div class="col-sm-2 col-md-2">
+                                                <div>
+                                                    <label class="m-lbl1 m-lbl2" id="RecomNm"> Recommender Name </label>
+                                                </div>
+                                            </div>
+                                            <div class="col-sm-2 col-md-2">
+                                                <div>
+                                                    <input id="RecommPno" maxlength="6" type="number" asp-for="@Model.Pi_Msts.RecommPno" class="form-control" />
+                                                </div>
+                                            </div>
+                                            <div class="col-sm-2 col-md-2">
+                                                <div>
+                                                    <label class="m-lbl1 m-lbl2" id="OthersRecomLabel"> Others Name </label>
+                                                </div>
+                                            </div>
+                                            <div>
                                                 <div class="col-sm-2 col-md-2">
-                                                    <div>
-                                                        <input type="text" class="form-control" asp-for="@Model.Pi_Msts.DocName" id="CourseName" required />
-                                                    </div>
+                                                    <select id="OthersRecommName" style="display: none;" typ="text" asp-for="@Model.Pi_Msts.OthersRecommName" class="form-control" asp-items="@(new SelectList(ViewBag.RecommendationLOV,"Value","Text")) ">
+                                                        <option value="">--Select--</option>
+                                                    </select>
                                                 </div>
-                                                
-                                                <div class="col-sm-1 col-md-2">
-                                                    <div>
-                                                        <label class="m-lbl1 m-lbl2">Doctor Registration :</label>
-                                                    </div>
-                                                </div>
-                                                <div class="col-sm-2 col-md-2">
-                                                    <div>
-                                                        <input type="text" class="form-control" asp-for="@Model.Pi_Msts.DocRegistrationNo" id="BankCode" required />
-                                                    </div>
-                                                </div>
-                                                <div class="col-sm-1 col-md-2">
-                                                    <div>
-                                                        <label class="m-lbl1 m-lbl2">Training Start Date :</label>
-                                                    </div>
-                                                </div>
-                                                <div class="col-sm-2 col-md-2">
-                                                    <div>
-                                                        <input type="date" class="form-control" asp-for="@Model.Pi_Msts.VtStartDate" onkeyup="this.value = this.value.toUpperCase();" id="IfscCode" required />
-                                                    </div>
-                                                </div>
-                                                <div class="col-sm-1 col-md-2">
-                                                                    <div>
-                                                                        <label class="m-lbl1 m-lbl2">Recommendation Type :</label>
-                                                                    </div>
-                                                                </div>
+                                            </div>
 
-                                                                 <div class="col-sm-2 col-md-2">
-                                                                        <div>
-                                                                                 <select id="Frecommendation" asp-for="@Model.Pi_Msts.RecommendationType" class="form-control">
-                                                                                    <option value="IFFCO" selected>IFFCO Employee</option>
-                                                                                    <option value="OTHERS">Others</option>                                                                                   
-                                                                                </select>
-                                                                        </div>
-                                                                     </div>
-                                                                      <div class="col-sm-2 col-md-2">
-                                                                            <div>
-                                                                                <label class="m-lbl1 m-lbl2" id="FRecommPnoLabel"> Personnel No. </label>
-                                                                            </div>
-                                                                       </div> 
-                                                                       <div class="col-sm-2 col-md-2">
-                                                                           <div>
-                                                                                <input id="FRecommPno" maxlength="6" type="number" asp-for="@Model.Pi_Msts.RecommPno" class="form-control" />
-                                                                           </div>
 
-                                                                       </div>
-
-                                                                     <div class="col-sm-2 col-md-2">
-                                                                            <div>
-                                                                                <label class="m-lbl1 m-lbl2" id="RecomNm"> Recommender Name </label>
-                                                                            </div>
-                                                                     </div>
-                                                                     <div class="col-sm-2 col-md-2">
-                                                                        <div>
-                                                                            <input id="RecommPno" maxlength="6" type="number" asp-for="@Model.Pi_Msts.RecommPno" class="form-control" /> 
-                                                                        </div>
-                                                                     </div>
-                                                                       <div class="col-sm-2 col-md-2">
-                                                                            <div>
-                                                                                <label class="m-lbl1 m-lbl2" id="OthersRecomLabel"> Others Name </label>
-                                                                            </div>
-                                                                     </div>
-                                                                      <div>
-                                                                           <div class="col-sm-2 col-md-2">
-                                                                            <select id="OthersRecommName" style="display: none;" typ="text" asp-for="@Model.Pi_Msts.OthersRecommName" class="form-control" asp-items="@(new SelectList(ViewBag.RecommendationLOV,"Value","Text")) ">
-                                                                                <option value="">--Select--</option>
-                                                                            </select>
-                                                                            </div>
-                                                                        </div>
-
-                                                           
-                                                 @*<div class="col-sm-1 col-md-2">
-                                                    <div>
-                                                        <label class="m-lbl1 m-lbl2">Recommendation Type :</label>
-                                                    </div>
+                                            @*<div class="col-sm-1 col-md-2">
+                                            <div>
+                                            <label class="m-lbl1 m-lbl2">Recommendation Type :</label>
+                                            </div>
+                                            </div>
+                                            <div class="col-sm-2 col-md-2">
+                                            <div>
+                                            <select id="Frecommendation" asp-for="@Model.Pi_Msts.RecommendationType" class="form-control">
+                                            <option value="IFFCO">IFFCO Employee</option>
+                                            <option value="OTHERS">Others</option>
+                                            </select>
+                                            <span asp-validation-for="@Model.Pi_Msts.RecommendationType class=" text-danger"></span>
+                                            </div>
+                                            </div> *@
+                                            <div class="col-sm-1 col-md-2">
+                                                <div>
+                                                    <label class="m-lbl1 m-lbl2">Training End Date :</label>
                                                 </div>
-                                                 <div class="col-sm-2 col-md-2">
-                                                    <div>
-                                                       <select id="Frecommendation" asp-for="@Model.Pi_Msts.RecommendationType" class="form-control">
-                                                               <option value="IFFCO">IFFCO Employee</option>
-                                                               <option value="OTHERS">Others</option>
-                                                        </select>
-                                                        <span asp-validation-for="@Model.Pi_Msts.RecommendationType class=" text-danger"></span>
-                                                    </div>
-                                                </div> *@                                              
-                                                  <div class="col-sm-1 col-md-2">
-                                                    <div>
-                                                        <label class="m-lbl1 m-lbl2">Training End Date :</label>
-                                                    </div>
+                                            </div>
+                                            <div class="col-sm-2 col-md-2">
+                                                <div>
+                                                    <input type="date" class="form-control" asp-for="@Model.Pi_Msts.VtEndDate" id="VtEndDate" required />
                                                 </div>
-                                                 <div class="col-sm-2 col-md-2">
-                                                    <div> 
-                                                        <input type="date" class="form-control" asp-for="@Model.Pi_Msts.VtEndDate" id="VtEndDate" required />
-                                                    </div>
-                                                </div>                                                
                                             </div>
                                         </div>
                                     </div>
+                                </div>
 
-                                    
-                                     <h3 class="sub-heading1 sub-heading2"><span>Identity Proof</span></h3>                             
 
-                                    <div class="m-form">
-                                        <div class="m-form-bx">
-                                            <div class="row form-sm">
-                                                <div class="col-sm-1 col-md-2">
-                                                    <div>
-                                                        <label class="m-lbl1 m-lbl2">Identity Proof Type :</label>
-                                                    </div>
-                                                </div>
-                                                <div class="col-sm-2 col-md-2">
-                                                    <div>
-                                                        <select id="FIdentityProofType" class="form-control" asp-for="@Model.Doc_Msts.VtIdType">
-                                                            <option value="">--Select--</option>
-                                                            <option value="Aadhaar Letter / Card">Aadhaar Letter / Card</option>
-                                                            <option value="Voter's Identity Card">Voter's Identity Card</option>
-                                                            <option value="Driving Licence">Driving Licence</option>
-                                                            <option value="Passport">Passport</option>
-                                                        </select>
-                                                    </div>
-                                                </div>
-                                                
-                                                <div class="col-sm-1 col-md-2">
-                                                    <div>
-                                                        <label class="m-lbl1 m-lbl2">Identity Proof No. :</label>
-                                                    </div>
-                                                </div>
-                                                <div class="col-sm-2 col-md-2">
-                                                    <div>
-                                                        <input type="text" class="form-control" asp-for="@Model.Doc_Msts.VtIdDtl" id="VtIdDtl" required />
-                                                    </div>
-                                                </div>
-                                                <div class="col-sm-1 col-md-2">
-                                                    <div>
-                                                        <label class="m-lbl1 m-lbl2">Upload File :</label>
-                                                    </div>
-                                                </div>
-                                                <div class="col-sm-2 col-md-2">
-                                                    <div>
-                                                         <div class="custom-file">
-                                                                @if (Model.IdProof.Length<=1)
-                                                                {
-                                                                    <input type="file" class="custom-file-input" id="customFile" asp-for="@Model.Doc_Msts.VtIdUpload">
-                                                                    <label class="custom-file-label" for="customFile">Choose file</label>
-                                                                }
-                                                                else
-                                                                {
-                                                                    <button class="btn btn-xs" type="button" data-toggle="collapse" data-target="#collapseExample" aria-expanded="false" aria-controls="collapseExample">
-                                                                     View Id proof
-                                                                    </button>
-                                                                }
-                                                         </div>
-                                                    </div>
-                                                </div>
-                                                 <div class="col-sm-1 col-md-2">
-                                                    <div>
-                                                         <div class="collapse" id="collapseExample">
-                                                            <div class="card card-body">
-                                                                <iframe src="data:application/pdf;base64, @System.Convert.ToBase64String((Byte[])Model.IdProof)"
-                                                                        style="width:100%; height:500px;" frameborder="0"></iframe>
-                                                            </div>
-                                                    </div>  
-                                                    </div>
-                                                </div>
-                                    <div class="row row form-group">
-                                    <div class="col-sm-3"></div>
-                                        <div class="col-sm-2">                                                                                        
+                                <h3 class="sub-heading1 sub-heading2"><span>Identity Proof</span></h3>
 
-                                             <input type="submit"  style="color:white" @Model.ActionMode value="Save" class="btn btn-success" />
-                                             <input type="reset" style="color:white" value="Reset" class="btn btn-primary" />
-                                         </div>
-                                    
-                                    </div>
+                                <div class="m-form">
+                                    <div class="m-form-bx">
+                                        <div class="row form-sm">
+                                            <div class="col-sm-1 col-md-2">
+                                                <div>
+                                                    <label class="m-lbl1 m-lbl2">Identity Proof Type :</label>
+                                                </div>
+                                            </div>
+                                            <div class="col-sm-2 col-md-2">
+                                                <div>
+                                                    <select id="FIdentityProofType" class="form-control" asp-for="@Model.Doc_Msts.VtIdType">
+                                                        <option value="">--Select--</option>
+                                                        <option value="Aadhaar Letter / Card">Aadhaar Letter / Card</option>
+                                                        <option value="Voter's Identity Card">Voter's Identity Card</option>
+                                                        <option value="Driving Licence">Driving Licence</option>
+                                                        <option value="Passport">Passport</option>
+                                                    </select>
+                                                </div>
+                                            </div>
+
+                                            <div class="col-sm-1 col-md-2">
+                                                <div>
+                                                    <label class="m-lbl1 m-lbl2">Identity Proof No. :</label>
+                                                </div>
+                                            </div>
+                                            <div class="col-sm-2 col-md-2">
+                                                <div>
+                                                    <input type="text" class="form-control" asp-for="@Model.Doc_Msts.VtIdDtl" id="VtIdDtl" required />
+                                                </div>
+                                            </div>
+                                            <div class="col-sm-1 col-md-2">
+                                                <div>
+                                                    <label class="m-lbl1 m-lbl2">Upload File :</label>
+                                                </div>
+                                            </div>
+
+                                           @* <div class="col-sm-9 col-md-4">
+                                                <div class="form-group border border-secondary">
+                                                    <label class="lebel2">ID Proof Upload</label>
+                                                    <input type="file" name="Id_ProofFile" id="Id_ProofFile" onclick="fnUploadImage()" />
+                                                    <span asp-validation-for="@Model.Doc_Msts.VtIdUpload" class="text-danger"></span>
+                                                </div>
+                                            </div>
+
+                                            <div class="col-sm-2 text-right">
+                                                <input type="button" class="btn btn-success" id="VTPhotoButton" onclick="fnUploadImage()" style="color:white;text-align:center" value="Upload Picture" />
+                                            </div>*@
+
+                                            
+                                            <div class="col-sm-2 col-md-2">
+                                                <div>
+                                                    <div class="custom-file">
+                                                        @if (Model.IdProof.Length <= 1)
+                                                        {
+                                                            <input type="file" class="custom-file-input" id="customFile" asp-for="@Model.Doc_Msts.VtIdUpload">
+                                                            <label class="custom-file-label" for="customFile">Choose file</label>
+                                                        }
+                                                        else
+                                                        {
+                                                            <button class="btn btn-xs" type="button" data-toggle="collapse" data-target="#collapseExample" aria-expanded="false" aria-controls="collapseExample">
+                                                                View Id proof
+                                                            </button>
+                                                        }
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="col-sm-1 col-md-2">
+                                                <div>
+                                                    <div class="collapse" id="collapseExample">
+                                                        <div class="card card-body">
+                                                            <iframe src="data:application/pdf;base64, @System.Convert.ToBase64String((Byte[])Model.IdProof)"
+                                                             style="width:100%; height:500px;" frameborder="0"></iframe>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                            <div class="row row form-group">
+                                                <div class="col-sm-3"></div>
+                                                <div class="col-sm-2">
+
+                                                    <input type="submit" style="color:white" value="Save" class="btn btn-success @Model.ActionMode" />
+                                                    <input type="reset" style="color:white" value="Reset" class="btn btn-primary" />
+                                                </div>
+
+                                            </div>
                             </form>
                         </div>
 
@@ -517,11 +589,11 @@
                         <div class="panel-body">
                             <div id="my_camera"></div>
                             <!-- A button for taking snaps -->
-                            <br/>                                                               
+                            <br />
                             <form>
                                 <input type="button" class="btn btn-success" style="text-align:center" value="Take Snapshot" onClick="take_snapshot()">
-                            </form>                                                                
-                            <br />  
+                            </form>
+                            <br />
                         </div>
                     </div>
                 </div>
@@ -537,6 +609,9 @@
             </div>
             <div class="modal-footer">
                 <input type="button" class="btn btn-primary m-btn" data-dismiss="modal" onclick="divhide()" value="OK">
+               
+
+
             </div>
 
         </div>
@@ -554,7 +629,7 @@
         Webcam.attach('#my_camera');
         document.getElementById("deleteModal").style.display = "block";
     }
-    
+
     function divhide() {
         document.getElementById("deleteModal").style.display = "none";
         document.getElementById('results').innerHTML = null;
@@ -563,27 +638,27 @@
     }
 
     $("#Frecommendation").change(function () {
-         if ($("#Frecommendation option:selected").val() == 'OTHERS') {
-              $('#FRecommPno').hide();
-              $('#FRecommPnoLabel').hide();
-              $('#FOthersRecommName').hide();
-              $('#FOthersRecommNameLabel').hide();
-              $('#RecomNm').hide();
-              $('#RecommPno').hide();
-              $('#OthersRecomLabel').show();
-              $('#OthersRecommName').show();
-            }
-         else {
-              $('#FRecommPno').show();
-              $('#FRecommPnoLabel').show();
-              $('#FOthersRecommName').hide();
-              $('#FOthersRecommNameLabel').hide();
-              $('#OthersRecomLabel').hide();
-              $('#OthersRecommName').hide();
-            }
+        if ($("#Frecommendation option:selected").val() == 'OTHERS') {
+            $('#FRecommPno').hide();
+            $('#FRecommPnoLabel').hide();
+            $('#FOthersRecommName').hide();
+            $('#FOthersRecommNameLabel').hide();
+            $('#RecomNm').hide();
+            $('#RecommPno').hide();
+            $('#OthersRecomLabel').show();
+            $('#OthersRecommName').show();
+        }
+        else {
+            $('#FRecommPno').show();
+            $('#FRecommPnoLabel').show();
+            $('#FOthersRecommName').hide();
+            $('#FOthersRecommNameLabel').hide();
+            $('#OthersRecomLabel').hide();
+            $('#OthersRecommName').hide();
+        }
     });
-                   
-           
+
+
 
     //$("#Frecommendation").change(function () {
     //    if ($("#Frecommendation option:selected").val() == 'OTHERS') {
@@ -600,19 +675,19 @@
     //        $('#FOthersRecommName').hide();
     //        $('#FOthersRecommNameLabel').hide();
     //    }
-       
 
 
 
-  //  $("#FState").change(function () {        
-     //   alert("entered");
-     //   CommonAjaxComboBox('/M2/TRSC01/DistrictDropDownList', "GET", false, "application/json", false, BindDropDown, "#FDistrict", { state: $('#FState').val(), district:null });
-  //  });
 
-   // $("#FDistrict").change(function () {
-   //     var districtval = $("#FDistrict").val()
-   //     $("#FDistrict1").val(districtval);
-  //  });
+    //  $("#FState").change(function () {
+    //   alert("entered");
+    //   CommonAjaxComboBox('/M2/TRSC01/DistrictDropDownList', "GET", false, "application/json", false, BindDropDown, "#FDistrict", { state: $('#FState').val(), district:null });
+    //  });
+
+    // $("#FDistrict").change(function () {
+    //     var districtval = $("#FDistrict").val()
+    //     $("#FDistrict1").val(districtval);
+    //  });
 
     $(".custom-file-input").on("change", function () {
         var fileName = $(this).val().split("\\").pop();
@@ -640,39 +715,47 @@
     });
 
 
-  
-    
-    function PopDistrictLOV() {  
-        debugger;  
+    function PopUniversityLOV() {
+        debugger;
         $(".modalLoader").css("display", "block");
-        setTimeout(function () { 
-        CommonAjax('/M2/TRSC01/DistrictLOVBind', "GET", false, "application/json", false, BindDropDownWithSelectAsNull, "#FDistrict", { StateCd: $('#FState').val() });
-        $(".modalLoader").hide(); 
-        }, 10);       
+        setTimeout(function () {
+            CommonAjax('/M1/ENSC01/UniversityLOVBindJSON', "GET", false, "application/json", false, BindDropDownWithSelectAsNull, "#FUniversity", { DistrictName: $('#FDistrictForUniversity').val() });
+
+            $(".modalLoader").hide();
+        }, 10);
+    }
+
+    function PopDistrictLOV() {
+        debugger;
+        $(".modalLoader").css("display", "block");
+        setTimeout(function () {
+            CommonAjax('/M2/TRSC01/DistrictLOVBind', "GET", false, "application/json", false, BindDropDownWithSelectAsNull, "#FDistrict", { StateCd: $('#FState').val() });
+            $(".modalLoader").hide();
+        }, 10);
     }
 
     function PopBranchLOV() {
         debugger;
         $(".modalLoader").css("display", "block");
-        setTimeout(function() {
+        setTimeout(function () {
             CommonAjax('/M2/TRSC01/BranchLOVBind', "GET", false, "application/json", false, BindDropDownWithSelectAsNull, "#branch", { Course_Code: $('#course').val() });
-             ValueToDropDownByAjax('branch',null)
+            ValueToDropDownByAjax('branch', null)
             $(".modalLoader").hide();
         }, 10);
     }
 
-     function PopinstituteLOV() {
+    function PopinstituteLOV() {
         debugger;
         $(".modalLoader").css("display", "block");
-        setTimeout(function() {
+        setTimeout(function () {
             CommonAjax('/M2/TRSC01/InstitueLOVBind', "GET", false, "application/json", false, BindDropDownWithSelectAsNull, "#Institute", { UNIVERSITY_ID: $('#university').val() });
-             ValueToDropDownByAjax('Institute',null)
+            ValueToDropDownByAjax('Institute', null)
             $(".modalLoader").hide();
         }, 10);
     }
-     //BranchLOVBind(string Course_Code)
-      function ValueToDropDownByAjax(loc, count) {
-         debugger;       
+    //BranchLOVBind(string Course_Code)
+    function ValueToDropDownByAjax(loc, count) {
+        debugger;
         var tempdata = $("#" + loc + "Hidden").val(); // 57
         if (tempdata != null && tempdata.length > 0) {
             debugger;
@@ -685,9 +768,9 @@
 
 
 
-       $("." + loc).select2();
+        $("." + loc).select2();
     }
- 
+
 </script>
 
 <!-- Configure a few settings and attach camera -->
@@ -706,7 +789,7 @@
 
     function take_snapshot() {
         //var a = '/M3/FP1/Capture/' + '1920VT3001'; //Added to enter VTCODE.
-        var a = '/M2/TRSC01/Capture/' + '@Model.Pi_Msts.VtCode'; 
+        var a = '/M2/TRSC01/Capture/' + '@Model.Pi_Msts.VtCode';
         // take snapshot and get image data
         Webcam.snap(function (data_uri) {
             // display results in page
@@ -718,18 +801,17 @@
             Webcam.upload(data_uri,
                 a,
                 function (code, text) {
-                    if (code == 200 || text == true)
-                    {
-                        
-                        alert("code:"+code+" text:"+text+". Uploaded Successfully.");
+                    if (code == 200 || text == true) {
+
+                        alert("code:" + code + " text:" + text + ". Uploaded Successfully.");
 
 
                     };
-                            
+
                 });
-         });
+        });
     }
 
-    
+
 </script>
 

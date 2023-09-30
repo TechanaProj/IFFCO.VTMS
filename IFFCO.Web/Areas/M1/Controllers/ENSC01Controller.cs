@@ -75,6 +75,7 @@ namespace IFFCO.VTMS.Web.Areas.M1.Controllers
            
             CommonViewModel.Pi_Msts = new VtmsEnrollPi();
             CommonViewModel.Edu_Msts = new VtmsEnrollEdu();
+            CommonViewModel.Doc_Msts = new VtmsEnrollDoc();
 
             CommonViewModel.AreaName = this.ControllerContext.RouteData.Values["area"].ToString();
             CommonViewModel.SelectedMenu = this.ControllerContext.RouteData.Values["controller"].ToString();
@@ -96,8 +97,14 @@ namespace IFFCO.VTMS.Web.Areas.M1.Controllers
                     eNSC01ViewModel.Pi_Msts.EnrolledBy = eNSC01ViewModel.Edu_Msts.EnrolledBy = Convert.ToInt32(HttpContext.Session.GetInt32("EmpID"));
                     eNSC01ViewModel.Edu_Msts.EnrolledOn = eNSC01ViewModel.Edu_Msts.EnrolledOn = DateTime.Now;
                     eNSC01ViewModel.Edu_Msts.EnrolledBy = eNSC01ViewModel.Edu_Msts.EnrolledBy = Convert.ToInt32(HttpContext.Session.GetInt32("EmpID"));
+                    eNSC01ViewModel.Doc_Msts.EnteredOn = eNSC01ViewModel.Edu_Msts.EnrolledOn = DateTime.Now;
+                    eNSC01ViewModel.Doc_Msts.EnteredBy = Convert.ToString(HttpContext.Session.GetInt32("EmpID"));
+                    eNSC01ViewModel.Edu_Msts.EnrolledBy = HttpContext.Session.GetInt32("EmpID");
                     eNSC01ViewModel.Edu_Msts.VtCode = eNSC01ViewModel.Pi_Msts.VtCode;
+                    eNSC01ViewModel.Doc_Msts.VtCode = eNSC01ViewModel.Edu_Msts.VtCode;
                     eNSC01ViewModel.Edu_Msts.UnitCode = eNSC01ViewModel.Pi_Msts.UnitCode = Convert.ToInt32(HttpContext.Session.GetString("UnitCode"));
+                    eNSC01ViewModel.Doc_Msts.UnitCode = Convert.ToInt32(HttpContext.Session.GetString("UnitCode"));
+                    
                     string selectedRecommName = eNSC01ViewModel.Pi_Msts.OthersRecommName;
                     eNSC01ViewModel.Pi_Msts.OthersRecommName = selectedRecommName;
                     
@@ -105,9 +112,12 @@ namespace IFFCO.VTMS.Web.Areas.M1.Controllers
                     //eNSC01ViewModel.Pi_Msts.OthersRecommName = eNSC01ViewModel.OthersRecommName;
                     eNSC01ViewModel.Pi_Msts.Status = "N";
                     if (eNSC01ViewModel.Edu_Msts.BranchName == "null") { eNSC01ViewModel.Edu_Msts.BranchName = String.Empty;}
+
+                    
                     _context.Add(eNSC01ViewModel.Pi_Msts);
                     _context.Add(eNSC01ViewModel.Edu_Msts);
-
+                    _context.Add(eNSC01ViewModel.Doc_Msts);
+                    
                     await _context.SaveChangesAsync();
                     CommonViewModel.Message = eNSC01ViewModel.Pi_Msts.VtCode + " | " + eNSC01ViewModel.Pi_Msts.Name;
                     CommonViewModel.Alert = "Create";
@@ -177,6 +187,8 @@ namespace IFFCO.VTMS.Web.Areas.M1.Controllers
                 CommonViewModel.Pi_Msts = _context.VtmsEnrollPi.FirstOrDefault(x => x.VtCode == id && x.UnitCode == unit);
                 CommonViewModel.Edu_Msts = new VtmsEnrollEdu();
                 CommonViewModel.Edu_Msts = _context.VtmsEnrollEdu.FirstOrDefault(x => x.VtCode == id && x.UnitCode == unit);
+                CommonViewModel.Doc_Msts = new VtmsEnrollDoc();
+                CommonViewModel.Doc_Msts = _context.VtmsEnrollDoc.FirstOrDefault(x => x.VtCode == id && x.UnitCode == unit);
 
                 var statelist = dropDownListBindWeb.ListStateBind();
                 ViewBag.StateList = statelist;
@@ -216,6 +228,7 @@ namespace IFFCO.VTMS.Web.Areas.M1.Controllers
                     {
                     VtmsEnrollPi PiObj = _context.VtmsEnrollPi.FirstOrDefault(x => x.VtCode  == eNSC01ViewModel.Pi_Msts.VtCode);       
                     VtmsEnrollEdu EdObj = _context.VtmsEnrollEdu.FirstOrDefault(x => x.VtCode == eNSC01ViewModel.Pi_Msts.VtCode);       
+                    VtmsEnrollDoc DocObj = _context.VtmsEnrollDoc.FirstOrDefault(x => x.VtCode == eNSC01ViewModel.Pi_Msts.VtCode);       
                     PiObj.Name = eNSC01ViewModel.Pi_Msts.Name;
                     PiObj.FatherName = eNSC01ViewModel.Pi_Msts.FatherName;
                     PiObj.Address = eNSC01ViewModel.Pi_Msts.Address;
@@ -231,6 +244,7 @@ namespace IFFCO.VTMS.Web.Areas.M1.Controllers
                     EdObj.ModifiedBy = Convert.ToInt32(HttpContext.Session.GetInt32("EmpID"));
                     EdObj.ModifiedOn = DateTime.Now;
                     PiObj.RecommendationType = eNSC01ViewModel.Pi_Msts.RecommendationType;
+                    DocObj.VtIdDtl = eNSC01ViewModel.Doc_Msts.VtIdDtl;
                     if (PiObj.RecommendationType == "IFFCO")
                     {
                         PiObj.RecommPno = eNSC01ViewModel.Pi_Msts.RecommPno;

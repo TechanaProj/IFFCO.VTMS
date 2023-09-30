@@ -57,9 +57,16 @@
                                    
                                                                 <a asp-area="M2"  asp-controller="TRSC01" asp-action="Edit" asp-route-id="@item.Vtcode" asp-route-mod="@item.Vtcode" class="edit @Model.Edit glpicon addnewitem"  data-toggle="modal"><i class="far fa-edit" data-toggle="tooltip" title="" data-original-title="Edit" onclick="SHOW_TR_Function('traddpanelEdit','traddpanel')"></i></a> 
                 @*                                              <a asp-area="M2" asp-controller="TRSC01" asp-action="Edit" asp-route-id="@item.Vtcode" class="edit @Model.Edit" data-toggle="modal"><i style="padding-left: 31px;" class="material-icons" data-toggle="tooltip" title="" data-original-title="Edit" onclick="SHOW_TR_Function('traddpanelEdit','traddpanel')"></i></a>
-                *@                                              <a asp-area="M2" asp-controller="TRSC01" asp-action="Details" asp-route-id="@item.Vtcode" class="@Model.Select glpicon addnewitem" data-toggle="modal">
-                                                                <i class='fa fa-eye' data-toggle='tooltip' title='View details' data-original-title='Details'></i>                                               
-                                                            </a>
+                *@                                             
+                
+                                                                <a asp asp-controller="TRSC01" asp-action="Details" asp-route-id="@item.Vtcode" asp-route-menu="@Model.SelectedMenu" class="@Model.Select glpicon addnewitem" data-toggle="modal">
+                                                                                                                <i class='fa fa-eye' data-toggle='tooltip' title='View details' data-original-title='Details'></i>
+                                                                                            </a>
+
+                                                                
+
+                                                  
+                                                           
                                                             </td>
                                                         </tr>
                                                      }

@@ -125,27 +125,32 @@ function Validate()
                                   @Html.DisplayFor(modelItem => item.COURSE_DESC) - @Html.DisplayFor(modelItem => item.BRANCH_DESC)
                             </td>
                             <td>
-                                @Html.DisplayFor(modelItem => item.VtStartDate) - @Html.DisplayFor(modelItem => item.VtEndDate)
+                                  @item.VtStartDate?.ToString("dd/MM/yyyy").Replace("-","/") - @item.VtEndDate?.ToString("dd/MM/yyyy").Replace("-","/")
                             </td>
-
+                            
                             <td style=" width: 32%;">
-
+@*
                                 @if (item.CertFlag == null)                                
                                 
                                 {
                                     <a asp-area="M2" asp-controller="TRSC03" asp-action="Create" asp-route-id="@item.Vtcode" class="Details" data-toggle="modal"><input type="button" class="btn btn-primary" value="Print Certificate" /></a>
                                 }
-                                
+                                *@
                                 <input type="button" class="btn btn-danger btnSelect" value="Applicant Form" />
 
-                                  
+                                 @* 
                                  <a asp-area="M2" asp-controller="TRSC03" asp-action="Create" target="_blank"  asp-route-id="@item.Vtcode" id="Create" type="button" class="btn btn-success"  data-toggle="modal"> Create Certificate</a>
+*@
 @*
                                  <a asp-area="M2" asp-controller="TRSC03" asp-action="Details" asp-route-id="@item.Vtcode" class="Details" data-toggle="modal"><input type="button" class="btn btn-success" value="Details"> </a>
 *@
-                                    <a asp-area="M2" asp-controller="TRSC01" asp-action="Details" asp-route-id="@item.Vtcode" class="@Model.Select glpicon addnewitem" data-toggle="modal">
+                                   @* <a asp-area="M2" asp-controller="TRSC01" asp-action="Details" asp-route-id="@item.Vtcode" class="@Model.Select glpicon addnewitem" data-toggle="modal">
                                                 <i class='fa fa-eye' data-toggle='tooltip' title='View details' data-original-title='Details'></i>                                               
-                                            </a>
+                                            </a>*@
+
+                                             <a asp asp-controller="TRSC01" asp-action="Details" asp-route-id="@item.Vtcode" asp-route-menu="@Model.SelectedMenu" class="@Model.Select glpicon addnewitem" data-toggle="modal">
+                                                    <i class='fa fa-eye' data-toggle='tooltip' title='View details' data-original-title='Details'></i>
+                                                </a>
 
                              </td>
                         </tr>

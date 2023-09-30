@@ -3,6 +3,7 @@ using IFFCO.HRMS.Repository.Pattern.Core.Factories;
 using IFFCO.HRMS.Repository.Pattern.UnitOfWork;
 using Microsoft.AspNetCore.Http;
 using System;
+using IFFCO.HRMS.Entities.AppConfig;
 
 namespace IFFCO.VTMS.Web.CommonFunctions
 {
@@ -73,6 +74,22 @@ namespace IFFCO.VTMS.Web.CommonFunctions
             string report = "";
             report = reportURL + "+module=" + reportname + "+" + querystring;
             //report = "data:application/vnd.ms-excel;base64," + report;
+            return report;
+        }
+        readonly string conn = new AppConfiguration().ConnectionString;
+        public string GenerateReportRdlc(string reportrdlcUrl, string querystring, string reportname, string module, string name, string personalNo, string fullClientIp, string clientIp)//, 
+        {
+
+
+            string report = "";
+            string sqlquery = "select IP from m_rep_server where status = 'A'";
+            reportrdlcUrl = _context.GetCharScalerFromDB(sqlquery).ToString();
+
+
+
+            //report = reportrdlcUrl + "/" + module + "/" + reportname + "?" + Encclass.GetEncryptedQueryString(querystring.Replace("''", ""));
+            report = reportrdlcUrl + "/" + reportname + "?" + Encclass.GetEncryptedQueryString(querystring.Replace("''", ""));
+            //Encclass.ReportLog(module, reportname, name, querystring, personalNo, fullClientIp, clientIp);
             return report;
         }
 

@@ -58,12 +58,12 @@
                                     <div class="m-form">
                                         <div class="m-form-bx">
                                             <div class="row form-sm">
-                                                <div class="col-sm-1 col-md-2">
+                                                    <div class="col-sm-1 col-md-2">
                                                     
-                                                    <div>
-                                                        <label class="m-lbl1 m-lbl2">VT Code :</label>
+                                                        <div>
+                                                            <label class="m-lbl1 m-lbl2">VT Code :</label>
+                                                        </div>
                                                     </div>
-                                                </div>
                                                     <div class="col-sm-2 col-md-2">
                                                         <div>
                                                             <input type="number" readonly class="form-control" asp-for="@Model.Pi_Msts.VtCode" id="VTCode" value="@Model.Pi_Msts?.VtCode ?? 0" />
@@ -132,6 +132,46 @@
                                                             <input type="number" max="9999999999" class="form-control" asp-for="@Model.Pi_Msts.ContactNo" id="MobileNo" />
                                                         </div>
                                                     </div>
+
+                                                <div class="col-sm-1 col-md-2">
+                                                    <div>
+                                                        <label class="m-lbl1 m-lbl2">State :</label>
+                                                    </div>
+                                                </div>
+                                                <div class="col-sm-2 col-md-2">
+                                                    <div>
+                                                        <select id="FStateForUniversity" asp-for="@Model.Pi_Msts.StateName" onchange="PopDistrictLOV()" required class="form-control" asp-items="@(new SelectList(ViewBag.StateList,"Value","Text")) ">
+                                                            <option value="">--Select State--</option>
+                                                        </select>
+
+                                                    </div>
+                                                </div>
+
+                                                <div class="col-sm-1 col-md-2">
+                                                    <div>
+                                                        <label class="m-lbl1 m-lbl2">District :</label>
+                                                    </div>
+                                                </div>
+                                                <div class="col-sm-2 col-md-2">
+                                                    <div>
+                                                        <select id="FDistrictForUniversity" onchange="PopUniversityLOV()" asp-for="@Model.Pi_Msts.DistrictName" required class="form-control">
+                                                            <option value="">--Select District--</option>
+                                                        </select>
+
+                                                    </div>
+                                                </div>
+                                                <div class="col-sm-1 col-md-2">
+
+                                                    <div>
+                                                        <label class="m-lbl1 m-lbl2">Adhar Number :</label>
+                                                    </div>
+                                                </div>
+                                                <div class="col-sm-2 col-md-2">
+                                                    <div>
+                                                        <input type="number"  class="form-control" asp-for="@Model.Doc_Msts.VtIdDtl" id="VTCode" value="@Model.Pi_Msts?.VtCode ?? 0" />
+                                                    </div>
+                                                </div>
+
                                             </div>
                                             </div>
                                         </div>
@@ -183,34 +223,7 @@
                                                         </div>
                                                     </div>
 
-                                                    <div class="col-sm-1 col-md-2">
-                                                        <div>
-                                                            <label class="m-lbl1 m-lbl2">State :</label>
-                                                        </div>
-                                                    </div>
-                                                    <div class="col-sm-2 col-md-2">
-                                                        <div> 
-                                                            <select id="FStateForUniversity" onchange="PopDistrictLOV()" required class="form-control" asp-items="@(new SelectList(ViewBag.StateList,"Value","Text")) ">
-                                                                <option value="">--Select State--</option>
-                                                            </select>
-
-                                                        </div>
-                                                    </div>
-
-                                                    <div class="col-sm-1 col-md-2">
-                                                        <div>
-                                                            <label class="m-lbl1 m-lbl2">District :</label>
-                                                        </div>
-                                                    </div>
-                                                    <div class="col-sm-2 col-md-2">
-                                                        <div> 
-                                                            <select id="FDistrictForUniversity" onchange="PopUniversityLOV()" required class="form-control">
-                                                                <option value="">--Select District--</option>
-                                                            </select>
-
-                                                        </div>
-                                                    </div>
-
+                                                   
                                                     <div class="col-sm-1 col-md-2">
                                                         <div>
                                                             <label class="m-lbl1 m-lbl2">Semester :</label>

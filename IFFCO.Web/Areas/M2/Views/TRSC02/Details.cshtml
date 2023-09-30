@@ -10,7 +10,7 @@
 
     function Validate() {
         debugger;
-        if (true){
+        if (true) {
             return true;
         }
         else {
@@ -31,7 +31,7 @@
                         <div class="tableUp">
                             <div class="content-box">
                                 <form id="CreateForm" asp-area="M2" asp-controller="TRSC02" asp-action="Edit" method="post" onsubmit="return Validate();">
-                                  <h3 class="sub-heading1 sub-heading2"><span>Ability to Learn</span></h3>
+                                    <h3 class="sub-heading1 sub-heading2"><span>Ability to Learn</span></h3>
                                     <div class="m-form">
                                         <div class="m-form">
                                             <div class="m-form-bx">
@@ -43,10 +43,10 @@
                                                     </div>
                                                     <div class="col-sm-2 col-md-2">
                                                         <div>
-                                                            <select id="VtevaL0001" asp-for="@Model.R_Msts.VtevaL0001"  class="form-control" asp-items="@(new SelectList(ViewBag.ReviewLOV,"Value","Text")) "></select>
+                                                            <input id="VtevaL0001" readonly asp-for="@Model.R_Msts.VtevaL0001" class="form-control"/>
                                                             <input type="hidden" asp-for="@Model.VtCode" />
-                                                            <input type="hidden" asp-for="@Model.UnitCode" />
-                                                       </div>
+                                                            <input type="hidden" asp-for="@Model.UnitCode"/>
+                                                        </div>
                                                     </div>
                                                     <div class="col-sm-1 col-md-1">
                                                         <div>
@@ -54,8 +54,8 @@
                                                         </div>
                                                     </div>
                                                     <div class="col-sm-2 col-md-2">
-                                                        <div>
-                                                            <select id="VtevaL0002" asp-for="@Model.R_Msts.VtevaL0002"  class="form-control" asp-items="@(new SelectList(ViewBag.ReviewLOV,"Value","Text")) "></select>
+                                                        <div> 
+                                                            <input id="VtevaL0002" readonly asp-for="@Model.R_Msts.VtevaL0002" class="form-control"/>
                                                         </div>
                                                     </div>
                                                     <div class="col-sm-1 col-md-1">
@@ -64,8 +64,8 @@
                                                         </div>
                                                     </div>
                                                     <div class="col-sm-2 col-md-2">
-                                                        <div>
-                                                            <select id="VtevaL0003" asp-for="@Model.R_Msts.VtevaL0003"  class="form-control" asp-items="@(new SelectList(ViewBag.ReviewLOV,"Value","Text")) "></select>
+                                                        <div> 
+                                                           <input id="VtevaL0003" readonly asp-for="@Model.R_Msts.VtevaL0003" class="form-control"/>
                                                         </div>
                                                     </div>
                                                     <div class="col-sm-1 col-md-1">
@@ -75,7 +75,7 @@
                                                     </div>
                                                     <div class="col-sm-2 col-md-2">
                                                         <div>
-                                                            <select id="VtevaL0004" asp-for="@Model.R_Msts.VtevaL0004"  class="form-control" asp-items="@(new SelectList(ViewBag.ReviewLOV,"Value","Text")) "></select>
+                                                            <input id="VtevaL0004" readonly asp-for="@Model.R_Msts.VtevaL0004" class="form-control" />
                                                         </div>
                                                     </div>
                                                 </div>
@@ -85,9 +85,9 @@
 
                                     <h3 class="sub-heading1 sub-heading2"><span>Reading / Writing / Computation Skills</span></h3>
                                     <div class="m-form">
-                                           <div class="m-form">
-                                              <div class="m-form-bx">
-                                                 <div class="row form-sm">
+                                        <div class="m-form">
+                                            <div class="m-form-bx">
+                                                <div class="row form-sm">
                                                     <div class="col-sm-1 col-md-2">
                                                         <div>
                                                             <label class="m-lbl1 m-lbl2">Reads, comprehends and follows written materials </label>
@@ -95,7 +95,7 @@
                                                     </div>
                                                     <div class="col-sm-2 col-md-2">
                                                         <div>
-                                                            <select id="VtevaL0005" asp-for="@Model.R_Msts.VtevaL0005"  class="form-control" asp-items="@(new SelectList(ViewBag.ReviewLOV,"Value","Text")) "></select>
+                                                            <input id="VtevaL0005" readonly asp-for="@Model.R_Msts.VtevaL0005" class="form-control"/>
                                                         </div>
                                                     </div>
                                                     <div class="col-sm-1 col-md-2">
@@ -105,19 +105,19 @@
                                                     </div>
                                                     <div class="col-sm-2 col-md-2">
                                                         <div>
-                                                            <select id="VtevaL0006" asp-for="@Model.R_Msts.VtevaL0006"  class="form-control" asp-items="@(new SelectList(ViewBag.ReviewLOV,"Value","Text")) "></select>
+                                                            <input id="VtevaL0006" readonly asp-for="@Model.R_Msts.VtevaL0006" class="form-control"/>
                                                         </div>
                                                     </div>
-                                                  </div>
+                                                </div>
                                             </div>
                                         </div>
                                     </div>
 
                                     <h3 class="sub-heading1 sub-heading2"><span>Listening and Oral Communication Skills</span></h3>
                                     <div class="m-form">
-                                           <div class="m-form">
-                                              <div class="m-form-bx">
-                                                 <div class="row form-sm">
+                                        <div class="m-form">
+                                            <div class="m-form-bx">
+                                                <div class="row form-sm">
                                                     <div class="col-sm-1 col-md-1">
                                                         <div>
                                                             <label class="m-lbl1 m-lbl2">Listens to others in an active and attentive manner </label>
@@ -125,7 +125,7 @@
                                                     </div>
                                                     <div class="col-sm-2 col-md-2">
                                                         <div>
-                                                            <select id="VtevaL0007" asp-for="@Model.R_Msts.VtevaL0007"  class="form-control" asp-items="@(new SelectList(ViewBag.ReviewLOV,"Value","Text")) "></select>
+                                                            <input id="VtevaL0007" readonly asp-for="@Model.R_Msts.VtevaL0007" class="form-control"/>
                                                         </div>
                                                     </div>
                                                     <div class="col-sm-1 col-md-1">
@@ -134,18 +134,18 @@
                                                         </div>
                                                     </div>
                                                     <div class="col-sm-2 col-md-2">
-                                                        <div>
-                                                            <select id="VtevaL0008" asp-for="@Model.R_Msts.VtevaL0008"  class="form-control" asp-items="@(new SelectList(ViewBag.ReviewLOV,"Value","Text")) "></select>
-                                                        </div>
+                                                        <div> 
+                                                            <input id="VtevaL0008" readonly asp-for="@Model.R_Msts.VtevaL0008" class="form-control"/>
+                                                   </div>
                                                     </div>
-                                                       <div class="col-sm-1 col-md-1">
+                                                    <div class="col-sm-1 col-md-1">
                                                         <div>
                                                             <label class="m-lbl1 m-lbl2">Effecively participates in class-room interaction sessions </label>
                                                         </div>
                                                     </div>
                                                     <div class="col-sm-2 col-md-2">
                                                         <div>
-                                                            <select id="VtevaL0009" asp-for="@Model.R_Msts.VtevaL0009"  class="form-control" asp-items="@(new SelectList(ViewBag.ReviewLOV,"Value","Text")) "></select>
+                                                            <input id="VtevaL0009" readonly asp-for="@Model.R_Msts.VtevaL0009" class="form-control"/>
                                                         </div>
                                                     </div>
                                                     <div class="col-sm-1 col-md-1">
@@ -155,19 +155,19 @@
                                                     </div>
                                                     <div class="col-sm-2 col-md-2">
                                                         <div>
-                                                            <select id="VtevaL0010" asp-for="@Model.R_Msts.VtevaL0010"  class="form-control" asp-items="@(new SelectList(ViewBag.ReviewLOV,"Value","Text")) "></select>
-                                                        </div>
+                                                            <input id="VtevaL0010" readonly asp-for="@Model.R_Msts.VtevaL0010" class="form-control" />
+                                                            </div>
                                                     </div>
-                                                  </div>
+                                                </div>
                                             </div>
                                         </div>
                                     </div>
 
                                     <h3 class="sub-heading1 sub-heading2"><span>Creative Thinking and Problem Solving Skills</span></h3>
                                     <div class="m-form">
-                                           <div class="m-form">
-                                              <div class="m-form-bx">
-                                                 <div class="row form-sm">
+                                        <div class="m-form">
+                                            <div class="m-form-bx">
+                                                <div class="row form-sm">
                                                     <div class="col-sm-1 col-md-2">
                                                         <div>
                                                             <label class="m-lbl1 m-lbl2">Seeks to comprehend and understand the 'The Big Picture' </label>
@@ -175,39 +175,40 @@
                                                     </div>
                                                     <div class="col-sm-2 col-md-2">
                                                         <div>
-                                                            <select id="VtevaL0011" asp-for="@Model.R_Msts.VtevaL0011"  class="form-control" asp-items="@(new SelectList(ViewBag.ReviewLOV,"Value","Text")) "></select>
-                                                        </div>
+                                                            <input id="VtevaL0011" readonly asp-for="@Model.R_Msts.VtevaL0011" class="form-control"/>
+                                                             </div>
                                                     </div>
                                                     <div class="col-sm-1 col-md-2">
                                                         <div>
+                                                             
                                                             <label class="m-lbl1 m-lbl2">Respects input and ideas from other sources and people  </label>
                                                         </div>
                                                     </div>
                                                     <div class="col-sm-2 col-md-2">
                                                         <div>
-                                                            <select id="VtevaL0012" asp-for="@Model.R_Msts.VtevaL0012"  class="form-control" asp-items="@(new SelectList(ViewBag.ReviewLOV,"Value","Text")) "></select>
-                                                        </div>
+
+                                                            <input id="VtevaL0012" readonly asp-for="@Model.R_Msts.VtevaL0012" class="form-control"/>
+                                                              </div>
                                                     </div>
-                                                     <div class="col-sm-1 col-md-2">
+                                                    <div class="col-sm-1 col-md-2">
                                                         <div>
                                                             <label class="m-lbl1 m-lbl2">Demonstrates an analytical capacity </label>
                                                         </div>
                                                     </div>
                                                     <div class="col-sm-2 col-md-2">
                                                         <div>
-                                                            <select id="VtevaL0013" asp-for="@Model.R_Msts.VtevaL0013"  class="form-control" asp-items="@(new SelectList(ViewBag.ReviewLOV,"Value","Text")) "></select>
-                                                        </div>
+                                                            <input id="VtevaL0013" readonly asp-for="@Model.R_Msts.VtevaL0013" class="form-control"/> </div>
                                                     </div>
-                                                  </div>
+                                                </div>
                                             </div>
                                         </div>
                                     </div>
-                                        
+
                                     <h3 class="sub-heading1 sub-heading2"><span>Professional and Career Development Skills</span></h3>
                                     <div class="m-form">
-                                           <div class="m-form">
-                                              <div class="m-form-bx">
-                                                 <div class="row form-sm">
+                                        <div class="m-form">
+                                            <div class="m-form-bx">
+                                                <div class="row form-sm">
                                                     <div class="col-sm-1 col-md-1">
                                                         <div>
                                                             <label class="m-lbl1 m-lbl2">Seeks to understand personal strengths and weaknesses </label>
@@ -215,8 +216,8 @@
                                                     </div>
                                                     <div class="col-sm-2 col-md-2">
                                                         <div>
-                                                            <select id="VtevaL0014" asp-for="@Model.R_Msts.VtevaL0014"  class="form-control" asp-items="@(new SelectList(ViewBag.ReviewLOV,"Value","Text")) "></select>
-                                                        </div>
+                                                            <input id="VtevaL0014" readonly asp-for="@Model.R_Msts.VtevaL0014" class="form-control"/>
+                                                            </div>
                                                     </div>
                                                     <div class="col-sm-1 col-md-1">
                                                         <div>
@@ -225,18 +226,17 @@
                                                     </div>
                                                     <div class="col-sm-2 col-md-2">
                                                         <div>
-                                                            <select id="VtevaL0015" asp-for="@Model.R_Msts.VtevaL0015"  class="form-control" asp-items="@(new SelectList(ViewBag.ReviewLOV,"Value","Text")) "></select>
-                                                        </div>
+                                                            <input id="VtevaL0015" readonly asp-for="@Model.R_Msts.VtevaL0015" class="form-control" />
+                                                            </div>
                                                     </div>
-                                                       <div class="col-sm-1 col-md-1">
+                                                    <div class="col-sm-1 col-md-1">
                                                         <div>
                                                             <label class="m-lbl1 m-lbl2">Manages personal expectations consistent with work role </label>
                                                         </div>
                                                     </div>
                                                     <div class="col-sm-2 col-md-2">
                                                         <div>
-                                                            <select id="VtevaL0016" asp-for="@Model.R_Msts.VtevaL0016"  class="form-control" asp-items="@(new SelectList(ViewBag.ReviewLOV,"Value","Text")) "></select>
-                                                        </div>
+                                                            <input id="VtevaL0016" readonly asp-for="@Model.R_Msts.VtevaL0016" class="form-control" />  </div>
                                                     </div>
                                                     <div class="col-sm-1 col-md-1">
                                                         <div>
@@ -245,19 +245,18 @@
                                                     </div>
                                                     <div class="col-sm-2 col-md-2">
                                                         <div>
-                                                            <select id="VtevaL0017" asp-for="@Model.R_Msts.VtevaL0017"  class="form-control" asp-items="@(new SelectList(ViewBag.ReviewLOV,"Value","Text")) "></select>
-                                                        </div>
+                                                            <input id="VtevaL0017" readonly asp-for="@Model.R_Msts.VtevaL0017" class="form-control"/>  </div>
                                                     </div>
-                                                  </div>
+                                                </div>
                                             </div>
                                         </div>
                                     </div>
-                                                 
+
                                     <h3 class="sub-heading1 sub-heading2"><span>Organizational Effectiveness Skills</span></h3>
                                     <div class="m-form">
-                                           <div class="m-form">
-                                              <div class="m-form-bx">
-                                                 <div class="row form-sm">
+                                        <div class="m-form">
+                                            <div class="m-form-bx">
+                                                <div class="row form-sm">
                                                     <div class="col-sm-1 col-md-2">
                                                         <div>
                                                             <label class="m-lbl1 m-lbl2">Seeks to understand and support the organisation's mission/goals </label>
@@ -265,8 +264,8 @@
                                                     </div>
                                                     <div class="col-sm-2 col-md-2">
                                                         <div>
-                                                            <select id="VtevaL0018" asp-for="@Model.R_Msts.VtevaL0018"  class="form-control" asp-items="@(new SelectList(ViewBag.ReviewLOV,"Value","Text")) "></select>
-                                                        </div>
+                                                            <input id="VtevaL0018" readonly asp-for="@Model.R_Msts.VtevaL0018" class="form-control" />
+                                                           </div>
                                                     </div>
                                                     <div class="col-sm-1 col-md-2">
                                                         <div>
@@ -275,21 +274,21 @@
                                                     </div>
                                                     <div class="col-sm-2 col-md-2">
                                                         <div>
-                                                            <select id="VtevaL0019" asp-for="@Model.R_Msts.VtevaL0019"  class="form-control" asp-items="@(new SelectList(ViewBag.ReviewLOV,"Value","Text")) "></select>
+                                                            <input id="VtevaL0019" readonly asp-for="@Model.R_Msts.VtevaL0019" class="form-control" />
+
                                                         </div>
                                                     </div>
-                                                  </div>
+                                                </div>
                                             </div>
                                         </div>
                                     </div>
-                                       <br>
-                                        <div class="btn-area-fixed" align="center">
-                                            <div>
-                                                <input type="submit" id="createid" value="Save" @Model.ActionMode class="m-btn-1 save" style="float:none;margin-right: 4px" /><button class="m-btn-1 close1" type="button" onclick=" GetIndex('M2/TRSC02/Index')">Close</button>
+                                    <br>
+                                    <div class="btn-area-fixed" align="center">
+                                        <div>
+                                            <input type="submit" id="createid" value="Save" @Model.ActionMode class="m-btn-1 save" style="float:none;margin-right: 4px" /><button class="m-btn-1 close1" type="button" onclick=" GetIndex('M2/TRSC02/Index')">Close</button>
                                         </div>
-                                        </div>
-                                    </form>
-                                </div>
+                                    </div>
+                                </form>
                             </div>
                         </div>
                     </div>
@@ -297,11 +296,12 @@
             </div>
         </div>
     </div>
+</div>
  </div>
 
 <div id="commonModalbinder" class="modal" style="display:none!important;z-index:99999999 !important;"></div>
 
 <script type="text/javascript">
-       
+
 </script>
 

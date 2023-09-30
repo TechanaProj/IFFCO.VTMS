@@ -888,7 +888,8 @@ $("input[type='submit']").click(function (e) {
                        CommonAlert("Error", response, null, null, "error");
                     },
                     success: function (response) {
-                        //do something with response                         
+                        //do something with response     
+                        
                         var contentId;
                         if (response.selectedAction == null) {
                              contentId = "/" + response.areaName + "/" + response.selectedMenu + "/Index";

@@ -164,7 +164,7 @@ namespace IFFCO.VTMS.Web.Areas.M2.Controllers
             CommonViewModel.Pi_Msts = await _context.VtmsEnrollPi.FirstOrDefaultAsync(x => x.VtCode == id && x.UnitCode == unit);
             var Edu_Msts = await _context.VtmsEnrollEdu.FirstOrDefaultAsync(x => x.VtCode == id && x.UnitCode == unit);
             CommonViewModel.Edu_Msts = Edu_Msts;
-            CommonViewModel.InstituteName = _context.VtmsInstituteMsts.FirstOrDefault(X=> Convert.ToString(X.InstituteCd) == Edu_Msts.InstituteName).InstituteName ??  string.Empty;
+            //CommonViewModel.InstituteName = _context.VtmsInstituteMsts.FirstOrDefault(X=> Convert.ToString(X.InstituteCd) == Edu_Msts.InstituteName).InstituteName ??  string.Empty;
 
             //vtmsdocmsts.CertFlag = "Y";
             _context.Update(vtmsdocmsts);

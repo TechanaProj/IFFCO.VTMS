@@ -12,6 +12,7 @@ namespace IFFCO.VTMS.Web.ViewModels
         public List<VCompleteVTInfo> View_List { get; set; }
         public VtmsEnrollPi Pi_Msts { get; set; }
         public VtmsEnrollEdu Edu_Msts { get; set; }
+        public VtmsEnrollDoc Doc_Msts { get; set; }
         public MState mState { get; set; }  
         public MDistrict mDistrict { get; set; }
 

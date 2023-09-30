@@ -104,12 +104,14 @@
                                     <div class="m-form-bx">
                                         <div class="row form-sm">
                                             <div class="col-sm-6">
-                               
-                                            <div class="row form-group">
-                                                <div class="col-sm-5"></div>
-                                                <div class="col-sm-4"> <span class="user-img-edit"><img src="@Model.ProfileImage" id="VTPhoto" style="width:100%;"></span></div>
-                                                <div class="col-sm-2 text-right"> <input type="hidden" style="color:white" class="btn btn-success" id="VTPhotoButton" onclick="divshow()" style="text-align:center" value="Upload Picture" /></div>
-                                            </div>
+
+                                               <div class="col-sm-5"></div>
+                                                <div class="col-sm-4">
+                                                    <span class="user-img-edit">
+                                                        <img src="@Model.ProfileImage" id="VTPhoto" style="width:100%;">
+                                                    </span>
+                                                </div>
+                                             </div>
                                         </div>
                                     </div>
                                 </div>
@@ -117,7 +119,7 @@
 
                                 <h3 class="sub-heading1 sub-heading2"><span>Personal Information</span></h3>
 
-                                <div class="m-form">
+                               <div class="m-form">
                                     <div class="m-form-bx">
                                         <div class="row form-sm">
                                             <div class="col-sm-1 col-md-2">
@@ -435,43 +437,23 @@
                                             <div class="col-sm-2 col-md-2">
                                                 <div>
                                                     <div class="custom-file">
-                                                        @if (Model.IdProof.Length <= 1)
-                                                        {
+
+                                                    
                                                                 <input type="file" class="custom-file-input" id="customFile" asp-for="@Model.Doc_Msts.VtIdUpload" readonly>
-                                                            <label class="custom-file-label" for="customFile">Choose file</label>
-                                                        }
-                                                        else
-                                                        {
-                                                            <button class="btn btn-xs" type="button" data-toggle="collapse" data-target="#collapseExample" aria-expanded="false" aria-controls="collapseExample">
-                                                                View Id proof
-                                                            </button>
-                                                        }
+                                                           
+                                                       
+
                                                     </div>
                                                 </div>
                                             </div>
-                                            <div class="col-sm-1 col-md-2">
-                                                <div>
-                                                    <div class="collapse" id="collapseExample">
-                                                        <div class="card card-body">
-                                                            <iframe src="data:application/pdf;base64, @System.Convert.ToBase64String((Byte[])Model.IdProof)"
-                                                                    style="width:100%; height:500px;" frameborder="0"></iframe>
-                                                        </div>
-                                                    </div>
-                                                </div>
+                                          
+                                            <div>
+                                                <a class="btn btn-success m-btn-1" onclick="GetIndex('@Model.AreaName/@ViewBag.ReturnMenu/Index')"><i class="material-icons"></i><span>Back List</span></a>
+                                                   
+                                                <br/>
                                             </div>
-                                                <div>
-                                                    <a class="btn btn-success m-btn-1" onclick="GetIndex('M2/TRSC01/Index')"><i class="material-icons"></i><span>Back List</span></a>
-                                                    <br />
-                                                </div>
-                                           @* <div class="row row form-group">
-                                                <div class="col-sm-3"></div>
-                                                <div class="col-sm-2">
 
-                                                    <input type="submit" style="color:white" @Model.ActionMode value="Save" class="btn btn-success" />
-                                                    <input type="reset" style="color:white" value="Reset" class="btn btn-primary" />
-                                                </div>
-
-                                            </div>*@
+                                          
                             </form>
                         </div>
 
@@ -567,6 +549,8 @@
         }
     });
 
+
+   
 
 
     //$("#Frecommendation").change(function () {

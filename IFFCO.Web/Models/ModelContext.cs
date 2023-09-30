@@ -401,7 +401,7 @@ namespace IFFCO.VTMS.Web.Models
                 entity.Property(e => e.VtCode)
                     .HasColumnName("VT_CODE")
                     .HasColumnType("varchar2")
-                    .HasMaxLength(15);
+                    .HasMaxLength(30);
 
                 entity.Property(e => e.CertFlag)
                     .HasColumnName("CERT_FLAG")

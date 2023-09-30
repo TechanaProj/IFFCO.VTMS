@@ -160,16 +160,19 @@ namespace IFFCO.VTMS.Web.Areas.M2.Controllers
         //    }
         //}
 
-        public async Task<IActionResult> Details(string id)
+        public async Task<IActionResult> Details(string id, string menu)
         {
-            int unit = Convert.ToInt32(HttpContext.Session.GetString("UnitCode")); 
-            if (id == null) 
-            { 
+            int unit = Convert.ToInt32(HttpContext.Session.GetString("UnitCode"));
+            if (id == null)
+            {
                 return NotFound();
             }
             CommonViewModel.Pi_Msts = await _context.VtmsEnrollPi.FirstOrDefaultAsync(x => x.VtCode == id && x.UnitCode == unit) ?? new VtmsEnrollPi();
             CommonViewModel.Edu_Msts = await _context.VtmsEnrollEdu.FirstOrDefaultAsync(x => x.VtCode == id && x.UnitCode == unit) ?? new VtmsEnrollEdu();
-            CommonViewModel.Doc_Msts = await _context.VtmsEnrollDoc.FirstOrDefaultAsync(x => x.VtCode == id && x.UnitCode == unit) ?? new VtmsEnrollDoc();
+            //CommonViewModel.Doc_Msts = await _context.VtmsEnrollDoc.FirstOrDefaultAsync(x => x.VtCode == id && x.UnitCode == unit) ?? new VtmsEnrollDoc();
+            var Doc_Msts = await _context.VtmsEnrollDoc.FirstOrDefaultAsync(x => x.VtCode == id && x.UnitCode == unit) ?? new VtmsEnrollDoc();
+            CommonViewModel.Doc_Msts = Doc_Msts;
+            CommonViewModel.ProfileImage = vTMSCommonService.ConvertBlobToString(Doc_Msts.VtPhoto);
             CommonViewModel.Status = "details";
             CommonViewModel.VTCode = id;
             CommonViewModel.UnitCode = unit;
@@ -180,10 +183,11 @@ namespace IFFCO.VTMS.Web.Areas.M2.Controllers
             ViewBag.CourseLOV = dropDownListBindWeb.GetCourse();
             ViewBag.UniversityLOV = dropDownListBindWeb.Getuniveristy();
             ViewBag.RecommendationLOV = dropDownListBindWeb.Getrecommendation();
+            ViewBag.ReturnMenu = menu;
 
-            //CommonViewModel.AreaName = this.ControllerContext.RouteData.Values["area"].ToString();
-            //CommonViewModel.SelectedMenu = this.ControllerContext.RouteData.Values["controller"].ToString(); 
-            return View("Edit", CommonViewModel);
+            CommonViewModel.AreaName = this.ControllerContext.RouteData.Values["area"].ToString();
+            CommonViewModel.SelectedMenu = this.ControllerContext.RouteData.Values["controller"].ToString(); 
+            return View("details", CommonViewModel);
         }
 
 
@@ -201,14 +205,14 @@ namespace IFFCO.VTMS.Web.Areas.M2.Controllers
             }
             CommonViewModel.View_List = new List<VCompleteVTInfo>();
             CommonViewModel.View_List = vTMSCommonService.VtCompleteDTl();
-           // CommonViewModel.View_List = vTMSCommonService.VtCompleteDTl().Where(x => x.Status == "A")/*.Where(x => x.EnrollmentStatus == "Enrolled")*/.Where(x => x.VtEndDate == null || x.VtEndDate >= DateTime.Today.AddDays(-7)).Where(x => x.UnitCode == unit).ToList();
-           //CommonViewModel.Edu_Msts = new VtmsEnrollEdu();
-           CommonViewModel.Pi_Msts = new VtmsEnrollPi();
+            // CommonViewModel.View_List = vTMSCommonService.VtCompleteDTl().Where(x => x.Status == "A")/*.Where(x => x.EnrollmentStatus == "Enrolled")*/.Where(x => x.VtEndDate == null || x.VtEndDate >= DateTime.Today.AddDays(-7)).Where(x => x.UnitCode == unit).ToList();
+            //CommonViewModel.Edu_Msts = new VtmsEnrollEdu();
+            CommonViewModel.Pi_Msts = new VtmsEnrollPi();
             return View(CommonViewModel);
         }
         // GET: M2/TRSC01/edit
         public async Task<IActionResult> Edit(string id)
-         {
+        {
             CommonService commonService = new CommonService();
             if (id == null)
             {
@@ -224,7 +228,9 @@ namespace IFFCO.VTMS.Web.Areas.M2.Controllers
             byte[] idproof = vTMSCommonService.GetVTIdProof(id, unit);
             if (idproof != null && idproof.Length > 0) { CommonViewModel.IdProof = vTMSCommonService.GetVTIdProof(id, unit); } else { CommonViewModel.IdProof = new byte[] { }; };
             CommonViewModel.Doc_Msts = new VtmsEnrollDoc();
-            CommonViewModel.Doc_Msts = await _context.VtmsEnrollDoc.FirstOrDefaultAsync(x => x.VtCode == id && x.UnitCode == unit);
+            var Doc_Msts = await _context.VtmsEnrollDoc.FirstOrDefaultAsync(x => x.VtCode == id && x.UnitCode == unit);
+            CommonViewModel.Doc_Msts = Doc_Msts;
+            CommonViewModel.ProfileImage = vTMSCommonService.ConvertBlobToString(Doc_Msts.VtPhoto);
             var statelist = dropDownListBindWeb.GetState();
             ViewBag.StateLOV = statelist;
             var courselist = dropDownListBindWeb.GetCourse();
@@ -237,12 +243,126 @@ namespace IFFCO.VTMS.Web.Areas.M2.Controllers
             return View("Edit", CommonViewModel);
         }
 
+
+        //POST/
+        [HttpPost]
+        public async Task<IActionResult> UploadFile(string vtCode)
+        {
+            var files = HttpContext.Request.Form.Files;
+
+            int unit = Convert.ToInt32(HttpContext.Session.GetString("UnitCode"));
+
+            if (files != null && files.Count > 0 && files.Any(x => x.Name == "Vt_uploadPhoto"))
+            {
+                var obj = _context.VtmsEnrollDoc.Where(x => x.VtCode == vtCode && x.UnitCode == unit).FirstOrDefault();
+
+                var file = files.Where(x => x.Name == "Vt_uploadPhoto").FirstOrDefault();
+
+                if (obj != null)
+                {
+                    if (file != null)
+                    {
+                        using (var ms = new MemoryStream())
+                        {
+                            file.CopyTo(ms);
+
+                            obj.VtPhoto = ms.ToArray();
+                        }
+
+                        _context.Entry(obj).State = EntityState.Modified;
+                        _context.SaveChanges();
+                    }
+
+                }
+                else
+                {
+                    if (file != null)
+                    {
+                        obj = new VtmsEnrollDoc();
+
+                        obj.VtCode = vtCode;
+                        obj.UnitCode = unit;
+
+                        using (var ms = new MemoryStream())
+                        {
+                            file.CopyTo(ms);
+
+                            obj.VtPhoto = ms.ToArray();
+                        }
+
+                        _context.VtmsEnrollDoc.Add(obj);
+                        _context.SaveChanges();
+                    }
+
+                }
+
+            }
+
+            if (files != null && files.Count > 0 && files.Any(x => x.Name == "Id_ProofFile"))
+            {
+                var obj = _context.VtmsEnrollDoc.Where(x => x.VtCode == vtCode && x.UnitCode == unit).FirstOrDefault();
+
+                var file = files.Where(x => x.Name == "Id_ProofFile").FirstOrDefault();
+
+                if (obj != null)
+                {
+                    if (file != null)
+                    {
+                        using (var ms = new MemoryStream())
+                        {
+                            file.CopyTo(ms);
+
+                            obj.VtIdUpload = ms.ToArray();
+                            
+                        }
+
+                        _context.Entry(obj).State = EntityState.Modified;
+                        _context.SaveChanges();
+                    }
+
+                }
+                else
+                {
+                    if (file != null)
+                    {
+                        obj = new VtmsEnrollDoc();
+
+                        obj.VtCode = vtCode;
+                        obj.UnitCode = unit;
+
+                        using (var ms = new MemoryStream())
+                        {
+                            file.CopyTo(ms);
+
+                            obj.VtIdUpload = ms.ToArray();
+                        }
+
+                        _context.VtmsEnrollDoc.Add(obj);
+                        _context.SaveChanges();
+                    }
+
+                }
+
+            }
+
+            CommonViewModel.Message = "Upload Image successfully";
+            CommonViewModel.Alert = "Update";
+            CommonViewModel.Status = "Update";
+            CommonViewModel.ErrorMessage = "";
+
+            CommonViewModel.AreaName = this.ControllerContext.RouteData.Values["area"].ToString();
+            CommonViewModel.SelectedMenu = this.ControllerContext.RouteData.Values["controller"].ToString();
+            return Json(CommonViewModel);
+
+        }
+
+         
         //POST/
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(string id, int unit,TRSC01ViewModel tRSC01ViewModel)
+        public async Task<IActionResult> Edit(string id, int unit, TRSC01ViewModel tRSC01ViewModel)
         {
-           // string unit = tRSC01ViewModel.Pi_Msts.VtCode;
+            // string unit = tRSC01ViewModel.Pi_Msts.VtCode;
 
             if (id != tRSC01ViewModel.Pi_Msts.VtCode)
             {
@@ -251,6 +371,7 @@ namespace IFFCO.VTMS.Web.Areas.M2.Controllers
 
             if (ModelState.IsValid)
             {
+                var files = HttpContext.Request.Form.Files;
                 try
                 {
                     if (tRSC01ViewModel.Pi_Msts.ManagedBy == null)
@@ -275,19 +396,19 @@ namespace IFFCO.VTMS.Web.Areas.M2.Controllers
                         tRSC01ViewModel.Doc_Msts.ModifiedBy = Convert.ToInt32(HttpContext.Session.GetInt32("EmpID"));
                         tRSC01ViewModel.Doc_Msts.ModifiedOn = DateTime.Now;
                     }
-                   // VtmsEnrollPi objpi = new VtmsEnrollPi();
+                    // VtmsEnrollPi objpi = new VtmsEnrollPi();
                     VtmsEnrollPi objpi = _context.VtmsEnrollPi.FirstOrDefault(x => x.VtCode.Equals(tRSC01ViewModel.Pi_Msts.VtCode));
-                   
+
                     objpi.Status = tRSC01ViewModel.Status;
                     objpi.StateName = tRSC01ViewModel.Pi_Msts.StateName;
                     objpi.ModifiedBy = Convert.ToInt32(HttpContext.Session.GetInt32("EmpID"));
                     objpi.ModifiedOn = DateTime.Now;
-                    objpi.Address= tRSC01ViewModel.Pi_Msts.Address;    
-                    objpi.DocName= tRSC01ViewModel.Pi_Msts.DocName;
-                    objpi.FatherName= tRSC01ViewModel.Pi_Msts.FatherName;
-                    objpi.ContactNo= tRSC01ViewModel.Pi_Msts.ContactNo;
-                    objpi.DistrictName= tRSC01ViewModel.Pi_Msts.DistrictName;
-                    objpi.DocRegistrationNo= tRSC01ViewModel.Pi_Msts.DocRegistrationNo;
+                    objpi.Address = tRSC01ViewModel.Pi_Msts.Address;
+                    objpi.DocName = tRSC01ViewModel.Pi_Msts.DocName;
+                    objpi.FatherName = tRSC01ViewModel.Pi_Msts.FatherName;
+                    objpi.ContactNo = tRSC01ViewModel.Pi_Msts.ContactNo;
+                    objpi.DistrictName = tRSC01ViewModel.Pi_Msts.DistrictName;
+                    objpi.DocRegistrationNo = tRSC01ViewModel.Pi_Msts.DocRegistrationNo;
                     objpi.EnrolledBy = tRSC01ViewModel.Pi_Msts.EnrolledBy;
                     objpi.EnrolledOn = tRSC01ViewModel.Pi_Msts.EnrolledOn;
                     objpi.EnrollmentStatus = tRSC01ViewModel.Pi_Msts.EnrollmentStatus;
@@ -297,50 +418,61 @@ namespace IFFCO.VTMS.Web.Areas.M2.Controllers
                     objpi.Pincode = tRSC01ViewModel.Pi_Msts.Pincode;
                     objpi.VtEndDate = tRSC01ViewModel.Pi_Msts.VtEndDate;
                     objpi.VtStartDate = tRSC01ViewModel.Pi_Msts.VtStartDate;
-                    objpi.VtCode= tRSC01ViewModel.Pi_Msts.VtCode;
+                    objpi.VtCode = tRSC01ViewModel.Pi_Msts.VtCode;
                     _context.VtmsEnrollPi.Update(objpi);
 
 
                     VtmsEnrollEdu objedu = new VtmsEnrollEdu();
                     objedu = _context.VtmsEnrollEdu.FirstOrDefault(x => x.VtCode.Equals(tRSC01ViewModel.Pi_Msts.VtCode));
-                    objedu.UniversityName= tRSC01ViewModel.Edu_Msts.UniversityName.ToString();
+                    objedu.UniversityName = tRSC01ViewModel.Edu_Msts.UniversityName.ToString();
                     objedu.InstituteName = tRSC01ViewModel.Edu_Msts.InstituteName;
-                    objedu.CourseName= tRSC01ViewModel.Edu_Msts.CourseName;
-                    objedu.BranchName= tRSC01ViewModel.Edu_Msts.BranchName;
+                    objedu.CourseName = tRSC01ViewModel.Edu_Msts.CourseName;
+                    objedu.BranchName = tRSC01ViewModel.Edu_Msts.BranchName;
                     objedu.ModifiedOn = DateTime.Now;
                     objedu.ModifiedBy = Convert.ToInt32(HttpContext.Session.GetInt32("EmpID"));
                     objedu.ModifiedOn = tRSC01ViewModel.Edu_Msts.ModifiedOn;
                     _context.VtmsEnrollEdu.Update(objedu);
 
                     VtmsEnrollDoc objdoc = new VtmsEnrollDoc();
-                    objdoc= await _context.VtmsEnrollDoc.FirstOrDefaultAsync(x => x.VtCode == tRSC01ViewModel.Pi_Msts.VtCode && x.UnitCode == tRSC01ViewModel.Pi_Msts.UnitCode);
-                   // objdoc.VtCode= tRSC01ViewModel.Doc_Msts.VtCode;
-                    objdoc.VtIdType= tRSC01ViewModel.Doc_Msts.VtIdType; 
-                   // objdoc.
-                    objdoc.VtPhoto = tRSC01ViewModel.Doc_Msts.VtPhoto;
+                    objdoc = await _context.VtmsEnrollDoc.FirstOrDefaultAsync(x => x.VtCode == tRSC01ViewModel.Pi_Msts.VtCode && x.UnitCode == tRSC01ViewModel.Pi_Msts.UnitCode);
+                    // objdoc.VtCode= tRSC01ViewModel.Doc_Msts.VtCode;
+                    objdoc.VtIdType = tRSC01ViewModel.Doc_Msts.VtIdType;
+                    // objdoc.
+                    // objdoc.VtPhoto = tRSC01ViewModel.Doc_Msts.VtPhoto;
                     objdoc.VtIdDtl = tRSC01ViewModel.Doc_Msts.VtIdDtl;
                     objdoc.VtIdUpload = tRSC01ViewModel.Doc_Msts.VtIdUpload;
                     objdoc.ModifiedBy = (int)Convert.ToInt32(HttpContext.Session.GetInt32("EmpID"));
                     objdoc.ModifiedOn = tRSC01ViewModel.Doc_Msts.ModifiedOn;
                     _context.VtmsEnrollDoc.Update(objdoc);
-                    // var vtmsdocmsts = await _context.VtmsEnrollDoc.FirstOrDefaultAsync(x => x.VtCode == tRSC01ViewModel.Pi_Msts.VtCode && x.UnitCode == tRSC01ViewModel.Pi_Msts.UnitCode); 
+
+                    if (files != null && files.Count > 0 && files.Any(x => x.Name == "Vt_uploadPhoto"))
+                    {
+                        var file = files.Where(x => x.Name == "Vt_uploadPhoto").FirstOrDefault();
+
+                        if (file != null)
+                            using (var ms = new MemoryStream())
+                            {
+                                file.CopyTo(ms);
+
+                                tRSC01ViewModel.Doc_Msts.VtPhoto = ms.ToArray();
+                            }
+                    }
+
+                    //var vtmsdocmsts = await _context.VtmsEnrollDoc.FirstOrDefaultAsync(x => x.VtCode == tRSC01ViewModel.Pi_Msts.VtCode && x.UnitCode == tRSC01ViewModel.Pi_Msts.UnitCode); 
                     //vtmsdocmsts.VtIdType = tRSC01ViewModel.Doc_Msts.VtIdType;
                     // vtmsdocmsts.VtIdDtl = tRSC01ViewModel.Doc_Msts.VtIdDtl;
-                    //await _context.SaveChangesAsync();
-                    _context.SaveChanges();
+                    await _context.SaveChangesAsync();
+                    //_context.SaveChanges();
 
 
-                    //TempData["Status"] = "Update";
-                    //TempData["Alert"] = "Update";
-                    //TempData["Message"] = tRSC01ViewModel.Pi_Msts.Name;                   
-
+                
                     CommonViewModel.Message = tRSC01ViewModel.Pi_Msts.Name;
                     CommonViewModel.Alert = "Update";
                     CommonViewModel.Status = "Update";
                     CommonViewModel.ErrorMessage = "";
                 }
 
-               // catch (DbUpdateConcurrencyException)
+                // catch (DbUpdateConcurrencyException)
                 //{
                 //    if (!vTPersonalInfoExists(tRSC01ViewModel.Pi_Msts.VtCode))
                 //    {
@@ -352,7 +484,7 @@ namespace IFFCO.VTMS.Web.Areas.M2.Controllers
                 //    }
                 //}
                 //return RedirectToAction(nameof(Index));
-                 catch (Exception ex)
+                catch (Exception ex)
                 {
                     commonException.GetCommonExcepton(CommonViewModel, ex);
                     CommonViewModel.AreaName = this.ControllerContext.RouteData.Values["area"].ToString();
@@ -363,14 +495,14 @@ namespace IFFCO.VTMS.Web.Areas.M2.Controllers
                 CommonViewModel.SelectedMenu = this.ControllerContext.RouteData.Values["controller"].ToString();
                 return Json(CommonViewModel);
             }
-            return View(tRSC01ViewModel);
+            return Json(tRSC01ViewModel);
         }
         private bool vTPersonalInfoExists(string id)
         {
             return _context.VtmsEnrollPi.Any(e => e.VtCode == id);
         }
 
-       
+
         public List<SelectListItem> DistrictLOVBind(string StateCd)
         {
             List<SelectListItem> disttCDLOV = new List<SelectListItem>();
@@ -390,7 +522,7 @@ namespace IFFCO.VTMS.Web.Areas.M2.Controllers
             List<SelectListItem> disttCDLOV = new List<SelectListItem>();
             disttCDLOV = dropDownListBindWeb.Getinstitue(UNIVERSITY_ID);
             return disttCDLOV;
-        } 
-      
+        }
+
     }
 }

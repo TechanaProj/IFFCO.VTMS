@@ -31,6 +31,7 @@ namespace IFFCO.VTMS.Web.Areas.M2.Controllers
         private readonly DropDownListBindWeb dropDownListBindWeb = null;
         private readonly VTMSCommonService vTMSCommonService = null;
         private readonly PrimaryKeyGen primaryKeyGen = null;
+        public ReportRepositoryWithParameters reportRepository = null;
         CommonException<TRSC04ViewModel> commonException = null;
         readonly string proj = new AppConfiguration().ProjectId;
         public TRSC04Controller(ModelContext context)
@@ -40,6 +41,7 @@ namespace IFFCO.VTMS.Web.Areas.M2.Controllers
             dropDownListBindWeb = new DropDownListBindWeb();
             vTMSCommonService = new VTMSCommonService();
             primaryKeyGen = new PrimaryKeyGen();
+            reportRepository = new ReportRepositoryWithParameters();
 
         }
 
@@ -92,19 +94,24 @@ namespace IFFCO.VTMS.Web.Areas.M2.Controllers
             return Json(CommonViewModel);
         }
 
+
         [HttpPost]
         public TRSC04ViewModel GetVtList(TRSC04ViewModel tRSC04ViewModel)
         {
             int unit = Convert.ToInt32(HttpContext.Session.GetString("UnitCode"));
-            string query = "SELECT A.BRANCH_NAME, A.COURSE_DESC, A.NAME, A.VT_CODE, A.VT_END_DATE, A.VT_START_DATE ";
-            query = query + "FROM V_COMPLETE_VT_INFO A, VTMS_ENROLL_PI B  ";
-            query = query + "WHERE A.VT_CODE = B.VT_CODE AND A.STATUS = 'A' AND A.STATUS = 'A' ";
-            query = query + "AND B.ENROLLED_ON BETWEEN '" + tRSC04ViewModel.FromDate.ToString("dd-MMM-yyyy") + "' AND '" + tRSC04ViewModel.ToDate.ToString("dd-MMM-yyyy") + "' ";
-            if (string.IsNullOrEmpty(tRSC04ViewModel.Edu_Msts.InstituteName)) { query = query + "AND A.INSTITUTE_NAME LIKE '%" + tRSC04ViewModel.Edu_Msts.InstituteName + "%' "; }
-            if (string.IsNullOrEmpty(tRSC04ViewModel.Edu_Msts.UniversityName)) { query = query + "AND a.UNIVERSITY_NAME LIKE '%" + tRSC04ViewModel.Edu_Msts.UniversityName + "%' "; }
-            if (string.IsNullOrEmpty(tRSC04ViewModel.Edu_Msts.BranchName)) { query = query + "AND A.BRANCH_NAME LIKE '%" + tRSC04ViewModel.Edu_Msts.BranchName + "%' "; }
-            if (string.IsNullOrEmpty(tRSC04ViewModel.Edu_Msts.CourseName)) { query = query + "AND A.COURSE_DESC LIKE '%" + tRSC04ViewModel.Edu_Msts.CourseName + "%' "; }
-            query = query + "AND A.UNIT_CODE LIKE '%" + unit + "%' ";
+
+            string query = "SELECT A.BRANCH_NAME, A.COURSE_DESC, A.NAME, A.VT_CODE, A.VT_END_DATE, A.VT_START_DATE " +
+               "FROM V_COMPLETE_VT_INFO A, VTMS_ENROLL_PI B " +
+               "WHERE A.VT_CODE = B.VT_CODE AND A.STATUS IN ('A','N','I') " +
+               "AND B.ENROLLED_ON BETWEEN '" + tRSC04ViewModel.FromDate.ToString("dd-MMM-yyyy") + "' AND '" + tRSC04ViewModel.ToDate.ToString("dd-MMM-yyyy") + "' ";
+
+            if (!string.IsNullOrEmpty(tRSC04ViewModel.Edu_Msts.InstituteName)) { query += "AND A.INSTITUTE_NAME LIKE '%" + tRSC04ViewModel.Edu_Msts.InstituteName + "%' "; }
+            if (!string.IsNullOrEmpty(tRSC04ViewModel.Edu_Msts.UniversityName)) { query += "AND A.UNIVERSITY_NAME LIKE '%" + tRSC04ViewModel.Edu_Msts.UniversityName + "%' "; }
+            if (!string.IsNullOrEmpty(tRSC04ViewModel.Edu_Msts.BranchName)) { query += "AND A.BRANCH_NAME LIKE '%" + tRSC04ViewModel.Edu_Msts.BranchName + "%' "; }
+            if (!string.IsNullOrEmpty(tRSC04ViewModel.Edu_Msts.CourseName)) { query += "AND A.COURSE_DESC LIKE '%" + tRSC04ViewModel.Edu_Msts.CourseName + "%' "; }
+
+            query += "AND A.UNIT_CODE LIKE '%" + unit + "%' ";
+
 
 
             DataTable dt = _context.GetSQLQuery(query);
@@ -179,18 +186,12 @@ namespace IFFCO.VTMS.Web.Areas.M2.Controllers
             
         }
 
-
-
-
-       
         public List<SelectListItem> DistrictLOVBindJSON(string StateCd)
         {
             List<SelectListItem> disttCDLOV = new List<SelectListItem>();
             disttCDLOV = dropDownListBindWeb.ListDistrictBind(StateCd);
             return disttCDLOV;
         }
-
-
 
         public List<SelectListItem> UniversityLOVBindJSON(string DistrictName)
         {
@@ -213,6 +214,51 @@ namespace IFFCO.VTMS.Web.Areas.M2.Controllers
             return BranchCodeLOV;
         }
 
+
+        public ActionResult GenerateReport(string vtcode)
+        {
+            var tRSC04ViewModel = new TRSC04ViewModel();
+            tRSC04ViewModel.Pi_Msts = new VtmsEnrollPi()
+            {
+                VtCode = vtcode
+            };
+            bool rdlc = true;
+            string separator = "&";
+            string extension = "aspx";
+            var fullClientIp = HttpContext.Session.GetString("fullClientIp");
+            var clientIp = HttpContext.Session.GetString("clientIp");
+
+            string Report = "";
+            string QueryString = String.Empty;
+
+            tRSC04ViewModel.CallingReport = "APPLICANTFORM." + extension;
+
+
+            Report reportobj = GenerateReportData(tRSC04ViewModel, separator);
+            string ReportFormat = "pdf";
+            string data = reportobj.ReportName + "+destype=cache+desformat=" + ReportFormat;
+
+            Report = reportRepository.GenerateReportRdlc(HttpContext.Session.GetString("ReportServer"),
+                      reportobj.Query,
+                      reportobj.ReportName,
+                      this.ControllerContext.RouteData.Values["area"].ToString(),
+                      this.ControllerContext.RouteData.Values["controller"].ToString(),
+                      HttpContext.Session.GetInt32("EmpID").ToString(), fullClientIp, clientIp);
+
+            CommonViewModel.AreaName = this.ControllerContext.RouteData.Values["area"].ToString();
+            CommonViewModel.SelectedMenu = this.ControllerContext.RouteData.Values["controller"].ToString();
+            CommonViewModel.Report = Report;
+            return Json(CommonViewModel);
+        }
+
+        public Report GenerateReportData(TRSC04ViewModel tRSC04ViewModel, string separator)
+        {
+            Report ReportData = new Report();
+            ReportData.ReportName = tRSC04ViewModel.CallingReport;
+            ReportData.Query =
+                "P_VTCODE=" + tRSC04ViewModel.Pi_Msts.VtCode;
+            return ReportData;
+        }
     }
 }
 

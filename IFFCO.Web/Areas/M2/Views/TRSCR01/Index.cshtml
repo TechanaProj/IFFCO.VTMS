@@ -130,7 +130,7 @@ function Validate()
                                                 @Html.DisplayFor(modelItem => item.COURSE_DESC) - @Html.DisplayFor(modelItem => item.BRANCH_DESC)
                                             </td>
                                             <td>
-                                                @Html.DisplayFor(modelItem => item.VtStartDate) - @Html.DisplayFor(modelItem => item.VtEndDate)
+                                            @item.VtStartDate?.ToString("dd/MM/yyyy").Replace("-","/") - @item.VtEndDate?.ToString("dd/MM/yyyy").Replace("-","/")
                                             </td>
                                             <td style=" width: 22%;">
                                             <select id="FReportType" class="form-control" required>
@@ -142,8 +142,9 @@ function Validate()
                                             </td>
                                             <td style=" width: 10%;">                                   
                                                 <input type="button" class="btn btn-primary btnSelect"  value="Generate Report">
-                                                <a asp-area="M2" asp-controller="TRSC03" asp-action="Create" asp-route-id="@item.Vtcode" target="_blank" data-toggle="modal"><input type="button" class="btn btn-success"  value="Print Certificate" /></a>
-                                            </td>
+                                               @* <a asp-area="M2" asp-controller="TRSC03" asp-action="Create" asp-route-id="@item.Vtcode" target="_blank" data-toggle="modal"><input type="button" class="btn btn-success"  value="Print Certificate" /></a>
+                                        *@   
+                                    </td>
                                         </tr>
                                       }
                                 </tbody>

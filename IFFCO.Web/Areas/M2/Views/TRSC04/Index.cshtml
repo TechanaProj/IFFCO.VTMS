@@ -7,6 +7,9 @@
 
 <script>
 
+   
+
+
 function Validate() 
 {
         debugger;
@@ -21,6 +24,14 @@ function Validate()
             return true;
         }
  }
+
+
+
+
+    $('#execute').click(function () {
+        window.location.href = '/M2/TRSC03/GenerateReport';
+    });
+
 
  </script>
 
@@ -70,7 +81,7 @@ function Validate()
                                                      </div>
                                                      <div class="col-sm-2 col-md-2">
                                                        <div class="form-group">
-                                                              <select id="FState" class="form-control" onchange="PopDistrictLOV()"  asp-for="@Model.Pi_Msts.StateName" style="width:100%" asp-items="@(new SelectList(ViewBag.StateLOV,"Value","Text")) " >
+                                                           <select id="FState" class="form-control" onchange="PopDistrictLOV()"  asp-for="@Model.Pi_Msts.StateName" style="width:100%" asp-items="@(new SelectList(ViewBag.StateLOV,"Value","Text")) " >
                                                            <option value="">------Select-----</option>
                                                             <span asp-validation-for="@Model.Pi_Msts.StateName" class="text-danger"></span>
                                                         </select>
@@ -170,7 +181,7 @@ function Validate()
                                  </thead>
 
                                   <tbody>
-                    @foreach (var item in Model.View_InActive_List)
+                                    @foreach (var item in Model.View_InActive_List)
                     {
                         <tr>
                             <td>
@@ -183,18 +194,29 @@ function Validate()
                                   @Html.DisplayFor(modelItem => item.COURSE_DESC) - @Html.DisplayFor(modelItem => item.BRANCH_DESC)
                             </td>
                             <td>
-                                @Html.DisplayFor(modelItem => item.VtStartDate) - @Html.DisplayFor(modelItem => item.VtEndDate)
+                                 @item.VtStartDate?.ToString("dd/MM/yyyy").Replace("-","/") - @item.VtEndDate?.ToString("dd/MM/yyyy").Replace("-","/")
+                               
                             </td>
 
                             <td style=" width: 32%;">
+@*
                                 @if (item.CertFlag == null)
                                 {
-                                    <a asp-area="M2" asp-controller="TRSC03" asp-action="Create" asp-route-id="@item.Vtcode" class="Details" data-toggle="modal"><input type="button" class="btn btn-primary"  value="Print Certificate" /></a>
+                                                  
+                               <a asp-area="M2" asp-controller="TRSC03" asp-action="Create" asp-route-id="@item.Vtcode" class="Details" data-toggle="modal"><input type="button" class="btn btn-primary"  value="Print Certificate" /></a>
                                 }
-                                <input type="button" class="btn btn-danger btnSelect" value="Applicant Form" />
+*@
+                               @* <input type="button" class="btn btn-danger btnSelect" value="Applicant Form" />*@
+                                             @*   <form asp-area="M2" asp-controller="TRSC04" action="GenerateReport" method="post">*@
+                               
+                                               @* </form>*@
 
-                                <a asp-area="M2" asp-controller="TRSC04" asp-action="Details" asp-route-id="@item.Vtcode" class="Details" data-toggle="modal"><input type="button" class="btn btn-success" value="Details"> </a>
-                            </td>
+                                                <input asp-area="M2" asp-controller="TRSC04" onclick="CommonReportGenerateJS('/M2/TRSC04/GenerateReport',{vtcode:' + @item.Vtcode + '});" id="execute" class="m-btn-1 execute report" value="Execute">
+
+                                                <a asp asp-controller="TRSC01" asp-action="Details" asp-route-id="@item.Vtcode" asp-route-menu="@Model.SelectedMenu" class="@Model.Select glpicon addnewitem" data-toggle="modal">
+                                                    <i class='fa fa-eye' data-toggle='tooltip' title='View details' data-original-title='Details'></i>
+                                                </a>
+                       </td>
                         </tr>
                     }
                 </tbody>
