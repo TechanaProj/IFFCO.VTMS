@@ -190,24 +190,8 @@ namespace IFFCO.VTMS.Web.Areas.M2.Controllers
         }
 
         //RDLC
-    
 
-        public JsonResult GetReport(string id)
-        {
-            string Report = "";
-            string QueryString = String.Empty;
-            var ReportName = string.Empty;
-            if (!string.IsNullOrWhiteSpace(id))
-            {
-                ReportName = "ApplicantForm".ToString() + ".rep";
-            }
-
-            var ReportFormat = "pdf";
-            string data = ReportName + "+destype=cache+desformat=" + ReportFormat;
-            QueryString = "P_VtCode=" + id;
-            return Json(Report);
-
-        }
+      
 
 
         // GET: M3/FP3/Edit/5

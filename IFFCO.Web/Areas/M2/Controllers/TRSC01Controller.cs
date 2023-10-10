@@ -230,7 +230,8 @@ namespace IFFCO.VTMS.Web.Areas.M2.Controllers
             CommonViewModel.Doc_Msts = new VtmsEnrollDoc();
             var Doc_Msts = await _context.VtmsEnrollDoc.FirstOrDefaultAsync(x => x.VtCode == id && x.UnitCode == unit);
             CommonViewModel.Doc_Msts = Doc_Msts;
-            CommonViewModel.ProfileImage = vTMSCommonService.ConvertBlobToString(Doc_Msts.VtPhoto);
+            //CommonViewModel.ProfileImage = vTMSCommonService.ConvertBlobToString(Doc_Msts.VtPhoto);
+            CommonViewModel.ProfileImage = vTMSCommonService.GetVTIdProofStr(id, unit);
             var statelist = dropDownListBindWeb.GetState();
             ViewBag.StateLOV = statelist;
             var courselist = dropDownListBindWeb.GetCourse();
@@ -320,7 +321,7 @@ namespace IFFCO.VTMS.Web.Areas.M2.Controllers
                         _context.SaveChanges();
                     }
 
-                }
+                } 
                 else
                 {
                     if (file != null)
@@ -363,7 +364,7 @@ namespace IFFCO.VTMS.Web.Areas.M2.Controllers
         public async Task<IActionResult> Edit(string id, int unit, TRSC01ViewModel tRSC01ViewModel)
         {
             // string unit = tRSC01ViewModel.Pi_Msts.VtCode;
-
+            unit = Convert.ToInt32(HttpContext.Session.GetString("UnitCode"));
             if (id != tRSC01ViewModel.Pi_Msts.VtCode)
             {
                 return NotFound();
@@ -419,31 +420,65 @@ namespace IFFCO.VTMS.Web.Areas.M2.Controllers
                     objpi.VtEndDate = tRSC01ViewModel.Pi_Msts.VtEndDate;
                     objpi.VtStartDate = tRSC01ViewModel.Pi_Msts.VtStartDate;
                     objpi.VtCode = tRSC01ViewModel.Pi_Msts.VtCode;
-                    _context.VtmsEnrollPi.Update(objpi);
-
+                  //  _context.VtmsEnrollPi.Update(objpi);
+                    _context.Entry(objpi).State = EntityState.Modified;
+                    _context.SaveChanges();
 
                     VtmsEnrollEdu objedu = new VtmsEnrollEdu();
                     objedu = _context.VtmsEnrollEdu.FirstOrDefault(x => x.VtCode.Equals(tRSC01ViewModel.Pi_Msts.VtCode));
-                    objedu.UniversityName = tRSC01ViewModel.Edu_Msts.UniversityName.ToString();
-                    objedu.InstituteName = tRSC01ViewModel.Edu_Msts.InstituteName;
-                    objedu.CourseName = tRSC01ViewModel.Edu_Msts.CourseName;
-                    objedu.BranchName = tRSC01ViewModel.Edu_Msts.BranchName;
-                    objedu.ModifiedOn = DateTime.Now;
-                    objedu.ModifiedBy = Convert.ToInt32(HttpContext.Session.GetInt32("EmpID"));
-                    objedu.ModifiedOn = tRSC01ViewModel.Edu_Msts.ModifiedOn;
-                    _context.VtmsEnrollEdu.Update(objedu);
+                    
+                    
+                    if (objedu != null)
+                    {
+                        objedu.VtCode = tRSC01ViewModel.Pi_Msts.VtCode;
+                        objedu.UnitCode = unit;
+                        objedu.UniversityName = tRSC01ViewModel.Edu_Msts.UniversityName.ToString();
+                        objedu.InstituteName = tRSC01ViewModel.Edu_Msts.InstituteName;
+                        objedu.CourseName = tRSC01ViewModel.Edu_Msts.CourseName;
+                        objedu.BranchName = tRSC01ViewModel.Edu_Msts.BranchName;
+                        objedu.ModifiedOn = DateTime.Now;
+                        objedu.Year = tRSC01ViewModel.Edu_Msts.Year;
+                        objedu.Semester = tRSC01ViewModel.Edu_Msts.Semester;
+                        objedu.ModifiedBy = Convert.ToInt32(HttpContext.Session.GetInt32("EmpID"));
+                        objedu.ModifiedOn = tRSC01ViewModel.Edu_Msts.ModifiedOn;
+                        //_context.VtmsEnrollEdu.Update(objedu);
+                        _context.Entry(objedu).State = EntityState.Modified;
+                        _context.SaveChanges();
 
-                    VtmsEnrollDoc objdoc = new VtmsEnrollDoc();
-                    objdoc = await _context.VtmsEnrollDoc.FirstOrDefaultAsync(x => x.VtCode == tRSC01ViewModel.Pi_Msts.VtCode && x.UnitCode == tRSC01ViewModel.Pi_Msts.UnitCode);
-                    // objdoc.VtCode= tRSC01ViewModel.Doc_Msts.VtCode;
-                    objdoc.VtIdType = tRSC01ViewModel.Doc_Msts.VtIdType;
-                    // objdoc.
-                    // objdoc.VtPhoto = tRSC01ViewModel.Doc_Msts.VtPhoto;
-                    objdoc.VtIdDtl = tRSC01ViewModel.Doc_Msts.VtIdDtl;
-                    objdoc.VtIdUpload = tRSC01ViewModel.Doc_Msts.VtIdUpload;
-                    objdoc.ModifiedBy = (int)Convert.ToInt32(HttpContext.Session.GetInt32("EmpID"));
-                    objdoc.ModifiedOn = tRSC01ViewModel.Doc_Msts.ModifiedOn;
-                    _context.VtmsEnrollDoc.Update(objdoc);
+
+                    }
+                    else
+                    {
+                        objedu = new VtmsEnrollEdu();
+
+                        objedu.VtCode = tRSC01ViewModel.Pi_Msts.VtCode;
+                        objedu.UnitCode = unit;
+                        objedu.UniversityName = tRSC01ViewModel.Edu_Msts.UniversityName.ToString();
+                        objedu.InstituteName = tRSC01ViewModel.Edu_Msts.InstituteName;
+                        objedu.CourseName = tRSC01ViewModel.Edu_Msts.CourseName;
+                        objedu.BranchName = tRSC01ViewModel.Edu_Msts.BranchName;
+                        objedu.Year = tRSC01ViewModel.Edu_Msts.Year;
+                        objedu.Semester = tRSC01ViewModel.Edu_Msts.Semester;
+                        objedu.ModifiedOn = DateTime.Now;
+                        objedu.ModifiedBy = Convert.ToInt32(HttpContext.Session.GetInt32("EmpID"));
+                        objedu.ModifiedOn = tRSC01ViewModel.Edu_Msts.ModifiedOn;
+
+                        _context.VtmsEnrollEdu.Add(objedu);
+                        _context.SaveChanges();
+
+                    }
+
+                    //VtmsEnrollDoc objdoc = new VtmsEnrollDoc();
+                    //objdoc = await _context.VtmsEnrollDoc.FirstOrDefaultAsync(x => x.VtCode == tRSC01ViewModel.Pi_Msts.VtCode && x.UnitCode == tRSC01ViewModel.Pi_Msts.UnitCode);
+                    //// objdoc.VtCode= tRSC01ViewModel.Doc_Msts.VtCode;
+                    //objdoc.VtIdType = tRSC01ViewModel.Doc_Msts.VtIdType;
+                    //// objdoc.
+                    //// objdoc.VtPhoto = tRSC01ViewModel.Doc_Msts.VtPhoto;
+                    //objdoc.VtIdDtl = tRSC01ViewModel.Doc_Msts.VtIdDtl;
+                    //objdoc.VtIdUpload = tRSC01ViewModel.Doc_Msts.VtIdUpload;
+                    //objdoc.ModifiedBy = (int)Convert.ToInt32(HttpContext.Session.GetInt32("EmpID"));
+                    //objdoc.ModifiedOn = tRSC01ViewModel.Doc_Msts.ModifiedOn;
+                    //_context.VtmsEnrollDoc.Update(objdoc);
 
                     if (files != null && files.Count > 0 && files.Any(x => x.Name == "Vt_uploadPhoto"))
                     {
@@ -470,6 +505,10 @@ namespace IFFCO.VTMS.Web.Areas.M2.Controllers
                     CommonViewModel.Alert = "Update";
                     CommonViewModel.Status = "Update";
                     CommonViewModel.ErrorMessage = "";
+
+                    CommonViewModel.AreaName = this.ControllerContext.RouteData.Values["area"].ToString();
+                    CommonViewModel.SelectedMenu = this.ControllerContext.RouteData.Values["controller"].ToString();
+                    
                 }
 
                 // catch (DbUpdateConcurrencyException)

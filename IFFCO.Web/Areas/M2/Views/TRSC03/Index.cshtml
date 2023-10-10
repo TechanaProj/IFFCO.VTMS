@@ -136,11 +136,9 @@ function Validate()
                                     <a asp-area="M2" asp-controller="TRSC03" asp-action="Create" asp-route-id="@item.Vtcode" class="Details" data-toggle="modal"><input type="button" class="btn btn-primary" value="Print Certificate" /></a>
                                 }
                                 *@
-                                <input type="button" class="btn btn-danger btnSelect" value="Applicant Form" />
-
-                                 @* 
-                                 <a asp-area="M2" asp-controller="TRSC03" asp-action="Create" target="_blank"  asp-route-id="@item.Vtcode" id="Create" type="button" class="btn btn-success"  data-toggle="modal"> Create Certificate</a>
-*@
+                                @*<input type="button" class="btn btn-danger btnSelect" value="Applicant Form" />*@
+                                <input asp-area="M2" asp-controller="TRSC04" onclick="CommonReportGenerateJS('/M2/TRSC04/GenerateReport',{vtcode:' + @item.Vtcode + '});" id="execute" class="m-btn-1 execute report" value="Applicant Form">
+                                
 @*
                                  <a asp-area="M2" asp-controller="TRSC03" asp-action="Details" asp-route-id="@item.Vtcode" class="Details" data-toggle="modal"><input type="button" class="btn btn-success" value="Details"> </a>
 *@

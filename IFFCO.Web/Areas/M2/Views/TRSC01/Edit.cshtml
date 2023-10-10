@@ -1,7 +1,7 @@
 ﻿@model IFFCO.VTMS.Web.ViewModels.TRSC01ViewModel
 
 @{
-            //ViewData["Title"] = "Edit";
+    //ViewData["Title"] = "Edit";
     //Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
@@ -16,6 +16,7 @@
 </script>
 
 <script src="~/js/bootstrap-datepicker.min.js"></script>
+<script src="~/js/common.js"></script>
 <style>
     .user-img-edit {
         width: 240px;
@@ -108,7 +109,7 @@
             debugger;
             var contentId;
             if (response.selectedAction == null) {
-                contentId = "/" + response.areaName + "/" + response.selectedMenu + "/Edit?id="+$("#VtCode").val();
+                contentId = "/" + response.areaName + "/" + response.selectedMenu + "/Edit?id=" + $("#VtCode").val();
             }
             else {
                 contentId = "/" + response.areaName + "/" + response.selectedMenu + "/" + response.selectedAction;
@@ -149,11 +150,14 @@
                                 <div class="m-form">
                                     <div class="m-form-bx">
                                         <div class="row form-sm">
-                                           
+
                                             <div class="row form-group">
                                                 <div class="col-sm-5"></div>
-                                                <div class="col-sm-4"> <span class="user-img-edit">
-                                                <img src="@Model.ProfileImage" id="VTPhoto" style="width:100%;"></span></div>
+                                                <div class="col-sm-4">
+                                                    <span class="user-img-edit">
+                                                        <img src="@Model.ProfileImage" id="VTPhoto" style="width:100%;">
+                                                    </span>
+                                                </div>
 
                                                 <div class="col-sm-9 col-md-4">
                                                     <div class="form-group border border-secondary">
@@ -165,7 +169,7 @@
 
                                                 <div class="col-sm-2 text-right">
                                                     <input type="button" class="btn btn-success" id="VTPhotoButton" onclick="fnUploadImage()" style="color:white;text-align:center" value="Upload Picture" />
-                                                </div>  
+                                                </div>
                                             </div>
                                         </div>
                                     </div>
@@ -247,12 +251,12 @@
                                                 </div>
                                             </div>
                                             <div class="col-sm-2 col-md-2">
-                                                <select id="FDistrict"  asp-for="@Model.Pi_Msts.DistrictName" class="form-control" style="width:100%">
+                                                <select id="FDistrict" asp-for="@Model.Pi_Msts.DistrictName" class="form-control" style="width:100%">
                                                     <option value="">--Select--</option>
                                                 </select>
                                                 @*<span asp-validation-for="@Model.Pi_Msts.DistrictName" class="text-danger"></span>*@
                                                 <input type="hidden" id="Districthidden" asp-for="@Model.Pi_Msts.DistrictName" class="form-control" />
-                                                
+
                                             </div>
                                             <div class="col-sm-1 col-md-2">
                                                 <div>
@@ -261,7 +265,7 @@
                                             </div>
                                             <div class="col-sm-2 col-md-2">
                                                 <div>
-                                                    <input id="FPincode" type="number" maxlength="6" asp-for="@Model.Pi_Msts.Pincode" class="form-control"  />
+                                                    <input id="FPincode" type="number" maxlength="6" asp-for="@Model.Pi_Msts.Pincode" class="form-control" />
                                                     <span asp-validation-for="@Model.Pi_Msts.Pincode" class="text-danger"></span>
                                                 </div>
                                             </div>
@@ -281,7 +285,9 @@
                                             </div>
                                             <div class="col-sm-2 col-md-2">
                                                 <div>
-                                                    <select id="course" required class="form-control" onchange="PopBranchLOV()" style="width:100%" asp-for="@Model.Edu_Msts.CourseName" asp-items="@(new SelectList(ViewBag.CourseLOV,"Value","Text"))">
+                                                    <select id="course" required class="form-control" onchange="PopBranchLOV()" style="width:100%"
+                                                            asp-for="@Model.Edu_Msts.CourseName"
+                                                            asp-items="@(new SelectList(ViewBag.CourseLOV,"Value","Text", Model.Edu_Msts != null ? Model.Edu_Msts.CourseName : ""))">
                                                         <option value="">--Select--</option>
                                                     </select>
                                                     @*                                                      <span asp-validation-for="@Model.Edu_Msts.CourseName" class="text-danger"></span>
@@ -414,7 +420,7 @@
                                             </div>
                                             <div class="col-sm-2 col-md-2">
                                                 <div>
-                                                    <input id="FRecommPno" maxlength="6" type="number" asp-for="@Model.Pi_Msts.RecommPno" class="form-control"/>
+                                                    <input id="FRecommPno" maxlength="6" type="number" asp-for="@Model.Pi_Msts.RecommPno" class="form-control" />
                                                 </div>
 
                                             </div>
@@ -510,19 +516,19 @@
                                                 </div>
                                             </div>
 
-                                           @* <div class="col-sm-9 col-md-4">
-                                                <div class="form-group border border-secondary">
-                                                    <label class="lebel2">ID Proof Upload</label>
-                                                    <input type="file" name="Id_ProofFile" id="Id_ProofFile" onclick="fnUploadImage()" />
-                                                    <span asp-validation-for="@Model.Doc_Msts.VtIdUpload" class="text-danger"></span>
-                                                </div>
+                                            @* <div class="col-sm-9 col-md-4">
+                                            <div class="form-group border border-secondary">
+                                            <label class="lebel2">ID Proof Upload</label>
+                                            <input type="file" name="Id_ProofFile" id="Id_ProofFile" onclick="fnUploadImage()" />
+                                            <span asp-validation-for="@Model.Doc_Msts.VtIdUpload" class="text-danger"></span>
+                                            </div>
                                             </div>
 
                                             <div class="col-sm-2 text-right">
-                                                <input type="button" class="btn btn-success" id="VTPhotoButton" onclick="fnUploadImage()" style="color:white;text-align:center" value="Upload Picture" />
+                                            <input type="button" class="btn btn-success" id="VTPhotoButton" onclick="fnUploadImage()" style="color:white;text-align:center" value="Upload Picture" />
                                             </div>*@
 
-                                            
+
                                             <div class="col-sm-2 col-md-2">
                                                 <div>
                                                     <div class="custom-file">
@@ -545,21 +551,34 @@
                                                     <div class="collapse" id="collapseExample">
                                                         <div class="card card-body">
                                                             <iframe src="data:application/pdf;base64, @System.Convert.ToBase64String((Byte[])Model.IdProof)"
-                                                             style="width:100%; height:500px;" frameborder="0"></iframe>
+                                                                    style="width:100%; height:500px;" frameborder="0"></iframe>
                                                         </div>
                                                     </div>
                                                 </div>
                                             </div>
 
-                                            <div class="row row form-group">
+                                            <div class="row form-group">
                                                 <div class="col-sm-3"></div>
-                                                <div class="col-sm-2">
+                                                <div class="col-sm-6 d-flex justify-content-center align-items-end">
+                                                    <div class="text-center mb-3">
 
-                                                    <input type="submit" style="color:white" value="Save" class="btn btn-success @Model.ActionMode" />
-                                                    <input type="reset" style="color:white" value="Reset" class="btn btn-primary" />
+                                                        <input type="submit" style="color:white" value="Save" class="btn btn-success @Model.ActionMode" />
+                                                        <input type="reset" style="color:white" value="Reset" class="btn btn-primary" />
+                                                    </div>
                                                 </div>
-
                                             </div>
+
+
+
+                                            @* <div class="row row form-group">
+                                            <div class="col-sm-3"></div>
+                                            <div class= "col-sm-2 col-md-2">
+
+                                            <input type="submit" style="color:white" value="Save" class="btn btn-success @Model.ActionMode" />
+                                            <input type="reset" style="color:white" value="Reset" class="btn btn-primary" />
+                                            </div>
+
+                                            </div>*@
                             </form>
                         </div>
 
@@ -609,7 +628,7 @@
             </div>
             <div class="modal-footer">
                 <input type="button" class="btn btn-primary m-btn" data-dismiss="modal" onclick="divhide()" value="OK">
-               
+
 
 
             </div>
@@ -689,30 +708,30 @@
     //     $("#FDistrict1").val(districtval);
     //  });
 
-    $(".custom-file-input").on("change", function () {
-        var fileName = $(this).val().split("\\").pop();
-        $(this).siblings(".custom-file-label").addClass("selected").html(fileName);
-        var formdata = new FormData(); //FormData object
-        var fileInput = document.getElementById('customFile');
-        //Iterating through each files selected in fileInput
-        for (i = 0; i < fileInput.files.length; i++) {
-            //Appending each file to FormData object
-            formdata.append(fileInput.files[i].name, fileInput.files[i]);
-        }
-        //Creating an XMLHttpRequest and sending
-        var xhr = new XMLHttpRequest();
-        xhr.open('POST', '/M2/TRSC01/Capture/' + '@Model.Pi_Msts.VtCode');
-        xhr.send(formdata);
-        xhr.onreadystatechange = function () {
-            if (xhr.status == 200) {
-                alert("Identity Proof uploaded successfully.");
-            }
-            else {
-                alert("Error Uploading File");
-            }
-        }
-        return false;
-    });
+    //$(".custom-file-input").on("change", function () {
+    //    var fileName = $(this).val().split("\\").pop();
+    //    $(this).siblings(".custom-file-label").addClass("selected").html(fileName);
+    //    var formdata = new FormData(); //FormData object
+    //    var fileInput = document.getElementById('customFile');
+    //    //Iterating through each files selected in fileInput
+    //    for (i = 0; i < fileInput.files.length; i++) {
+    //        //Appending each file to FormData object
+    //        formdata.append(fileInput.files[i].name, fileInput.files[i]);
+    //    }
+    //    //Creating an XMLHttpRequest and sending
+    //    var xhr = new XMLHttpRequest();
+    //    xhr.open('POST', '/M2/TRSC01/Capture/' + '@Model.Pi_Msts.VtCode');
+    //    xhr.send(formdata);
+    //    xhr.onreadystatechange = function () {
+    //        if (xhr.status == 200) {
+    //            alert("Identity Proof uploaded successfully.");
+    //        }
+    //        else {
+    //            alert("Error Uploading File");
+    //        }
+    //    }
+    //    return false;
+    //});
 
 
     function PopUniversityLOV() {

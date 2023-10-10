@@ -41,7 +41,7 @@
                                             </div>
                                             <div class="col-sm-2 col-md-2">
                                                 <div>
-                                                    <input id="FFromDate" type="date" class="form-control datetime" required asp-for="@Model.VtEndDate" />  
+                                                    <input id="FFromDate" type="date" class="form-control datetime" required asp-for="@Model.FromDate" />  
                                                 </div>
                                              </div>
                                              <div class="col-sm-2 col-md-2">
@@ -51,7 +51,7 @@
                                              </div>
                                              <div class="col-sm-2 col-md-2">
                                                 <div>
-                                                    <input id="FToDate" type="date" class="form-control"  required asp-for="@Model.VtStartDate" />
+                                                    <input id="FToDate" type="date" class="form-control"  required asp-for="@Model.ToDate" />
 
                                                 </div>
                                              </div>
@@ -177,7 +177,7 @@
                                              </div>
                                              <div class="col-sm-2 col-md-2">
                                                 <div>
-                                                  <select id="FEnrollStatus" asp-for="@Model.Msts.STATUS_DESC" class="form-control" asp-items="@(new SelectList(ViewBag.Status,"Value","Text"))">
+                                                  <select id="FEnrollStatus" asp-for="@Model.Msts.StatusDesc" class="form-control" asp-items="@(new SelectList(ViewBag.Status,"Value","Text"))">
                                                     <option value="">--Select--</option>
                                                 </select>
                                                 </div>
@@ -256,7 +256,7 @@
                             <td style=" width: 32%;">
 
                                 <input type="button" class="btn btn-danger btnSelect" value="Applicant Form" />
-                                <a asp-area="M1" asp-controller="ENSCR01" asp-action="Create" asp-route-id="@item.Vtcode" class="Create" data-toggle="modal"><input type="button"  onclick="GetIndex('M1/ENSCR01/Create')" class="btn btn-success"  /></a>
+                               @* <a asp-area="M1" asp-controller="ENSCR01" asp-action="Create" asp-route-id="@item.Vtcode" class="Create" data-toggle="modal"><input type="button"  onclick="GetIndex('M1/ENSCR01/Create')" class="btn btn-success"  /></a>*@
                                 <a asp-area="M1" asp-controller="ENSCR01" asp-action="Details" asp-route-id="@item.Vtcode" class="Details" data-toggle="modal"><input type="button" class="btn btn-success" value="Details"> </a>
 
                              </td>

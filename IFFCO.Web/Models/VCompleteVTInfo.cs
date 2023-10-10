@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Runtime.InteropServices;
 
 namespace IFFCO.VTMS.Web.Models
 { 
@@ -23,6 +24,7 @@ namespace IFFCO.VTMS.Web.Models
           public DateTime? VtStartDate { get; set; }
           public DateTime? VtEndDate { get; set; }
           public string Status { get; set; }
+          public string StatusDesc { get; set; }
           public string EnrollmentStatus { get; set; }
           public string CourseName { get; set; }
           public decimal? Year { get; set; }
@@ -40,7 +42,7 @@ namespace IFFCO.VTMS.Web.Models
         public string OtherRecommName{ get; set; }
 
           public string CertFlag { get; set; }
-        public string STATUS_DESC { get; internal set; }
+        
     }
 }
 
