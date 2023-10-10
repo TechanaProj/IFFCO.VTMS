@@ -44,7 +44,48 @@ function CommonAjax1(Url, Type, Async, ContentType, Cache, fn, Id, content, head
         });
     }
 }
+function readCookie(name) {
+    var nameEQ = name + "=";
+    var ca = document.cookie.split(';');
+    for (var i = 0; i < ca.length; i++) {
+        var c = ca[i];
+        while (c.charAt(0) == ' ') c = c.substring(1, c.length);
+        if (c.indexOf(nameEQ) == 0) return c.substring(nameEQ.length, c.length);
+    }
+    return null;
+}
 
+
+function CommonAjax(Url, Type, Async, ContentType, Cache, fn, Id, content) {
+    if (Url != "") {
+        debugger;
+        if (Url[0] == "/") {
+            Url = readCookie("U") + Url;
+            //Url = window.location.href + Url;
+            //17:23 http://localhost:52362/
+        }
+
+        $.ajax({
+            url: Url,
+            type: Type,
+            async: Async,
+            data: content,
+            contentType: ContentType,
+            cache: Cache,
+            success: function (data) {
+                CallBack(fn, data, Id);
+            },
+            error: function (response) {
+                CommonAlert("Error", response.statusText, null, null, "error");
+                //alert(response.responseText);
+            },
+            failure: function (response) {
+                CommonAlert("Failure", response.statusText, null, null, "error");
+                //alert(response.responseText);
+            }
+        });
+    }
+}
 function CommonAjaxComboBox(Url, Type, Async, ContentType, Cache, fn, Id, content) {    
     if (Url != "") {
         $.ajax({
