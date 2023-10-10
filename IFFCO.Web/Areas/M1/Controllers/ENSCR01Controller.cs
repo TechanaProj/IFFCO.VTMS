@@ -36,8 +36,8 @@ namespace IFFCO.VTMS.Web.Areas.M1.Controllers
 
         public IActionResult Index()
         {
-            CommonViewModel.FromDate = DateTime.Today.AddMonths(-1); // Declaring from-date as the 1st day of the current month
-            CommonViewModel.ToDate = DateTime.Today;
+            CommonViewModel.VtStartDate = DateTime.Today.AddMonths(-1); // Declaring from-date as the 1st day of the current month
+            CommonViewModel.VtEndDate = DateTime.Today;
             var CourseLOV = dropDownListBindWeb.ListCourseBind();
             //var UniversityLOV = dropDownListBindWeb.ListUniversityBind();
             int unit = Convert.ToInt32(HttpContext.Session.GetString("UnitCode"));
