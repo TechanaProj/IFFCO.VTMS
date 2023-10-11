@@ -86,7 +86,7 @@
     });
 
     function fnUploadImage() {
-        debugger;
+
 
         $(".modalLoader").css("display", "block");
 
@@ -106,7 +106,7 @@
         }).done(function (response) {
             $(".modalLoader").css("display", "none");
             //do something with response
-            debugger;
+
             var contentId;
             if (response.selectedAction == null) {
                 contentId = "/" + response.areaName + "/" + response.selectedMenu + "/Edit?id=" + $("#VtCode").val();
@@ -167,9 +167,9 @@
                                                     </div>
                                                 </div>
 
-                                                <div class="col-sm-2 text-right">
-                                                    <input type="button" class="btn btn-success" id="VTPhotoButton" onclick="fnUploadImage()" style="color:white;text-align:center" value="Upload Picture" />
-                                                </div>
+                                                @*<div class="col-sm-2 text-right">
+                                                <input type="button" class="btn btn-success" id="VTPhotoButton" onclick="fnUploadImage()" style="color:white;text-align:center" value="Upload Picture" />
+                                                </div>*@
                                             </div>
                                         </div>
                                     </div>
@@ -532,7 +532,7 @@
                                             <div class="col-sm-2 col-md-2">
                                                 <div>
                                                     <div class="custom-file">
-                                                        @if (Model.IdProof.Length <= 1)
+                                                        @if (Model.IdProof != null)
                                                         {
                                                             <input type="file" class="custom-file-input" id="customFile" asp-for="@Model.Doc_Msts.VtIdUpload">
                                                             <label class="custom-file-label" for="customFile">Choose file</label>
@@ -550,8 +550,11 @@
                                                 <div>
                                                     <div class="collapse" id="collapseExample">
                                                         <div class="card card-body">
-                                                            <iframe src="data:application/pdf;base64, @System.Convert.ToBase64String((Byte[])Model.IdProof)"
+                                                            @if (Model.IdProof != null)
+                                                            {
+                                                                <iframe src="data:application/pdf;base64, @System.Convert.ToBase64String((Byte[])Model.IdProof)"
                                                                     style="width:100%; height:500px;" frameborder="0"></iframe>
+                                                            }
                                                         </div>
                                                     </div>
                                                 </div>
@@ -579,6 +582,7 @@
                                             </div>
 
                                             </div>*@
+
                             </form>
                         </div>
 
@@ -644,17 +648,17 @@
 <script type="text/javascript">
 
 
-    function divshow() {
-        Webcam.attach('#my_camera');
-        document.getElementById("deleteModal").style.display = "block";
-    }
+    //function divshow() {
+    //    Webcam.attach('#my_camera');
+    //    document.getElementById("deleteModal").style.display = "block";
+    //}
 
-    function divhide() {
-        document.getElementById("deleteModal").style.display = "none";
-        document.getElementById('results').innerHTML = null;
-        Webcam.reset('#my_camera');
-        window.location.href = '/M2/TRSC01/Edit/' + '@Model.Pi_Msts.VtCode';
-    }
+    //function divhide() {
+    //    document.getElementById("deleteModal").style.display = "none";
+    //    document.getElementById('results').innerHTML = null;
+    //    Webcam.reset('#my_camera');
+    //    window.location.href = '/M2/TRSC01/Edit/' + '@Model.Pi_Msts.VtCode';
+    //}
 
     $("#Frecommendation").change(function () {
         if ($("#Frecommendation option:selected").val() == 'OTHERS') {
@@ -735,7 +739,7 @@
 
 
     function PopUniversityLOV() {
-        debugger;
+
         $(".modalLoader").css("display", "block");
         setTimeout(function () {
             CommonAjax('/M1/ENSC01/UniversityLOVBindJSON', "GET", false, "application/json", false, BindDropDownWithSelectAsNull, "#FUniversity", { DistrictName: $('#FDistrictForUniversity').val() });
@@ -744,8 +748,18 @@
         }, 10);
     }
 
+    function PopUniversityLOV() {
+
+        $(".modalLoader").css("display", "block");
+        setTimeout(function () {
+            CommonAjax('/M1/ENSCR01/UniversityLOVBindJSON', "GET", false, "application/json", false, BindDropDownWithSelectAsNull, "#FUniversityName", { DistrictName: $('#FDistrict').val() });
+
+            $(".modalLoader").hide();
+        }, 10);
+    }
+
     function PopDistrictLOV() {
-        debugger;
+
         $(".modalLoader").css("display", "block");
         setTimeout(function () {
             CommonAjax('/M2/TRSC01/DistrictLOVBind', "GET", false, "application/json", false, BindDropDownWithSelectAsNull, "#FDistrict", { StateCd: $('#FState').val() });
@@ -753,8 +767,20 @@
         }, 10);
     }
 
+    //function PopDistrictLOV() {
+    //
+    //    $(".modalLoader").css("display", "block");
+    //    setTimeout(function () {
+    //        CommonAjax('/M1/ENSCR01/DistrictLOVBindJSON', "GET", false, "application/json", false, BindDropDownWithSelectAsNull, "#FDistrict", { StateCd: $('#FState').val() });
+
+    //        $(".modalLoader").hide();
+    //    }, 10);
+    //}
+
+
+
     function PopBranchLOV() {
-        debugger;
+
         $(".modalLoader").css("display", "block");
         setTimeout(function () {
             CommonAjax('/M2/TRSC01/BranchLOVBind', "GET", false, "application/json", false, BindDropDownWithSelectAsNull, "#branch", { Course_Code: $('#course').val() });
@@ -764,7 +790,7 @@
     }
 
     function PopinstituteLOV() {
-        debugger;
+
         $(".modalLoader").css("display", "block");
         setTimeout(function () {
             CommonAjax('/M2/TRSC01/InstitueLOVBind', "GET", false, "application/json", false, BindDropDownWithSelectAsNull, "#Institute", { UNIVERSITY_ID: $('#university').val() });
@@ -774,10 +800,10 @@
     }
     //BranchLOVBind(string Course_Code)
     function ValueToDropDownByAjax(loc, count) {
-        debugger;
+
         var tempdata = $("#" + loc + "Hidden").val(); // 57
         if (tempdata != null && tempdata.length > 0) {
-            debugger;
+
             $("#" + loc).val(tempdata);
         } else {
             $("#" + loc).attr('selectedIndex', 0);

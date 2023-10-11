@@ -184,13 +184,13 @@
     });
 
     function PopDetail(row) {
-        debugger;
+        
         $("#ParentMenuId").val(row);
         GetIndex("/M2/ADMM02/ViewMsts?id=" + row);
     }
 
      function subMenuHiddenMarker() {
-         debugger;
+         
          var editVal = '@Model.Status';
         var val = $("#SubMenuId").val();
          if (val != null && editVal == "Edit") {
@@ -199,20 +199,20 @@
     }
 
      function PopDistrictLOV() {  
-        debugger;  
+          
         $(".modalLoader").css("display", "block");
         setTimeout(function () { 
-        CommonAjax('/M1/ENM04/DistrictLOVBind', "GET", false, "application/json", false, BindDropDownWithSelectAsNull, "#district", { StateCd: $('#state').val() });
+        CommonAjax('@Url.Content("~/")/M1/ENM04/DistrictLOVBind', "GET", false, "application/json", false, BindDropDownWithSelectAsNull, "#district", { StateCd: $('#state').val() });
          ValueToDropDownByAjax('district',null)
         $(".modalLoader").hide(); 
         }, 10);       
     }
 
      function ValueToDropDownByAjax(loc, count) {
-         debugger;       
+                
         var tempdata = $("#" + loc + "Hidden").val(); // 57
         if (tempdata != null && tempdata.length > 0) {
-            debugger;
+            
             $("#" + loc).val(tempdata);
         } else {
             $("#" + loc).attr('selectedIndex', 0);

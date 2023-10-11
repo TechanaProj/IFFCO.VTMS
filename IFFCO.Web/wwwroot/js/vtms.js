@@ -1,5 +1,5 @@
 ﻿function CommonReportGenerateJS(Url, data) {
-    debugger;
+    
 
     //if (Url[0] == "/") {
     //    Url = readCookie("U") + Url;
@@ -18,7 +18,7 @@
             CommonAlert(status, error, SubmitPopup, url, "error");
         },
         success: function (response) {
-            debugger;
+            
             var contentId = "/" + response.areaName + "/" + response.selectedMenu + "/GenerateReport";
             url = window.location.origin + contentId;
             var path = window.location.href

@@ -193,13 +193,13 @@
     });
 
     function PopDetail(row) {
-        debugger;
+        
         $("#ParentMenuId").val(row);
         GetIndex("/M1/ENM06/ViewMsts?id=" + row);
     }
 
      function subMenuHiddenMarker() {
-         debugger;
+         
          var editVal = '@Model.Status';
         var val = $("#SubMenuId").val();
          if (val != null && editVal == "Edit") {

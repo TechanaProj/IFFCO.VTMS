@@ -5,7 +5,7 @@
 <script>
 
     function Validate(row) {
-        debugger;
+        
         var PlantCD = '';
         var TptrCD = '';
         if ($('#PlantCD').val() == "") {
@@ -118,7 +118,7 @@
 
 <script type="text/javascript">
     $(document).ready(function () {
-        debugger;       
+               
         $('#HrmsHrdGrid').DataTable({
             order: [[0, "asce"]]
         });
@@ -129,7 +129,7 @@
 
 
      function subMenuHiddenMarker() {
-         debugger;
+         
          var editVal = '@Model.Status';
         var val = $("#SubMenuId").val();
          if (val != null && editVal == "Edit") {

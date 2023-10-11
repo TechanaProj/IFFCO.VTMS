@@ -9,7 +9,7 @@
 
 function Validate() 
 {
-        debugger;
+        
         if ($('#Status').val() == "") 
         {
             CommonAlert("Alert", "select Status  ", null, null, "Warning");
@@ -226,14 +226,14 @@ function Validate()
 
        function PopDetail(row) 
         {
-          debugger;
+          
           $("#UniversityId").val(row);
           GetIndex("/M1/ENM03/ViewMsts?id=" + row);
         }
 
         function subMenuHiddenMarker()
         {
-           debugger;
+           
            var editVal = '@Model.Status';
            var val = $("#InstituteCd").val();
            if (val != null && editVal == "Edit")
@@ -244,7 +244,7 @@ function Validate()
 
         function bindddl(val)
         { 
-            debugger;
+            
             var StateCd = $("#StateName-" + val).val();
             $.ajax({
             url: '/M1/ENM03/ddl1',
@@ -264,7 +264,7 @@ function Validate()
         }
 
         function BindDropDown(data, id) {
-            debugger;
+            
             var ddlhtml = "<option>----------Select----------</option>";
             $.each(data, function (index, ddl) {
             ddlhtml += "<option value=" + ddl.value + ">" + ddl.text + "</option>";

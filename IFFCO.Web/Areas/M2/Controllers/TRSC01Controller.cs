@@ -21,6 +21,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using System.Data;
 using System.IO;
+using NPOI.SS.Formula.Functions;
 
 namespace IFFCO.VTMS.Web.Areas.M2.Controllers
 {
@@ -186,7 +187,7 @@ namespace IFFCO.VTMS.Web.Areas.M2.Controllers
             ViewBag.ReturnMenu = menu;
 
             CommonViewModel.AreaName = this.ControllerContext.RouteData.Values["area"].ToString();
-            CommonViewModel.SelectedMenu = this.ControllerContext.RouteData.Values["controller"].ToString(); 
+            CommonViewModel.SelectedMenu = this.ControllerContext.RouteData.Values["controller"].ToString();
             return View("details", CommonViewModel);
         }
 
@@ -224,14 +225,25 @@ namespace IFFCO.VTMS.Web.Areas.M2.Controllers
             CommonViewModel.Pi_Msts = await _context.VtmsEnrollPi.FirstOrDefaultAsync(x => x.VtCode == id && x.UnitCode == unit);
             CommonViewModel.Edu_Msts = new VtmsEnrollEdu();
             CommonViewModel.Edu_Msts = await _context.VtmsEnrollEdu.FirstOrDefaultAsync(x => x.VtCode == id && x.UnitCode == unit);
-            CommonViewModel.ProfileImage = vTMSCommonService.GetVTProfileImage(id, unit);
-            byte[] idproof = vTMSCommonService.GetVTIdProof(id, unit);
-            if (idproof != null && idproof.Length > 0) { CommonViewModel.IdProof = vTMSCommonService.GetVTIdProof(id, unit); } else { CommonViewModel.IdProof = new byte[] { }; };
+
+            var dosc = _context.VtmsEnrollDoc.Where(x => x.VtCode == id).Where(x => x.UnitCode == unit).FirstOrDefault();
+
+            if (dosc != null)
+            {
+                CommonViewModel.ProfileImage = vTMSCommonService.ConvertBlobToString(dosc.VtPhoto);
+                CommonViewModel.IdProof = vTMSCommonService.ConvertBlobToString(dosc.VtIdUpload);
+            }
+
+            //CommonViewModel.ProfileImage = vTMSCommonService.GetVTProfileImage(id, unit);
+            //byte[] idproof = vTMSCommonService.GetVTIdProof(id, unit);
+            //if (idproof != null && idproof.Length > 0)
+            //{ CommonViewModel.IdProof = vTMSCommonService.GetVTIdProof(id, unit); }
+            //else { CommonViewModel.IdProof = new byte[] { }; };
             CommonViewModel.Doc_Msts = new VtmsEnrollDoc();
-            var Doc_Msts = await _context.VtmsEnrollDoc.FirstOrDefaultAsync(x => x.VtCode == id && x.UnitCode == unit);
-            CommonViewModel.Doc_Msts = Doc_Msts;
+            //var Doc_Msts = await _context.VtmsEnrollDoc.FirstOrDefaultAsync(x => x.VtCode == id && x.UnitCode == unit);
+            //CommonViewModel.Doc_Msts = Doc_Msts;
             //CommonViewModel.ProfileImage = vTMSCommonService.ConvertBlobToString(Doc_Msts.VtPhoto);
-            CommonViewModel.ProfileImage = vTMSCommonService.GetVTIdProofStr(id, unit);
+            //CommonViewModel.ProfileImage = vTMSCommonService.GetVTIdProofStr(id, unit);
             var statelist = dropDownListBindWeb.GetState();
             ViewBag.StateLOV = statelist;
             var courselist = dropDownListBindWeb.GetCourse();
@@ -314,14 +326,14 @@ namespace IFFCO.VTMS.Web.Areas.M2.Controllers
                             file.CopyTo(ms);
 
                             obj.VtIdUpload = ms.ToArray();
-                            
+
                         }
 
                         _context.Entry(obj).State = EntityState.Modified;
                         _context.SaveChanges();
                     }
 
-                } 
+                }
                 else
                 {
                     if (file != null)
@@ -357,7 +369,7 @@ namespace IFFCO.VTMS.Web.Areas.M2.Controllers
 
         }
 
-         
+
         //POST/
         [HttpPost]
         [ValidateAntiForgeryToken]
@@ -420,14 +432,14 @@ namespace IFFCO.VTMS.Web.Areas.M2.Controllers
                     objpi.VtEndDate = tRSC01ViewModel.Pi_Msts.VtEndDate;
                     objpi.VtStartDate = tRSC01ViewModel.Pi_Msts.VtStartDate;
                     objpi.VtCode = tRSC01ViewModel.Pi_Msts.VtCode;
-                  //  _context.VtmsEnrollPi.Update(objpi);
+                    //  _context.VtmsEnrollPi.Update(objpi);
                     _context.Entry(objpi).State = EntityState.Modified;
                     _context.SaveChanges();
 
                     VtmsEnrollEdu objedu = new VtmsEnrollEdu();
                     objedu = _context.VtmsEnrollEdu.FirstOrDefault(x => x.VtCode.Equals(tRSC01ViewModel.Pi_Msts.VtCode));
-                    
-                    
+
+
                     if (objedu != null)
                     {
                         objedu.VtCode = tRSC01ViewModel.Pi_Msts.VtCode;
@@ -480,18 +492,77 @@ namespace IFFCO.VTMS.Web.Areas.M2.Controllers
                     //objdoc.ModifiedOn = tRSC01ViewModel.Doc_Msts.ModifiedOn;
                     //_context.VtmsEnrollDoc.Update(objdoc);
 
+
                     if (files != null && files.Count > 0 && files.Any(x => x.Name == "Vt_uploadPhoto"))
                     {
-                        var file = files.Where(x => x.Name == "Vt_uploadPhoto").FirstOrDefault();
+                        var obj = _context.VtmsEnrollDoc.Where(x => x.VtCode == tRSC01ViewModel.Pi_Msts.VtCode && x.UnitCode == unit).FirstOrDefault();
 
-                        if (file != null)
-                            using (var ms = new MemoryStream())
+                        var filePhoto = files.Where(x => x.Name == "Vt_uploadPhoto").FirstOrDefault();
+
+                        var fileId = files.Where(x => x.Name != "Vt_uploadPhoto").FirstOrDefault();
+
+                        if (obj != null)
+                        {
+                            if (filePhoto != null)
                             {
-                                file.CopyTo(ms);
+                                using (var ms = new MemoryStream())
+                                {
+                                    filePhoto.CopyTo(ms);
 
-                                tRSC01ViewModel.Doc_Msts.VtPhoto = ms.ToArray();
+                                    obj.VtPhoto = ms.ToArray();
+                                }
+
                             }
+
+                            if (fileId != null)
+                            {
+                                using (var ms = new MemoryStream())
+                                {
+                                    fileId.CopyTo(ms);
+
+                                    obj.VtIdUpload = ms.ToArray();
+                                }
+
+                            }
+
+                            _context.Entry(obj).State = EntityState.Modified;
+                            _context.SaveChanges();
+                        }
+                        else
+                        {
+                            obj = new VtmsEnrollDoc();
+
+                            obj.VtCode = tRSC01ViewModel.Pi_Msts.VtCode;
+                            obj.UnitCode = unit;
+
+                            if (filePhoto != null)
+                            {
+                                using (var ms = new MemoryStream())
+                                {
+                                    filePhoto.CopyTo(ms);
+
+                                    obj.VtPhoto = ms.ToArray();
+                                }
+
+                            }
+
+                            if (fileId != null)
+                            {
+                                using (var ms = new MemoryStream())
+                                {
+                                    fileId.CopyTo(ms);
+
+                                    obj.VtIdUpload = ms.ToArray();
+                                }
+
+                            }
+
+                            _context.VtmsEnrollDoc.Add(obj);
+                            _context.SaveChanges();
+                        }
+
                     }
+
 
                     //var vtmsdocmsts = await _context.VtmsEnrollDoc.FirstOrDefaultAsync(x => x.VtCode == tRSC01ViewModel.Pi_Msts.VtCode && x.UnitCode == tRSC01ViewModel.Pi_Msts.UnitCode); 
                     //vtmsdocmsts.VtIdType = tRSC01ViewModel.Doc_Msts.VtIdType;
@@ -500,7 +571,7 @@ namespace IFFCO.VTMS.Web.Areas.M2.Controllers
                     //_context.SaveChanges();
 
 
-                
+
                     CommonViewModel.Message = tRSC01ViewModel.Pi_Msts.Name;
                     CommonViewModel.Alert = "Update";
                     CommonViewModel.Status = "Update";
@@ -508,7 +579,8 @@ namespace IFFCO.VTMS.Web.Areas.M2.Controllers
 
                     CommonViewModel.AreaName = this.ControllerContext.RouteData.Values["area"].ToString();
                     CommonViewModel.SelectedMenu = this.ControllerContext.RouteData.Values["controller"].ToString();
-                    
+
+                    return Json(CommonViewModel);
                 }
 
                 // catch (DbUpdateConcurrencyException)
@@ -545,9 +617,17 @@ namespace IFFCO.VTMS.Web.Areas.M2.Controllers
         public List<SelectListItem> DistrictLOVBind(string StateCd)
         {
             List<SelectListItem> disttCDLOV = new List<SelectListItem>();
-            disttCDLOV = dropDownListBindWeb.GET_District(StateCd);
+            disttCDLOV = dropDownListBindWeb.ListDistrictBind(StateCd);
             return disttCDLOV;
         }
+
+
+        //public List<SelectListItem> DistrictLOVBind(string StateCd)
+        //{
+        //    List<SelectListItem> disttCDLOV = new List<SelectListItem>();
+        //    disttCDLOV = dropDownListBindWeb.GET_District(StateCd);
+        //    return disttCDLOV;
+        //}
 
         public List<SelectListItem> BranchLOVBind(string Course_Code)
         {

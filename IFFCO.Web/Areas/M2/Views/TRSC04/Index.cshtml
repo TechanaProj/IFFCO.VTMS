@@ -12,7 +12,7 @@
 
 function Validate() 
 {
-        debugger;
+        
         if (true) 
         {            
             return true;
@@ -248,7 +248,7 @@ function Validate()
 <script>
 
        function PopDistrictLOV() {
-        debugger;
+        
         $(".modalLoader").css("display", "block");
         setTimeout(function () {
             CommonAjax('/M2/TRSC04/DistrictLOVBindJSON', "GET", false, "application/json", false, BindDropDownWithSelectAsNull, "#FDistrict", { StateCd: $('#FState').val() });
@@ -257,7 +257,7 @@ function Validate()
        }
 
        function PopUniversityLOV() {
-        debugger;
+        
         $(".modalLoader").css("display", "block");
         setTimeout(function () {
             CommonAjax('/M2/TRSC04/UniversityLOVBindJSON', "GET", false, "application/json", false, BindDropDownWithSelectAsNull, "#FUniversity", { DistrictName: $('#FDistrict').val() });
@@ -266,7 +266,7 @@ function Validate()
        }
 
         function PopInstituteLOV() {
-            debugger;
+            
             $(".modalLoader").css("display", "block");
             setTimeout(function() {
                 CommonAjax('/M2/TRSC04/InstituteLOVBindJSON', "GET", false, "application/json", false, BindDropDownWithSelectAsNull, "#FInstitute", { UniversityId: $('#FUniversity').val() });
@@ -274,7 +274,7 @@ function Validate()
             }, 10);
         }
        function PopBranchLOV() {
-            debugger;
+            
             $(".modalLoader").css("display", "block");
             setTimeout(function() {
                CommonAjax('/M2/TRSC04/BranchLOVBindJSON', "GET", false, "application/json", false, BindDropDownWithSelectAsNull, "#FBranch", { CourseCode: $('#FCourse').val() });

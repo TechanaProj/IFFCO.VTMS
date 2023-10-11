@@ -239,7 +239,7 @@ $(document).ready(function ( ) {
 
 //function Validate() {
 
-//        debugger;
+//        
 //        if ($('#BranchCode') && $('#SubMenuName1').val() == "") {
 //            CommonAlert("Alert", "select Branch Code ", null, null, "Warning");
 //            return false;
@@ -253,13 +253,13 @@ $(document).ready(function ( ) {
     //    }
     //}
     function PopDetail(row) {
-        debugger;
+        
         $("#CourseCode").val(row);
         GetIndex("/M1/ENM01/ViewMsts?id=" + row);
     }
 
      function subMenuHiddenMarker() {
-         debugger;
+         
          var editVal = '@Model.Status';
         var val = $("#SubMenuId").val();
          if (val != null && editVal == "Edit") {

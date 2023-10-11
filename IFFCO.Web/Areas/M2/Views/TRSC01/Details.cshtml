@@ -612,7 +612,7 @@
 
 
     function PopDistrictLOV() {
-        debugger;
+        
         $(".modalLoader").css("display", "block");
         setTimeout(function () {
             CommonAjax('/M2/TRSC01/DistrictLOVBind', "GET", false, "application/json", false, BindDropDownWithSelectAsNull, "#FDistrict", { StateCd: $('#FState').val() });
@@ -621,17 +621,17 @@
     }
 
     function PopBranchLOV() {
-        debugger;
+        
         $(".modalLoader").css("display", "block");
         setTimeout(function () {
-            CommonAjax('/M2/TRSC01/BranchLOVBind', "GET", false, "application/json", false, BindDropDownWithSelectAsNull, "#branch", { Course_Code: $('#course').val() });
+            CommonAjax('@Url.Content("~")/M2/TRSC01/BranchLOVBind', "GET", false, "application/json", false, BindDropDownWithSelectAsNull, "#branch", { Course_Code: $('#course').val() });
             ValueToDropDownByAjax('branch', null)
             $(".modalLoader").hide();
         }, 10);
     }
 
     function PopinstituteLOV() {
-        debugger;
+        
         $(".modalLoader").css("display", "block");
         setTimeout(function () {
             CommonAjax('/M2/TRSC01/InstitueLOVBind', "GET", false, "application/json", false, BindDropDownWithSelectAsNull, "#Institute", { UNIVERSITY_ID: $('#university').val() });
@@ -641,10 +641,10 @@
     }
     //BranchLOVBind(string Course_Code)
     function ValueToDropDownByAjax(loc, count) {
-        debugger;
+        
         var tempdata = $("#" + loc + "Hidden").val(); // 57
         if (tempdata != null && tempdata.length > 0) {
-            debugger;
+            
             $("#" + loc).val(tempdata);
         } else {
             $("#" + loc).attr('selectedIndex', 0);

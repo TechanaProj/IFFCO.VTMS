@@ -310,7 +310,7 @@
     });
            
          function PopDistrictLOV() {
-                debugger;
+                
                 $(".modalLoader").css("display", "block");
                 setTimeout(function () {
                     CommonAjax('/M1/ENSCR01/DistrictLOVBindJSON', "GET", false, "application/json", false, BindDropDownWithSelectAsNull, "#FDistrict", { StateCd: $('#FState').val() });
@@ -320,7 +320,7 @@
                }
 
                 function PopUniversityLOV() {
-                debugger;
+                
                 $(".modalLoader").css("display", "block");
                 setTimeout(function () {
                     CommonAjax('/M1/ENSCR01/UniversityLOVBindJSON', "GET", false, "application/json", false, BindDropDownWithSelectAsNull, "#FUniversityName", { DistrictName: $('#FDistrict').val() });
@@ -330,7 +330,7 @@
                }
 
                 function PopBranchLOV() {
-                    debugger;
+                    
                     $(".modalLoader").css("display", "block");
                     setTimeout(function() {
                         CommonAjax('/M1/ENSCR01/BranchLOVBindJSON', "GET", false, "application/json", false, BindDropDownWithSelectAsNull, "#FBranch", { CourseCode: $('#FCourse').val() });
@@ -341,7 +341,7 @@
 
     
                  function PopInstituteLOV() {
-                    debugger;
+                    
                     $(".modalLoader").css("display", "block");
                     setTimeout(function() {
                         CommonAjax('/M1/ENSCR01/InstituteLOVBindJSON', "GET", false, "application/json", false, BindDropDownWithSelectAsNull, "#FInstitute", { UniversityId: $('#FUniversityName').val() });
@@ -352,7 +352,7 @@
 
                 //Ajax for table
                function PopReportList() {
-                    debugger;
+                    
                     $(".modalLoader").css("display", "block");
                     setTimeout(function () {
                         CommonAjax('/M1/ENSCR01/GetFormQuery', "GET", false, "application/json", false, EchitBind, {FromDate: $('#FFromDate').val(), ToDate: $('#FToDate').val(), Course: $('#FCourse').val(), Branch: $('#FCourse').val(), University: $("#FUniversityName").val(), Institute: $("#FInstitute").val(), Recommendation: $('#Frecommendation').val(), PersonalNo: $('#FRecommPno').val(), RecommenderName: $('#FOthersRecommName'), Enroll: $('#FEnrollStatus').val(), ReportType: $('#FReportType') });

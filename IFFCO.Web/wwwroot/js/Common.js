@@ -7,21 +7,21 @@
             data: content,
             contentType: ContentType,
             cache: Cache,
-            success: function (data) {                
+            success: function (data) {
                 CallBack(fn, data, Id);
             },
-            error: function (response) {                
+            error: function (response) {
                 CommonAlert("Error", response.statusText, null, null, "error");
                 //alert(response.responseText);
             },
-            failure: function (response) {                
+            failure: function (response) {
                 CommonAlert("Failure", response.statusText, null, null, "error");
                 //alert(response.responseText);
             }
         });
     }
 }
-function CommonAjax1(Url, Type, Async, ContentType, Cache, fn, Id, content, headersData) {    
+function CommonAjax1(Url, Type, Async, ContentType, Cache, fn, Id, content, headersData) {
     if (Url != "") {
         $.ajax({
             url: Url,
@@ -55,38 +55,7 @@ function readCookie(name) {
     return null;
 }
 
-
-function CommonAjax(Url, Type, Async, ContentType, Cache, fn, Id, content) {
-    if (Url != "") {
-        debugger;
-        if (Url[0] == "/") {
-            Url = readCookie("U") + Url;
-            //Url = window.location.href + Url;
-            //17:23 http://localhost:52362/
-        }
-
-        $.ajax({
-            url: Url,
-            type: Type,
-            async: Async,
-            data: content,
-            contentType: ContentType,
-            cache: Cache,
-            success: function (data) {
-                CallBack(fn, data, Id);
-            },
-            error: function (response) {
-                CommonAlert("Error", response.statusText, null, null, "error");
-                //alert(response.responseText);
-            },
-            failure: function (response) {
-                CommonAlert("Failure", response.statusText, null, null, "error");
-                //alert(response.responseText);
-            }
-        });
-    }
-}
-function CommonAjaxComboBox(Url, Type, Async, ContentType, Cache, fn, Id, content) {    
+function CommonAjaxComboBox(Url, Type, Async, ContentType, Cache, fn, Id, content) {
     if (Url != "") {
         $.ajax({
             url: Url,
@@ -114,7 +83,7 @@ function CommonAjaxComboBox(Url, Type, Async, ContentType, Cache, fn, Id, conten
 }
 
 
-function CallBack(fn, data, Id) {    
+function CallBack(fn, data, Id) {
     return fn(data, Id);
 }
 function BindEdit(Data, id) {
@@ -173,7 +142,7 @@ function CustomAutocomplete(txtId, hdnId, url, Type, DataType, ContentType) {
 //    });
 //});
 
-function BindDropDown(data, id) {    
+function BindDropDown(data, id) {
     var districtHtml = "<option>---Select---</option>";
 
     $.each(data, function (index, District) {
@@ -242,20 +211,22 @@ function accessrights(btnselect, btninsert, btnupdate, btndelete) {
         $('.delete').hide();
     }
 }
-function SHOW_TR_Function(e, e1, id) {   
+function SHOW_TR_Function(e, e1, id) {
     var TRID = document.getElementById(e);
     var TRID1 = document.getElementById(e1);
-    TRID.style.display = '';
-    TRID1.style.display = "none";
-    
+    if (typeof TRID != 'undefined' && TRID != null)
+        TRID.style.display = '';
+    if (typeof TRID1 != 'undefined' && TRID1 != null)
+        TRID1.style.display = "none";
+
 }
 function HIDE_TR_Function(e) {
     var TRID = document.getElementById(e);
     TRID.style.display = "none";
 }
 
-function BindGrid(ExcelColumns, PdfColumns) {    
-    if ($('#HrmsGrid').DataTable().context.length>0) {
+function BindGrid(ExcelColumns, PdfColumns) {
+    if ($('#HrmsGrid').DataTable().context.length > 0) {
         var table = $('#HrmsGrid').DataTable();
         var tableArray = [
             {
@@ -285,7 +256,7 @@ function BindGrid(ExcelColumns, PdfColumns) {
     }
 }
 
-function BindGridWithId(ExcelColumns, PdfColumns,Id) {    
+function BindGridWithId(ExcelColumns, PdfColumns, Id) {
     if ($(Id).DataTable().context.length > 0) {
         var table = $(Id).DataTable();
         var tableArray = [
@@ -320,7 +291,7 @@ function BindGridWithIdAll(ExcelColumns, PdfColumns, Id) {
     var table = $(Id).DataTable({
         lengthMenu: [[10, 25, 50, -1], [10, 25, 50, "All"]]
     });
-    
+
     var tableArray = [
         {
             extend: 'excel',
@@ -499,7 +470,7 @@ $(document).ready(function () {
     $(".edit").removeAttr("data-toggle");
     $(".Details").removeAttr("data-toggle");
 
-    $(".addnewitem").click(function (e) {        
+    $(".addnewitem").click(function (e) {
         e.preventDefault();
         localStorage.setItem("currentUrl", $(this).attr('href'));
         document.getElementById("page-wrapper").innerHTML = "";
@@ -516,7 +487,7 @@ $(document).ready(function () {
 });
 
 
-function CommonAlert(Title, Message, fn, data, type, msgType) {    
+function CommonAlert(Title, Message, fn, data, type, msgType) {
     //var data = JSON.stringify(data);
     switch (type.toLowerCase()) {
         case 'alert':
@@ -550,7 +521,7 @@ function AlertMessage(Title, Message, fn, data, type) {
     strHtml += "<button type='button' class='close' data-dismiss='modal' aria-hidden='true' onclick='divhideSuccess();'>×</button>";
     strHtml += "</div>";
     strHtml += "<div class='modal-body'>";
-    
+
     if (type.toLowerCase() == "create") {
         strHtml += "<center><img style='    width: 60px;' src='images/Success-Round-Tick.png' alt=''></center>";
         strHtml += "<p style='font-weight:bold;padding-top: 12px;color: black;text-align: center;'><mediam>" + Message + " save successfully!</mediam></p>";
@@ -564,9 +535,9 @@ function AlertMessage(Title, Message, fn, data, type) {
         if (type.toLowerCase() == "confirmation") {
             strHtml += "<center><img style='    width: 60px;' src='images/warning.png' alt=''></center>";
             strHtml += "<p style='font-weight:bold;padding-top: 12px;color: black;text-align: center;'><mediam>" + Message + "</mediam></p>";
-    } else {
-        strHtml += "<p style='font-weight:bold;padding-top: 12px;color: black;text-align: center;'><mediam>" + Message + "</mediam></p>";
-    }
+        } else {
+            strHtml += "<p style='font-weight:bold;padding-top: 12px;color: black;text-align: center;'><mediam>" + Message + "</mediam></p>";
+        }
     strHtml += "</div>";
     strHtml += "<div class='modal-footer'>";
     //strHtml += "<input type='button' class='btn btn-primary m-btn' onclick='PopupOk(" + fn + ",\"" + data + "\");' data-dismiss='modal' value='OK'>";
@@ -584,7 +555,7 @@ function SuccessAlert(Title, Message, fn, data) {
     strHtml += "<div id='ErrorModal' class='modal' style='display:block'>";
     strHtml += "<div class='modal-dialog'>";
     strHtml += "<div class='modal-content' style='MARGIN-TOP: 71PX'>";
-    strHtml += "<div class='modal-header' style='background-color: #41ab34'>";    
+    strHtml += "<div class='modal-header' style='background-color: #41ab34'>";
     strHtml += "<h4 class='modal-title' style='font-weight:bold;color: white'>" + Title + "</h4>";
     strHtml += "<button type='button' class='close' data-dismiss='modal' aria-hidden='true' onclick='divhidError();'>×</button>";
     strHtml += "</div>";
@@ -686,7 +657,7 @@ function CommonUpdateAlert(Title, Message, bgColor, img) {
     //return 
 }
 
-function BootStrapCalender(Id) {    
+function BootStrapCalender(Id) {
     var date_input = $(Id); //our date input has the name "date"
     var container = $('.bootstrap-iso form').length > 0 ? $('.bootstrap-iso form').parent() : "body";
     var options = {
@@ -772,7 +743,7 @@ function CustomConfrimBox(Title, Content, fn, data) {
     });
 }
 
-function Dateformate(selectedDate) {    
+function Dateformate(selectedDate) {
     var FormattedDate = "";
     if (selectedDate == undefined) {
         FormattedDate = "";
@@ -804,12 +775,12 @@ function GetIndex(thisid) {
     $(".modalLoader").show();
     localStorage.setItem("currentUrl", thisid);
     document.getElementById("page-wrapper").innerHTML = "";
-    $('#page-wrapper').load(thisid);   
-    interval = setInterval(function () {      
+    $('#page-wrapper').load(thisid);
+    interval = setInterval(function () {
         if ($(".plcholder-cn").html() != undefined) {
             $(".modalLoader").hide();
             clearInterval(interval);
-        }        
+        }
     }, 1000);
     return false;
     //alert(window.location.origin + thisid);
@@ -847,9 +818,9 @@ function scriptLoader(path, callback) {
 }
 var url;
 
-$("input[type='submit']").click(function (e) {    
+$("input[type='submit']").click(function (e) {
     if ($(this).hasClass("report")) {
-        
+
         var valid = this.form.checkValidity();
         if (valid) {
             if (this.form.hasAttribute("onsubmit")) {
@@ -878,7 +849,7 @@ $("input[type='submit']").click(function (e) {
                         }
                         $(".modalLoader").hide();
                         debugger
-                        var x = window.open('ReportTab','_blank');
+                        var x = window.open('ReportTab', '_blank');
                         x.document.write('<body></body>');
                         var style = x.document.createElement('style');
                         style.innerHTML = ".modalLoader { display:block; position:fixed; z-index:9999999; top:0; left:0; height:100%; width:100%; background:rgba(18, 92, 214, 0.25) url('../images/tenor.gif') 50% 50% no-repeat;} body.loading{overflow:hidden;}";
@@ -907,7 +878,7 @@ $("input[type='submit']").click(function (e) {
             }
         }
     } else {
-        
+
         var valid = this.form.checkValidity();
         if (valid) {
             if (this.form.hasAttribute("onsubmit")) {
@@ -920,23 +891,23 @@ $("input[type='submit']").click(function (e) {
 
                 //var $form = $("input[type='submit']").parents('form');
                 var $form = $(this).parents("form");
-                
+
                 $.ajax({
                     type: "POST",
                     url: $form.attr('action'),
                     data: $form.serialize(),
-                    error: function (xhr, response, error) {                        
-                       CommonAlert("Error", response, null, null, "error");
+                    error: function (xhr, response, error) {
+                        CommonAlert("Error", response, null, null, "error");
                     },
                     success: function (response) {
                         //do something with response     
-                        
+                        debugger;
                         var contentId;
                         if (response.selectedAction == null) {
-                             contentId = "/" + response.areaName + "/" + response.selectedMenu + "/Index";
+                            contentId = "/" + response.areaName + "/" + response.selectedMenu + "/Index";
                         }
                         else {
-                             contentId = "/" + response.areaName + "/" + response.selectedMenu + "/" + response.selectedAction;
+                            contentId = "/" + response.areaName + "/" + response.selectedMenu + "/" + response.selectedAction;
                         }
                         //CommonAlert(response.alert, response.message, window.location.origin + contentId);
                         url = window.location.origin + contentId;
@@ -951,7 +922,7 @@ $("input[type='submit']").click(function (e) {
                             $(".modalLoader").hide();
                             GetIndex(url);
                         }
-                        
+
 
                     }
                 });
@@ -962,7 +933,7 @@ $("input[type='submit']").click(function (e) {
     }
 });
 function CommonSubmit(data, actionUrl, e) {
-    
+
     e.preventDefault();
 
     $(".modalLoader").css("display", "block");
@@ -973,10 +944,10 @@ function CommonSubmit(data, actionUrl, e) {
         data: data,
         //processData: false,//Add for uploading content like pdf
         //contentType: false,//Add for uploading content like pdf
-        error: function (xhr, response, error) {            
+        error: function (xhr, response, error) {
             CommonAlert("Error", response, null, null, "error");
         },
-        success: function (response) {            
+        success: function (response) {
             var url = window.location.origin + "/" + response.areaName + "/" + response.selectedMenu + "/" + response.selectedAction;
 
             if (response.isAlertBox) {
@@ -985,7 +956,7 @@ function CommonSubmit(data, actionUrl, e) {
                 } else {
                     CommonAlert(response.alert, response.message, SubmitPopup, url, "alert", "create");
                 }
-            } else {                
+            } else {
                 $(".modalLoader").hide();
                 GetIndex(url);
             }
@@ -994,7 +965,7 @@ function CommonSubmit(data, actionUrl, e) {
     });
 }
 
-function CommonSubmitUpload(data, actionUrl, e) {    
+function CommonSubmitUpload(data, actionUrl, e) {
     e.preventDefault();
 
     $(".modalLoader").css("display", "block");
@@ -1030,7 +1001,7 @@ function SubmitPopup(data) {
     $(".modalLoader").hide();
 }
 
-function hideImage() {$(".modalLoader").hide();}
+function hideImage() { $(".modalLoader").hide(); }
 
 
 
@@ -1039,7 +1010,7 @@ function hideImage() {$(".modalLoader").hide();}
 //    document.getElementById("deleteModal").style.display = "block";
 //}
 function ResponseSave(response) {
-    
+
     var contentId = "/" + response.areaName + "/" + response.selectedMenu + "/Index";
     url = window.location.origin + contentId;
     $("#commonModalbinder").css("display", "none");
@@ -1051,12 +1022,12 @@ function ResponseSave(response) {
 }
 
 function DeleteConfirm(Data) {
-    
+
     $(".modalLoader").css("display", "block");
     CommonAjax(Data.Url, "Get", false, "application/json", false, DeleteSuccess);
 }
 function DeleteSuccess(response) {
-    
+
     var contentId;
     if (response.selectedAction == null) {
         contentId = "/" + response.areaName + "/" + response.selectedMenu + "/Index";
@@ -1064,9 +1035,9 @@ function DeleteSuccess(response) {
     else {
         contentId = "/" + response.areaName + "/" + response.selectedMenu + "/" + response.selectedAction;
     }
-     
+
     url = window.location.origin + contentId;
-    $("#commonModalbinder").css("display", "none");    
+    $("#commonModalbinder").css("display", "none");
     if (response.errorMessage != "") {
         CommonAlert(response.alert, response.errorMessage, AfterSuccess, url, "error");
     } else {
@@ -1097,19 +1068,19 @@ function isDecimal(evt) {
 }
 
 function divShow(url) {
-    
+
     CommonAlert('Delete', 'Do you want to delete?', DeleteConfirm, { 'Url': url }, 'delete');
 }
 function SetDateInHidden(thisVal, hiddenObj) {
-    debugger;
+    
     hiddenObj.val(Dateformate(thisVal.value));
 }
 //var hdnPlaceCode = document.getElementById('hdnValue').value
-    //document.getElementById("deleteModal").style.display = "none";
-    //var data = Data+"?id="
+//document.getElementById("deleteModal").style.display = "none";
+//var data = Data+"?id="
 //window.location.href = "/ESTABLISHMENT/EMSC27/DeleteConfirmed?id=" + hdnPlaceCode;
 function OpenPdf(url) {
-    
+
     $(".modalLoader").show();
     var x = window.open('_blank');
     x.document.write('<body></body>');
@@ -1128,6 +1099,6 @@ function OpenPdf(url) {
     var script = x.document.createElement('script');
     script.type = "text/javascript";
     script.innerHTML = "document.getElementById('reportFrame').onload = function(){document.getElementById('modalLoaderId').style.display='none';}";
-    x.document.head.appendChild(script);   
+    x.document.head.appendChild(script);
     $(".modalLoader").hide();
 }

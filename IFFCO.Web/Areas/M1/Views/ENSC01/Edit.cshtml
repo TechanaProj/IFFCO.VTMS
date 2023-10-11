@@ -8,7 +8,7 @@
 <script>
 
     function Validate() {
-        debugger;
+        
         return true;
         //if ($('#CasualName').val().length > 30) {
         //    CommonAlert("Alert", "The name of Trainee should be under 30 Characters", null, null, "Warning");
@@ -358,7 +358,7 @@
    
 
        //function PopDistrictLOV() {
-       // debugger;
+       // 
        // $(".modalLoader").css("display", "block");
        // setTimeout(function () {
        //     CommonAjax('/M1/ENSC01/DistrictLOVBindJSON', "GET", false, "application/json", false, BindDropDownWithSelectAsNull, "#FDistrictForUniversity", { StateCd: $('#FStateForUniversity').val() });
@@ -369,7 +369,7 @@
 
 
         function PopBranchLOV() {
-            debugger;
+            
             $(".modalLoader").css("display", "block");
             setTimeout(function() {
                 CommonAjax('/M1/ENSC01/BranchLOVBindJSON', "GET", false, "application/json", false, BindDropDownWithSelectAsNull, "#FBranch", { CourseCode: $('#FCourse').val() });
@@ -380,7 +380,7 @@
 
     
          function PopInstituteLOV() {
-            debugger;
+            
             $(".modalLoader").css("display", "block");
             setTimeout(function() {
                 CommonAjax('/M1/ENSC01/InstituteLOVBindJSON', "GET", false, "application/json", false, BindDropDownWithSelectAsNull, "#FInstitute", { UniversityId: $('#FUniversity').val() });
@@ -391,10 +391,10 @@
         }
 
         function ValueToDropDownByAjax(loc, count) {
-         debugger;
+         
         var tempdata = $("#" + loc + "Hidden").val(); // 59
         if (tempdata.length > 0) {
-            debugger;
+            
             $("#" + loc).val(tempdata);
         } else {
             $("#" + loc).attr('selectedIndex', 0);
